@@ -43,7 +43,6 @@ export default function KanbanTaskCommentList({ comments }) {
 
               {comment.messageType === 'image' ? (
                 <Image
-                  alt={comment.message}
                   src={comment.message}
                   onClick={() => handleOpenLightbox(comment.message)}
                   sx={{ mt: 2, borderRadius: 1 }}

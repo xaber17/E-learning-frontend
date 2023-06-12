@@ -1,5 +1,4 @@
-// next
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Grid, Link, Divider, Container, Typography, Stack } from '@mui/material';
@@ -83,11 +82,16 @@ export default function MainFooter() {
                     {list.headline}
                   </Typography>
                   {list.children.map((link) => (
-                    <NextLink key={link.name} href={link.href} passHref>
-                      <Link color="inherit" variant="body2" sx={{ display: 'block' }}>
-                        {link.name}
-                      </Link>
-                    </NextLink>
+                    <Link
+                      to={link.href}
+                      key={link.name}
+                      color="inherit"
+                      variant="body2"
+                      component={RouterLink}
+                      sx={{ display: 'block' }}
+                    >
+                      {link.name}
+                    </Link>
                   ))}
                 </Stack>
               ))}

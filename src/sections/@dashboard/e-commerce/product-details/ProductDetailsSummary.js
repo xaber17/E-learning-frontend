@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { sentenceCase } from 'change-case';
-// next
-import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom';
 // form
 import { Controller, useForm } from 'react-hook-form';
 // @mui
@@ -52,7 +51,7 @@ ProductDetailsSummary.propTypes = {
 export default function ProductDetailsSummary({ cart, product, onAddCart, onGotoStep, ...other }) {
   const theme = useTheme();
 
-  const { push } = useRouter();
+  const navigate = useNavigate();
 
   const {
     id,
@@ -101,7 +100,7 @@ export default function ProductDetailsSummary({ cart, product, onAddCart, onGoto
         });
       }
       onGotoStep(0);
-      push(PATH_DASHBOARD.eCommerce.checkout);
+      navigate(PATH_DASHBOARD.eCommerce.checkout);
     } catch (error) {
       console.error(error);
     }

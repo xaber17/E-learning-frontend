@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
 import { m } from 'framer-motion';
 import { useState, useEffect } from 'react';
-// next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Link, Grid, List, Stack, Popover, ListSubheader, CardActionArea } from '@mui/material';
+import { Box, Link, Grid, List, Stack, Popover, ListItem, ListSubheader, CardActionArea } from '@mui/material';
 // components
 import Iconify from '../../components/Iconify';
 
@@ -25,10 +23,8 @@ const LinkStyle = styled(Link)(({ theme }) => ({
   },
 }));
 
-const ListItemStyle = styled(Link)(({ theme }) => ({
+const ListItemStyle = styled(ListItem)(({ theme }) => ({
   ...theme.typography.body2,
-  display: 'flex',
-  alignItems: 'center',
   padding: 0,
   marginTop: theme.spacing(3),
   color: theme.palette.text.secondary,
@@ -47,7 +43,7 @@ MenuDesktop.propTypes = {
 };
 
 export default function MenuDesktop({ isOffset, isHome, navConfig }) {
-  const { pathname } = useRouter();
+  const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -122,11 +118,7 @@ MenuDesktopItem.propTypes = {
 };
 
 function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose }) {
-  const { pathname } = useRouter();
-
   const { title, path, children } = item;
-
-  const isActive = (path) => pathname === path;
 
   if (children) {
     return (
@@ -191,45 +183,46 @@ function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose }) {
                     </ListSubheader>
 
                     {items.map((item) => (
-                      <NextLink key={item.title} href={item.path} passHref>
-                        <ListItemStyle
-                          underline="none"
-                          sx={{
-                            ...(isActive(item.path) && {
-                              color: 'text.primary',
-                              typography: 'subtitle2',
-                            }),
-                          }}
-                        >
-                          {item.title === 'Dashboard' ? (
-                            <CardActionArea
-                              sx={{
-                                py: 5,
-                                px: 10,
-                                borderRadius: 2,
-                                color: 'primary.main',
-                                bgcolor: 'background.neutral',
+                      <ListItemStyle
+                        key={item.title}
+                        to={item.path}
+                        component={RouterLink}
+                        underline="none"
+                        sx={{
+                          '&.active': {
+                            color: 'text.primary',
+                            typography: 'subtitle2',
+                          },
+                        }}
+                      >
+                        {item.title === 'Dashboard' ? (
+                          <CardActionArea
+                            sx={{
+                              py: 5,
+                              px: 10,
+                              borderRadius: 2,
+                              color: 'primary.main',
+                              bgcolor: 'background.neutral',
+                            }}
+                          >
+                            <Box
+                              component={m.img}
+                              whileTap="tap"
+                              whileHover="hover"
+                              variants={{
+                                hover: { scale: 1.02 },
+                                tap: { scale: 0.98 },
                               }}
-                            >
-                              <Box
-                                component={m.img}
-                                whileTap="tap"
-                                whileHover="hover"
-                                variants={{
-                                  hover: { scale: 1.02 },
-                                  tap: { scale: 0.98 },
-                                }}
-                                src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_dashboard.png"
-                              />
-                            </CardActionArea>
-                          ) : (
-                            <>
-                              <IconBullet />
-                              {item.title}
-                            </>
-                          )}
-                        </ListItemStyle>
-                      </NextLink>
+                              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_dashboard.png"
+                            />
+                          </CardActionArea>
+                        ) : (
+                          <>
+                            <IconBullet />
+                            {item.title}
+                          </>
+                        )}
+                      </ListItemStyle>
                     ))}
                   </List>
                 </Grid>
@@ -258,18 +251,19 @@ function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose }) {
   }
 
   return (
-    <NextLink href={path} passHref>
-      <LinkStyle
-        sx={{
-          ...(isHome && { color: 'common.white' }),
-          ...(isOffset && { color: 'text.primary' }),
-          ...(isActive(path) && {
-            color: 'primary.main',
-          }),
-        }}
-      >
-        {title}
-      </LinkStyle>
-    </NextLink>
+    <LinkStyle
+      to={path}
+      component={RouterLink}
+      end={path === '/'}
+      sx={{
+        ...(isHome && { color: 'common.white' }),
+        ...(isOffset && { color: 'text.primary' }),
+        '&.active': {
+          color: 'primary.main',
+        },
+      }}
+    >
+      {title}
+    </LinkStyle>
   );
 }

@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { paramCase } from 'change-case';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-// next
-import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Link, Typography, Autocomplete, InputAdornment, Popper } from '@mui/material';
@@ -28,7 +27,7 @@ const PopperStyle = styled((props) => <Popper placement="bottom-start" {...props
 // ----------------------------------------------------------------------
 
 export default function BlogPostsSearch() {
-  const { push } = useRouter();
+  const navigate = useNavigate();
 
   const isMountedRef = useIsMountedRef();
 
@@ -54,7 +53,7 @@ export default function BlogPostsSearch() {
   };
 
   const handleClick = (title) => {
-    push(`${PATH_DASHBOARD.blog.root}/post/${paramCase(title)}`);
+    navigate(`${PATH_DASHBOARD.blog.root}/post/${paramCase(title)}`);
   };
 
   const handleKeyUp = (event) => {

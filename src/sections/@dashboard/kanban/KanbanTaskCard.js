@@ -71,11 +71,7 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }) {
                     }),
                   }}
                 >
-                  <Image
-                    alt={attachments[0]}
-                    src={attachments[0]}
-                    sx={{ position: 'absolute', top: 0, width: 1, height: 1 }}
-                  />
+                  <Image src={attachments[0]} sx={{ position: 'absolute', top: 0, width: 1, height: 1 }} />
                 </Box>
               )}
 

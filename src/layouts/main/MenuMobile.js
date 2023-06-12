@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-// next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
 import { Box, List, Link, Drawer, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
@@ -33,7 +31,7 @@ MenuMobile.propTypes = {
 };
 
 export default function MenuMobile({ isOffset, isHome, navConfig }) {
-  const { pathname } = useRouter();
+  const { pathname } = useLocation();
 
   const [open, setOpen] = useState(false);
 
@@ -105,10 +103,7 @@ MenuMobileItem.propTypes = {
 };
 
 function MenuMobileItem({ item, isOpen, onOpen }) {
-  const { pathname } = useRouter();
   const { title, path, icon, children } = item;
-
-  const isActive = pathname === path;
 
   if (children) {
     return (
@@ -155,19 +150,20 @@ function MenuMobileItem({ item, isOpen, onOpen }) {
   }
 
   return (
-    <NextLink href={path} passHref>
-      <ListItemStyle
-        sx={{
-          ...(isActive && {
-            color: 'primary.main',
-            fontWeight: 'fontWeightMedium',
-            bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-          }),
-        }}
-      >
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText disableTypography primary={title} />
-      </ListItemStyle>
-    </NextLink>
+    <ListItemStyle
+      to={path}
+      component={RouterLink}
+      end={path === '/'}
+      sx={{
+        '&.active': {
+          color: 'primary.main',
+          fontWeight: 'fontWeightMedium',
+          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+        },
+      }}
+    >
+      <ListItemIcon>{icon}</ListItemIcon>
+      <ListItemText disableTypography primary={title} />
+    </ListItemStyle>
   );
 }

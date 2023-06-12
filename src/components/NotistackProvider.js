@@ -17,7 +17,7 @@ function SnackbarStyles() {
   return (
     <GlobalStyles
       styles={{
-        '#__next': {
+        '#root': {
           '& .SnackbarContent-root': {
             width: '100%',
             padding: theme.spacing(1),

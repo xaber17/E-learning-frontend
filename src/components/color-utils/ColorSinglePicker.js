@@ -69,7 +69,7 @@ IconColor.propTypes = {
   sx: PropTypes.object,
 };
 
-function IconColor({ sx, ...other }) {
+function IconColor({ sx }) {
   return (
     <Box
       sx={{
@@ -87,7 +87,6 @@ function IconColor({ sx, ...other }) {
           }),
         ...sx,
       }}
-      {...other}
     >
       <Iconify icon={'eva:checkmark-fill'} />
     </Box>

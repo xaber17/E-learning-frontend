@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
+import { useState, useMemo, useEffect } from 'react';
 import { noCase } from 'change-case';
-import { useState } from 'react';
 // @mui
 import {
   Box,
@@ -16,10 +16,13 @@ import {
   ListItemAvatar,
   ListItemButton,
 } from '@mui/material';
+
+import { useDispatch, useSelector } from '../../../redux/store';
+import { updateNotifikasi, getNotifikasiByAuth } from '../../../redux/slices/notifikasi';
 // utils
 import { fToNow } from '../../../utils/formatTime';
 // _mock_
-import { _notifications } from '../../../_mock';
+
 // components
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
@@ -29,9 +32,26 @@ import { IconButtonAnimate } from '../../../components/animate';
 // ----------------------------------------------------------------------
 
 export default function NotificationsPopover() {
-  const [notifications, setNotifications] = useState(_notifications);
+  const dispatch = useDispatch();
 
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+  const { notifikasi } = useSelector((state) => state.notifikasi);
+  console.log('notifikasi', notifikasi);
+  useEffect(() => {
+    dispatch(getNotifikasiByAuth()).catch((err) => {
+      console.log('ERROR', err);
+    });
+  }, [dispatch]);
+
+  let notifikasiListUnread = [];
+  let notifikasiListRead = [];
+  try {
+    notifikasiListUnread = notifikasi?.data_unread;
+    notifikasiListRead = notifikasi?.data_read;
+  } catch (e) {
+    console.log(e);
+  }
+
+  const totalUnRead = notifikasi?.unread || 0;
 
   const [open, setOpen] = useState(null);
 
@@ -40,24 +60,27 @@ export default function NotificationsPopover() {
   };
 
   const handleClose = () => {
-    setOpen(null);
-  };
-
-  const handleMarkAllAsRead = () => {
-    setNotifications(
-      notifications.map((notification) => ({
-        ...notification,
-        isUnRead: false,
-      }))
-    );
+    dispatch(updateNotifikasi())
+      .then((data) => {
+        console.log('data update notifikasi', data);
+        dispatch(getNotifikasiByAuth());
+        setOpen(null);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <>
       <IconButtonAnimate color={open ? 'primary' : 'default'} onClick={handleOpen} sx={{ width: 40, height: 40 }}>
-        <Badge badgeContent={totalUnRead} color="error">
+        {totalUnRead > 0 ? (
+          <Badge badgeContent={totalUnRead} color="error">
+            <Iconify icon="eva:bell-fill" width={20} height={20} />
+          </Badge>
+        ) : (
           <Iconify icon="eva:bell-fill" width={20} height={20} />
-        </Badge>
+        )}
       </IconButtonAnimate>
 
       <MenuPopover
@@ -70,13 +93,13 @@ export default function NotificationsPopover() {
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              You have {totalUnRead} unread messages
+              Anda memiliki {totalUnRead} notifikasi belum dibaca
             </Typography>
           </Box>
 
           {totalUnRead > 0 && (
             <Tooltip title=" Mark all as read">
-              <IconButtonAnimate color="primary" onClick={handleMarkAllAsRead}>
+              <IconButtonAnimate color="primary">
                 <Iconify icon="eva:done-all-fill" width={20} height={20} />
               </IconButtonAnimate>
             </Tooltip>
@@ -94,8 +117,37 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(0, 2).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+            {notifikasiListUnread?.map((notification) => (
+              <ListItemButton
+                sx={{
+                  py: 1.5,
+                  px: 2.5,
+                  mt: '1px',
+                  bgcolor: 'action.selected',
+                }}
+              >
+                <ListItemText
+                  primary={
+                    <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
+                      {notification?.deskripsi}
+                    </Typography>
+                  }
+                  secondary={
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        mt: 0.5,
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: 'text.disabled',
+                      }}
+                    >
+                      <Iconify icon="eva:clock-outline" sx={{ mr: 0.5, width: 16, height: 16 }} />
+                      {fToNow(notification?.created_at)}
+                    </Typography>
+                  }
+                />
+              </ListItemButton>
             ))}
           </List>
 
@@ -107,134 +159,41 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(2, 5).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+            {notifikasiListRead?.map((notification) => (
+              <ListItemButton
+                sx={{
+                  py: 1.5,
+                  px: 2.5,
+                  mt: '1px',
+                }}
+              >
+                <ListItemText
+                  primary={
+                    <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
+                      {notification?.deskripsi}
+                    </Typography>
+                  }
+                  secondary={
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        mt: 0.5,
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: 'text.disabled',
+                      }}
+                    >
+                      <Iconify icon="eva:clock-outline" sx={{ mr: 0.5, width: 16, height: 16 }} />
+                      {fToNow(notification?.created_at)}
+                    </Typography>
+                  }
+                />
+              </ListItemButton>
             ))}
           </List>
         </Scrollbar>
-
         <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple>
-            View All
-          </Button>
-        </Box>
       </MenuPopover>
     </>
   );
-}
-
-// ----------------------------------------------------------------------
-
-NotificationItem.propTypes = {
-  notification: PropTypes.shape({
-    createdAt: PropTypes.instanceOf(Date),
-    id: PropTypes.string,
-    isUnRead: PropTypes.bool,
-    title: PropTypes.string,
-    description: PropTypes.string,
-    type: PropTypes.string,
-    avatar: PropTypes.any,
-  }),
-};
-
-function NotificationItem({ notification }) {
-  const { avatar, title } = renderContent(notification);
-
-  return (
-    <ListItemButton
-      sx={{
-        py: 1.5,
-        px: 2.5,
-        mt: '1px',
-        ...(notification.isUnRead && {
-          bgcolor: 'action.selected',
-        }),
-      }}
-    >
-      <ListItemAvatar>
-        <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={title}
-        secondary={
-          <Typography
-            variant="caption"
-            sx={{
-              mt: 0.5,
-              display: 'flex',
-              alignItems: 'center',
-              color: 'text.disabled',
-            }}
-          >
-            <Iconify icon="eva:clock-outline" sx={{ mr: 0.5, width: 16, height: 16 }} />
-            {fToNow(notification.createdAt)}
-          </Typography>
-        }
-      />
-    </ListItemButton>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-function renderContent(notification) {
-  const title = (
-    <Typography variant="subtitle2">
-      {notification.title}
-      <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
-        &nbsp; {noCase(notification.description)}
-      </Typography>
-    </Typography>
-  );
-
-  if (notification.type === 'order_placed') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_package.svg"
-        />
-      ),
-      title,
-    };
-  }
-  if (notification.type === 'order_shipped') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_shipping.svg"
-        />
-      ),
-      title,
-    };
-  }
-  if (notification.type === 'mail') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_mail.svg"
-        />
-      ),
-      title,
-    };
-  }
-  if (notification.type === 'chat_message') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_chat.svg"
-        />
-      ),
-      title,
-    };
-  }
-  return {
-    avatar: notification.avatar ? <img alt={notification.title} src={notification.avatar} /> : null,
-    title,
-  };
 }

@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-// next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { useNavigate, useLocation } from 'react-router-dom';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
 import { Box, Stack, Drawer, IconButton } from '@mui/material';
@@ -48,7 +46,9 @@ const SIDEBAR_COLLAPSE_WIDTH = 96;
 export default function ChatSidebar() {
   const theme = useTheme();
 
-  const { push, pathname } = useRouter();
+  const navigate = useNavigate();
+
+  const { pathname } = useLocation();
 
   const [openSidebar, setOpenSidebar] = useState(true);
 
@@ -121,7 +121,7 @@ export default function ChatSidebar() {
   const handleSearchSelect = (username) => {
     setSearchFocused(false);
     setSearchQuery('');
-    push(`${PATH_DASHBOARD.chat.root}/${username}`);
+    navigate(`${PATH_DASHBOARD.chat.root}/${username}`);
   };
 
   const handleSelectContact = (result) => {
@@ -150,11 +150,9 @@ export default function ChatSidebar() {
           </IconButton>
 
           {!isCollapse && (
-            <NextLink href={PATH_DASHBOARD.chat.new}>
-              <IconButton>
-                <Iconify icon={'eva:edit-fill'} width={20} height={20} />
-              </IconButton>
-            </NextLink>
+            <IconButton onClick={() => navigate(PATH_DASHBOARD.chat.new)}>
+              <Iconify icon={'eva:edit-fill'} width={20} height={20} />
+            </IconButton>
           )}
         </Stack>
 

@@ -130,16 +130,13 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }) {
 // ----------------------------------------------------------------------
 
 export function useDatePicker({ date }) {
-  const [dueDate, setDueDate] = useState([(date[0], date[1])]);
-
+  const [dueDate, setDueDate] = useState([date[0], date[1]]);
   const [openPicker, setOpenPicker] = useState(false);
 
   const startTime = dueDate[0] || '';
-
   const endTime = dueDate[1] || '';
 
   const isSameDays = isSameDay(new Date(startTime), new Date(endTime));
-
   const isSameMonths = isSameMonth(new Date(startTime), new Date(endTime));
 
   const handleChangeDueDate = (newValue) => {

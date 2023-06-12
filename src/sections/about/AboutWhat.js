@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { m } from 'framer-motion';
 // @mui
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { Box, Grid, Button, Container, Typography, LinearProgress } from '@mui/material';
@@ -12,7 +11,7 @@ import { _skills } from '../../_mock';
 // components
 import Image from '../../components/Image';
 import Iconify from '../../components/Iconify';
-import { MotionViewport, varFade } from '../../components/animate';
+import { MotionInView, varFade } from '../../components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -37,15 +36,14 @@ export default function AboutWhat() {
 
   return (
     <RootStyle>
-      <Container component={MotionViewport}>
+      <Container>
         <Grid container spacing={3}>
           {isDesktop && (
             <Grid item xs={12} md={6} lg={7} sx={{ pr: { md: 7 } }}>
               <Grid container spacing={3} alignItems="flex-end">
                 <Grid item xs={6}>
-                  <m.div variants={varFade().inUp}>
+                  <MotionInView variants={varFade().inUp}>
                     <Image
-                      alt="our office 1"
                       src="https://minimal-assets-api.vercel.app/assets/images/about/what-1.jpg"
                       ratio="3/4"
                       sx={{
@@ -53,30 +51,29 @@ export default function AboutWhat() {
                         boxShadow: shadow,
                       }}
                     />
-                  </m.div>
+                  </MotionInView>
                 </Grid>
                 <Grid item xs={6}>
-                  <m.div variants={varFade().inUp}>
+                  <MotionInView variants={varFade().inUp}>
                     <Image
-                      alt="our office 2"
                       src="https://minimal-assets-api.vercel.app/assets/images/about/what-2.jpg"
                       ratio="1/1"
                       sx={{ borderRadius: 2 }}
                     />
-                  </m.div>
+                  </MotionInView>
                 </Grid>
               </Grid>
             </Grid>
           )}
 
           <Grid item xs={12} md={6} lg={5}>
-            <m.div variants={varFade().inRight}>
+            <MotionInView variants={varFade().inRight}>
               <Typography variant="h2" sx={{ mb: 3 }}>
                 What is minimal?
               </Typography>
-            </m.div>
+            </MotionInView>
 
-            <m.div variants={varFade().inRight}>
+            <MotionInView variants={varFade().inRight}>
               <Typography
                 sx={{
                   color: (theme) => (theme.palette.mode === 'light' ? 'text.secondary' : 'common.white'),
@@ -87,17 +84,17 @@ export default function AboutWhat() {
                 click and everything from the theme options to page content can be edited from the front-end. This is
                 the theme you are looking for.
               </Typography>
-            </m.div>
+            </MotionInView>
 
             <Box sx={{ my: 5 }}>
               {_skills.map((progress) => (
-                <m.div key={progress.label} variants={varFade().inRight}>
+                <MotionInView key={progress.label} variants={varFade().inRight}>
                   <ProgressItem progress={progress} />
-                </m.div>
+                </MotionInView>
               ))}
             </Box>
 
-            <m.div variants={varFade().inRight}>
+            <MotionInView variants={varFade().inRight}>
               <Button
                 variant="outlined"
                 color="inherit"
@@ -106,7 +103,7 @@ export default function AboutWhat() {
               >
                 Check out our work
               </Button>
-            </m.div>
+            </MotionInView>
           </Grid>
         </Grid>
       </Container>

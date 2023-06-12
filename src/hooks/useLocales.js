@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-// @mui
+// '@mui
 import { enUS, deDE, frFR } from '@mui/material/locale';
 
 // ----------------------------------------------------------------------
@@ -15,6 +15,7 @@ const LANGS = [
     label: 'German',
     value: 'de',
     systemValue: deDE,
+
     icon: 'https://minimal-assets-api.vercel.app/assets/icons/ic_flag_de.svg',
   },
   {

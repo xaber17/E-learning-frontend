@@ -1,11 +1,12 @@
 import merge from 'lodash/merge';
+import ReactApexChart from 'react-apexcharts';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
 import { Box, Card, Stack, Divider, CardHeader, Typography } from '@mui/material';
 // hooks
 import useResponsive from '../../../../hooks/useResponsive';
-// components
-import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
+//
+import { BaseOptionChart } from '../../../../components/chart';
 
 // ----------------------------------------------------------------------
 
@@ -100,16 +101,12 @@ export default function BankingExpensesCategories() {
 
       <Stack direction="row" divider={<Divider orientation="vertical" flexItem />}>
         <Box sx={{ py: 2, width: 1, textAlign: 'center' }}>
-          <Typography sx={{ mb: 1, typography: 'body2', color: 'text.secondary' }}>
-            Categories
-          </Typography>
+          <Typography sx={{ mb: 1, typography: 'body2', color: 'text.secondary' }}>Categories</Typography>
           <Typography sx={{ typography: 'h4' }}>9</Typography>
         </Box>
 
         <Box sx={{ py: 2, width: 1, textAlign: 'center' }}>
-          <Typography sx={{ mb: 1, typography: 'body2', color: 'text.secondary' }}>
-            Categories
-          </Typography>
+          <Typography sx={{ mb: 1, typography: 'body2', color: 'text.secondary' }}>Categories</Typography>
           <Typography sx={{ typography: 'h4' }}>$18,765</Typography>
         </Box>
       </Stack>

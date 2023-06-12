@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-// next
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { Box, Link, Typography, Breadcrumbs as MUIBreadcrumbs } from '@mui/material';
 
@@ -58,23 +57,23 @@ LinkItem.propTypes = {
 };
 
 function LinkItem({ link }) {
-  const { href = '', name, icon } = link;
+  const { href, name, icon } = link;
   return (
-    <NextLink href={href} passHref>
-      <Link
-        key={name}
-        variant="body2"
-        sx={{
-          lineHeight: 2,
-          display: 'flex',
-          alignItems: 'center',
-          color: 'text.primary',
-          '& > div': { display: 'inherit' },
-        }}
-      >
-        {icon && <Box sx={{ mr: 1, '& svg': { width: 20, height: 20 } }}>{icon}</Box>}
-        {name}
-      </Link>
-    </NextLink>
+    <Link
+      key={name}
+      variant="body2"
+      component={RouterLink}
+      to={href || '#'}
+      sx={{
+        lineHeight: 2,
+        display: 'flex',
+        alignItems: 'center',
+        color: 'text.primary',
+        '& > div': { display: 'inherit' },
+      }}
+    >
+      {icon && <Box sx={{ mr: 1, '& svg': { width: 20, height: 20 } }}>{icon}</Box>}
+      {name}
+    </Link>
   );
 }

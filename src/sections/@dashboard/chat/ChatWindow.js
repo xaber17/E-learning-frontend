@@ -1,9 +1,7 @@
-// next
-import Router, { useRouter } from 'next/router';
-//
 import { useEffect } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 // @mui
-import { Box, Divider } from '@mui/material';
+import { Box, Divider, Stack } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../../redux/store';
 import {
@@ -43,27 +41,23 @@ const conversationSelector = (state) => {
 
 export default function ChatWindow() {
   const dispatch = useDispatch();
-
-  const { pathname, query } = useRouter();
-
-  const { conversationKey } = query;
-
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { conversationKey } = useParams();
   const { contacts, recipients, participants, activeConversationId } = useSelector((state) => state.chat);
-
   const conversation = useSelector((state) => conversationSelector(state));
 
   const mode = conversationKey ? 'DETAIL' : 'COMPOSE';
-
   const displayParticipants = participants.filter((item) => item.id !== '8864c717-587d-472a-929a-8e5f298024da-0');
 
   useEffect(() => {
     const getDetails = async () => {
-      dispatch(getParticipants(`${conversationKey}`));
+      dispatch(getParticipants(conversationKey));
       try {
-        await dispatch(getConversation(`${conversationKey}`));
+        await dispatch(getConversation(conversationKey));
       } catch (error) {
         console.error(error);
-        Router.push(PATH_DASHBOARD.chat.new);
+        navigate(PATH_DASHBOARD.chat.new);
       }
     };
     if (conversationKey) {
@@ -93,7 +87,7 @@ export default function ChatWindow() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+    <Stack sx={{ flexGrow: 1, minWidth: '1px' }}>
       {mode === 'DETAIL' ? (
         <ChatHeaderDetail participants={displayParticipants} />
       ) : (
@@ -107,7 +101,7 @@ export default function ChatWindow() {
       <Divider />
 
       <Box sx={{ flexGrow: 1, display: 'flex', overflow: 'hidden' }}>
-        <Box sx={{ display: 'flex', flexGrow: 1, flexDirection: 'column' }}>
+        <Stack sx={{ flexGrow: 1 }}>
           <ChatMessageList conversation={conversation} />
 
           <Divider />
@@ -117,10 +111,10 @@ export default function ChatWindow() {
             onSend={handleSendMessage}
             disabled={pathname === PATH_DASHBOARD.chat.new}
           />
-        </Box>
+        </Stack>
 
         {mode === 'DETAIL' && <ChatRoom conversation={conversation} participants={displayParticipants} />}
       </Box>
-    </Box>
+    </Stack>
   );
 }

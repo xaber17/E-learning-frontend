@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { paramCase } from 'change-case';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-// next
-import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Link, Typography, Autocomplete, InputAdornment, Popper } from '@mui/material';
@@ -28,7 +27,7 @@ const PopperStyle = styled((props) => <Popper placement="bottom-start" {...props
 // ----------------------------------------------------------------------
 
 export default function ShopProductSearch() {
-  const { push } = useRouter();
+  const navigate = useNavigate();
 
   const isMountedRef = useIsMountedRef();
 
@@ -54,7 +53,7 @@ export default function ShopProductSearch() {
   };
 
   const handleClick = (name) => {
-    push(`${PATH_DASHBOARD.eCommerce.root}/product/${paramCase(name)}`);
+    navigate(`${PATH_DASHBOARD.eCommerce.root}/product/${paramCase(name)}`);
   };
 
   const handleKeyUp = (event) => {

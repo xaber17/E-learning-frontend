@@ -35,6 +35,10 @@ export default function ProductListHead({
   onRequestSort,
   onSelectAllClick,
 }) {
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
   return (
     <TableHead>
       <TableRow>
@@ -42,7 +46,7 @@ export default function ProductListHead({
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
-            onChange={(event) => onSelectAllClick(event.target.checked)}
+            onChange={onSelectAllClick}
           />
         </TableCell>
         {headLabel.map((headCell) => (
@@ -55,7 +59,7 @@ export default function ProductListHead({
               hideSortIcon
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={() => onRequestSort(headCell.id)}
+              onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (

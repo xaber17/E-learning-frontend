@@ -1,17 +1,15 @@
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-// next
-import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Divider, Box } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../../redux/store';
 import { getMails } from '../../../redux/slices/mail';
-// components
+//
 import Scrollbar from '../../../components/Scrollbar';
 import EmptyContent from '../../../components/EmptyContent';
-//
 import MailItem from './MailItem';
 import MailToolbar from './MailToolbar';
 
@@ -31,7 +29,7 @@ MailList.propTypes = {
 };
 
 export default function MailList({ onOpenSidebar }) {
-  const { query } = useRouter();
+  const params = useParams();
 
   const dispatch = useDispatch();
 
@@ -44,8 +42,8 @@ export default function MailList({ onOpenSidebar }) {
   const isEmpty = mails.allIds.length < 1;
 
   useEffect(() => {
-    dispatch(getMails(query));
-  }, [dispatch, query]);
+    dispatch(getMails(params));
+  }, [dispatch, params]);
 
   const handleSelectAllMails = () => {
     setSelectedMails(mails.allIds.map((mailId) => mailId));

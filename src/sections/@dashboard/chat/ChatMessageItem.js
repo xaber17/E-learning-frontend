@@ -3,6 +3,8 @@ import { formatDistanceToNowStrict } from 'date-fns';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Avatar, Box, Typography } from '@mui/material';
+// components
+import Image from '../../../components/Image';
 
 // ----------------------------------------------------------------------
 
@@ -23,15 +25,6 @@ const InfoStyle = styled(Typography)(({ theme }) => ({
   display: 'flex',
   marginBottom: theme.spacing(0.75),
   color: theme.palette.text.secondary,
-}));
-
-const MessageImgStyle = styled('img')(({ theme }) => ({
-  height: 200,
-  minWidth: 296,
-  width: '100%',
-  cursor: 'pointer',
-  objectFit: 'cover',
-  borderRadius: theme.shape.borderRadius,
 }));
 
 // ----------------------------------------------------------------------
@@ -64,11 +57,16 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox 
         }}
       >
         {senderDetails.type !== 'me' && (
-          <Avatar alt={senderDetails.name} src={senderDetails.avatar} sx={{ width: 32, height: 32 }} />
+          <Avatar alt={senderDetails.name} src={senderDetails.avatar} sx={{ width: 32, height: 32, mr: 2 }} />
         )}
 
-        <Box sx={{ ml: 2 }}>
-          <InfoStyle noWrap variant="caption" sx={{ ...(isMe && { justifyContent: 'flex-end' }) }}>
+        <div>
+          <InfoStyle
+            variant="caption"
+            sx={{
+              ...(isMe && { justifyContent: 'flex-end' }),
+            }}
+          >
             {!isMe && `${firstName},`}&nbsp;
             {formatDistanceToNowStrict(new Date(message.createdAt), {
               addSuffix: true,
@@ -77,19 +75,22 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox 
 
           <ContentStyle
             sx={{
-              ...(isMe && {
-                color: 'grey.800',
-                bgcolor: 'primary.lighter',
-              }),
+              ...(isMe && { color: 'grey.800', bgcolor: 'primary.lighter' }),
+              ...(isImage && { p: 0 }),
             }}
           >
             {isImage ? (
-              <MessageImgStyle alt="attachment" src={message.body} onClick={() => onOpenLightbox(message.body)} />
+              <Image
+                alt="attachment"
+                src={message.body}
+                onClick={() => onOpenLightbox(message.body)}
+                sx={{ borderRadius: 1, cursor: 'pointer', '&:hover': { opacity: 0.8 } }}
+              />
             ) : (
               <Typography variant="body2">{message.body}</Typography>
             )}
           </ContentStyle>
-        </Box>
+        </div>
       </Box>
     </RootStyle>
   );

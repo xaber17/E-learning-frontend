@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { Box, Stack, Link, Card, Button, Divider, Typography, CardHeader } from '@mui/material';
 // utils
@@ -28,7 +29,13 @@ export default function AnalyticsNewsUpdate() {
       <Divider />
 
       <Box sx={{ p: 2, textAlign: 'right' }}>
-        <Button size="small" color="inherit" endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}>
+        <Button
+          to="#"
+          size="small"
+          color="inherit"
+          component={RouterLink}
+          endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}
+        >
           View all
         </Button>
       </Box>
@@ -54,7 +61,7 @@ function NewsItem({ news }) {
     <Stack direction="row" alignItems="center" spacing={2}>
       <Image alt={title} src={image} sx={{ width: 48, height: 48, borderRadius: 1.5, flexShrink: 0 }} />
       <Box sx={{ minWidth: 240 }}>
-        <Link color="inherit">
+        <Link component={RouterLink} to="#" color="inherit">
           <Typography variant="subtitle2" noWrap>
             {title}
           </Typography>

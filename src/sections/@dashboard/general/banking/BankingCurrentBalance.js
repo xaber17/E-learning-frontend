@@ -105,7 +105,6 @@ CardItem.propTypes = {
 
 function CardItem({ card }) {
   const { cardType, balance, cardHolder, cardNumber, cardValid } = card;
-
   const [showCurrency, setShowCurrency] = useState(true);
 
   const onToggleShowCurrency = () => {

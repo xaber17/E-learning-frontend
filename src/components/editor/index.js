@@ -1,34 +1,14 @@
 import PropTypes from 'prop-types';
-// next
-import dynamic from 'next/dynamic';
+import ReactQuill from 'react-quill';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 //
-import EditorToolbar, { formats } from './EditorToolbar';
-const ReactQuill = dynamic(() => import('react-quill'), {
-  ssr: false,
-  loading: () => (
-    <Box
-      sx={{
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        position: 'absolute',
-        bgcolor: 'background.paper',
-      }}
-    >
-      Loading...
-    </Box>
-  ),
-});
+import EditorToolbar, { formats, redoChange, undoChange } from './EditorToolbar';
 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Box)(({ theme }) => ({
-  overflow: 'hidden',
-  position: 'relative',
   borderRadius: theme.shape.borderRadius,
   border: `solid 1px ${theme.palette.grey[500_32]}`,
   '& .ql-container.ql-snow': {
@@ -76,6 +56,10 @@ export default function Editor({
   const modules = {
     toolbar: {
       container: `#${id}`,
+      handlers: {
+        undo: undoChange,
+        redo: redoChange,
+      },
     },
     history: {
       delay: 500,

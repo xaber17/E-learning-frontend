@@ -1,11 +1,10 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-// next
-import { useRouter } from 'next/router';
 // form
 import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { OutlinedInput, Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -15,7 +14,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // ----------------------------------------------------------------------
 
 export default function VerifyCodeForm() {
-  const { push } = useRouter();
+  const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -63,7 +62,7 @@ export default function VerifyCodeForm() {
 
       enqueueSnackbar('Verify success!');
 
-      push(PATH_DASHBOARD.root);
+      navigate(PATH_DASHBOARD.root, { replace: true });
     } catch (error) {
       console.error(error);
     }

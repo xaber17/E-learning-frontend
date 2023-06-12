@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-// next
-import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { List } from '@mui/material';
 // routes
@@ -20,7 +19,7 @@ ChatConversationList.propTypes = {
 };
 
 export default function ChatConversationList({ conversations, isOpenSidebar, activeConversationId, sx, ...other }) {
-  const { push } = useRouter();
+  const navigate = useNavigate();
 
   const handleSelectConversation = (conversationId) => {
     let conversationKey = '';
@@ -35,7 +34,7 @@ export default function ChatConversationList({ conversations, isOpenSidebar, act
         conversationKey = otherParticipant?.username;
       }
     }
-    push(`${PATH_DASHBOARD.chat.root}/${conversationKey}`);
+    navigate(`${PATH_DASHBOARD.chat.root}/${conversationKey}`);
   };
 
   const loading = !conversations.allIds.length;

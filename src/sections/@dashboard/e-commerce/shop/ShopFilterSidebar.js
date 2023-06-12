@@ -15,7 +15,7 @@ import {
   RadioGroup,
   FormControlLabel,
 } from '@mui/material';
-// config
+// @types
 import { NAVBAR } from '../../../../config';
 // components
 import Iconify from '../../../../components/Iconify';

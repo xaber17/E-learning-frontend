@@ -55,7 +55,6 @@ export default function CarouselArrows({
   ...other
 }) {
   const theme = useTheme();
-
   const isRTL = theme.direction === 'rtl';
 
   const style = {
@@ -101,7 +100,7 @@ export default function CarouselArrows({
 
 const leftIcon = (customIcon, isRTL) => (
   <Iconify
-    icon={customIcon ? customIcon : 'eva:arrow-right-fill'}
+    icon={customIcon || 'eva:arrow-right-fill'}
     sx={{
       width: 20,
       height: 20,
@@ -113,7 +112,7 @@ const leftIcon = (customIcon, isRTL) => (
 
 const rightIcon = (customIcon, isRTL) => (
   <Iconify
-    icon={customIcon ? customIcon : 'eva:arrow-right-fill'}
+    icon={customIcon || 'eva:arrow-right-fill'}
     sx={{
       width: 20,
       height: 20,

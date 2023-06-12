@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-// next
-import NextLink from 'next/link';
+import { useState, useEffect } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Link, Typography } from '@mui/material';
@@ -8,6 +8,8 @@ import { Box, Link, Typography } from '@mui/material';
 import useAuth from '../../../hooks/useAuth';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+import { getAuth } from '../../../redux/slices/auth';
+import { useDispatch, useSelector } from '../../../redux/store';
 // components
 import MyAvatar from '../../../components/MyAvatar';
 
@@ -31,42 +33,72 @@ NavbarAccount.propTypes = {
 };
 
 export default function NavbarAccount({ isCollapse }) {
-  const { user } = useAuth();
+  const [choosenRole, setChoosenRole] = useState('');
+  const dispatch = useDispatch();
+
+  const { auth } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(getAuth()).then((data) => {
+      const a = window.localStorage.getItem('choosenRole');
+      let namaRole = '';
+      if (a === 'pegawai') {
+        namaRole = 'Pegawai';
+      } else if (a === 'admin') {
+        namaRole = 'Admin';
+      } else if (a === 'stafinv') {
+        namaRole = 'Staf Invoice & Pembukuan';
+      } else if (a === 'stafpayroll') {
+        namaRole = 'Staf Payroll';
+      } else if (a === 'dirut') {
+        namaRole = 'Direktur Utama';
+      } else if (a === 'gm') {
+        namaRole = 'General Manager';
+      } else if (a === 'manhrd') {
+        namaRole = 'Manajer HRD';
+      } else if (a === 'manfin') {
+        namaRole = 'Manajer Finance';
+      } else if (a === 'manpro') {
+        namaRole = 'Manajer Proyek';
+      } else if (a === 'stafabs'){
+        namaRole = 'Staf Absensi dan Lembur';
+      }
+      setChoosenRole(namaRole);
+    });
+  }, [dispatch]);
 
   return (
-    <NextLink href={PATH_DASHBOARD.user.account} passHref>
-      <Link underline="none" color="inherit">
-        <RootStyle
-          sx={{
-            ...(isCollapse && {
-              bgcolor: 'transparent',
-            }),
-          }}
-        >
-          <MyAvatar />
+    // <Link underline="none" color="inherit" component={RouterLink} to={PATH_DASHBOARD.user.account}>
+    <RootStyle
+      sx={{
+        ...(isCollapse && {
+          bgcolor: 'transparent',
+        }),
+      }}
+    >
+      {/* <MyAvatar /> */}
 
-          <Box
-            sx={{
-              ml: 2,
-              transition: (theme) =>
-                theme.transitions.create('width', {
-                  duration: theme.transitions.duration.shorter,
-                }),
-              ...(isCollapse && {
-                ml: 0,
-                width: 0,
-              }),
-            }}
-          >
-            <Typography variant="subtitle2" noWrap>
-              {user?.displayName}
-            </Typography>
-            <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
-              {user?.role}
-            </Typography>
-          </Box>
-        </RootStyle>
-      </Link>
-    </NextLink>
+      <Box
+        sx={{
+          ml: 2,
+          transition: (theme) =>
+            theme.transitions.create('width', {
+              duration: theme.transitions.duration.shorter,
+            }),
+          ...(isCollapse && {
+            ml: 0,
+            width: 0,
+          }),
+        }}
+      >
+        <Typography variant="subtitle2" noWrap>
+          {auth?.nama_lengkap}
+        </Typography>
+        <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
+          {choosenRole}
+        </Typography>
+      </Box>
+    </RootStyle>
+    // </Link>
   );
 }

@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { m } from 'framer-motion';
 // @mui
 import { alpha, styled, useTheme } from '@mui/material/styles';
 import { Box, Grid, Link, Paper, Rating, Container, Typography } from '@mui/material';
@@ -9,7 +8,7 @@ import useResponsive from '../../hooks/useResponsive';
 import cssStyles from '../../utils/cssStyles';
 // components
 import Iconify from '../../components/Iconify';
-import { MotionViewport, varFade } from '../../components/animate';
+import { MotionInView, varFade } from '../../components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -75,42 +74,42 @@ export default function AboutTestimonials() {
 
   return (
     <RootStyle>
-      <Container component={MotionViewport} sx={{ position: 'relative', height: 1 }}>
+      <Container sx={{ position: 'relative', height: '100%' }}>
         <Grid
           container
           spacing={3}
           alignItems="center"
           justifyContent={{ xs: 'center', md: 'space-between' }}
-          sx={{ height: 1 }}
+          sx={{ height: '100%' }}
         >
           <Grid item xs={10} md={4}>
             <Box sx={{ maxWidth: { md: 360 } }}>
-              <m.div variants={varFade().inUp}>
+              <MotionInView variants={varFade().inUp}>
                 <Typography component="p" variant="overline" sx={{ mb: 2, color: 'text.secondary' }}>
                   Testimonials
                 </Typography>
-              </m.div>
+              </MotionInView>
 
-              <m.div variants={varFade().inUp}>
+              <MotionInView variants={varFade().inUp}>
                 <Typography variant="h2" sx={{ mb: 3, color: 'common.white' }}>
                   Who love <br />
                   my work
                 </Typography>
-              </m.div>
+              </MotionInView>
 
-              <m.div variants={varFade().inUp}>
+              <MotionInView variants={varFade().inUp}>
                 <Typography sx={{ color: 'common.white' }}>
                   Our goal is to create a product and service that you’re satisfied with and use it every day. This is
                   why we’re constantly working on our services to make it better every day and really listen to what our
                   users has to say.
                 </Typography>
-              </m.div>
+              </MotionInView>
 
               {!isDesktop && (
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
-                  <m.div variants={varFade().inUp}>
+                  <MotionInView variants={varFade().inUp}>
                     <TestimonialLink />
-                  </m.div>
+                  </MotionInView>
                 </Box>
               )}
             </Box>
@@ -129,17 +128,17 @@ export default function AboutTestimonials() {
             <Grid container spacing={isDesktop ? 3 : 0} alignItems="center">
               <Grid item xs={12} md={6}>
                 {TESTIMONIALS.slice(0, 3).map((testimonial) => (
-                  <m.div key={testimonial.name} variants={varFade().inUp}>
+                  <MotionInView key={testimonial.name} variants={varFade().inUp}>
                     <TestimonialCard testimonial={testimonial} />
-                  </m.div>
+                  </MotionInView>
                 ))}
               </Grid>
 
               <Grid item xs={12} md={6}>
                 {TESTIMONIALS.slice(3, 6).map((testimonial) => (
-                  <m.div key={testimonial.name} variants={varFade().inUp}>
+                  <MotionInView key={testimonial.name} variants={varFade().inUp}>
                     <TestimonialCard testimonial={testimonial} />
-                  </m.div>
+                  </MotionInView>
                 ))}
               </Grid>
             </Grid>
@@ -148,9 +147,9 @@ export default function AboutTestimonials() {
 
         {isDesktop && (
           <Box sx={{ bottom: 60, position: 'absolute' }}>
-            <m.div variants={varFade().inLeft}>
+            <MotionInView variants={varFade().inLeft}>
               <TestimonialLink />
-            </m.div>
+            </MotionInView>
           </Box>
         )}
       </Container>

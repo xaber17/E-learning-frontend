@@ -29,15 +29,15 @@ export default function BlogPostCommentList({ post }) {
             />
             {hasReply &&
               replyComment.map((reply) => {
-                const user = users.find((_user) => _user.id === reply.userId);
+                const user = users.find((user) => user.id === reply.userId);
                 return (
                   <BlogPostCommentItem
                     key={reply.id}
+                    message={reply.message}
                     tagUser={reply.tagUser}
                     postedAt={reply.postedAt}
-                    message={reply.message}
-                    name={user?.name || ''}
-                    avatarUrl={user?.avatarUrl}
+                    name={user.name}
+                    avatarUrl={user.avatarUrl}
                     hasReply
                   />
                 );

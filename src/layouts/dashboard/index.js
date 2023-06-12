@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
@@ -39,11 +39,7 @@ const MainStyle = styled('main', {
 
 // ----------------------------------------------------------------------
 
-DashboardLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout() {
   const { collapseClick, isCollapse } = useCollapseDrawer();
 
   const { themeLayout } = useSettings();
@@ -79,7 +75,7 @@ export default function DashboardLayout({ children }) {
             },
           }}
         >
-          {children}
+          <Outlet />
         </Box>
       </>
     );
@@ -96,7 +92,9 @@ export default function DashboardLayout({ children }) {
 
       <NavbarVertical isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
 
-      <MainStyle collapseClick={collapseClick}>{children}</MainStyle>
+      <MainStyle collapseClick={collapseClick} style={{backgroundColor:'#f7f7f7'}}>
+        <Outlet />
+      </MainStyle>
     </Box>
   );
 }

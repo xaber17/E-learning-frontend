@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
-// next
-import { useRouter } from 'next/router';
+import { useLocation, Outlet } from 'react-router-dom';
 // @mui
 import { Box, Link, Container, Typography, Stack } from '@mui/material';
 // components
@@ -11,12 +9,8 @@ import MainHeader from './MainHeader';
 
 // ----------------------------------------------------------------------
 
-MainLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export default function MainLayout({ children }) {
-  const { pathname } = useRouter();
+export default function MainLayout() {
+  const { pathname } = useLocation();
 
   const isHome = pathname === '/';
 
@@ -24,7 +18,7 @@ export default function MainLayout({ children }) {
     <Stack sx={{ minHeight: 1 }}>
       <MainHeader />
 
-      {children}
+      <Outlet />
 
       <Box sx={{ flexGrow: 1 }} />
 

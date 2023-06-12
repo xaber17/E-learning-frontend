@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
-// next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Link, Tooltip, Typography, Checkbox } from '@mui/material';
@@ -70,9 +68,7 @@ MailItem.propTypes = {
 };
 
 export default function MailItem({ mail, isDense, isSelected, onSelect, onDeselect, ...other }) {
-  const { query } = useRouter();
-
-  const params = query;
+  const params = useParams();
 
   const { labels } = useSelector((state) => state.mail);
 
@@ -115,108 +111,112 @@ export default function MailItem({ mail, isDense, isSelected, onSelect, onDesele
         </Box>
       )}
 
-      <NextLink href={linkTo(params, mail.id)} passHref>
-        <WrapStyle color="inherit" underline="none" sx={{ ...(isDense && { py: 1 }) }}>
-          <Avatar
-            alt={mail.from.name}
-            src={mail.from.avatar || ''}
-            color={createAvatar(mail.from.name).color}
-            sx={{ width: 32, height: 32 }}
-          >
-            {createAvatar(mail.from.name).name}
-          </Avatar>
+      <WrapStyle
+        color="inherit"
+        underline="none"
+        component={RouterLink}
+        to={linkTo(params, mail.id)}
+        sx={{ ...(isDense && { py: 1 }) }}
+      >
+        <Avatar
+          alt={mail.from.name}
+          src={mail.from.avatar || ''}
+          color={createAvatar(mail.from.name).color}
+          sx={{ width: 32, height: 32 }}
+        >
+          {createAvatar(mail.from.name).name}
+        </Avatar>
 
-          <Box
+        <Box
+          sx={{
+            ml: 2,
+            minWidth: 0,
+            alignItems: 'center',
+            display: { md: 'flex' },
+          }}
+        >
+          <Typography
+            variant="body2"
+            noWrap
             sx={{
-              ml: 2,
-              minWidth: 0,
-              alignItems: 'center',
-              display: { md: 'flex' },
+              pr: 2,
+              minWidth: 200,
+              ...(!mail.isUnread && { fontWeight: 'fontWeightBold' }),
             }}
           >
-            <Typography
-              variant="body2"
-              noWrap
-              sx={{
-                pr: 2,
-                minWidth: 200,
-                ...(!mail.isUnread && { fontWeight: 'fontWeightBold' }),
-              }}
-            >
-              {mail.from.name}
-            </Typography>
+            {mail.from.name}
+          </Typography>
 
-            <Typography
-              noWrap
-              variant="body2"
+          <Typography
+            noWrap
+            variant="body2"
+            sx={{
+              pr: 2,
+            }}
+          >
+            <Box component="span" sx={{ ...(!mail.isUnread && { fontWeight: 'fontWeightBold' }) }}>
+              {mail.subject}
+            </Box>
+            &nbsp;-&nbsp;
+            <Box
+              component="span"
               sx={{
-                pr: 2,
+                ...(!mail.isUnread && { color: 'text.secondary' }),
               }}
             >
-              <Box component="span" sx={{ ...(!mail.isUnread && { fontWeight: 'fontWeightBold' }) }}>
-                {mail.subject}
+              {mail.message}
+            </Box>
+          </Typography>
+
+          {isDesktop && (
+            <>
+              <Box sx={{ display: 'flex' }}>
+                {mail.labelIds.map((labelId) => {
+                  const label = labels.find((_label) => _label.id === labelId);
+                  if (!label) return null;
+                  return (
+                    <Label
+                      key={label.id}
+                      sx={{
+                        mx: 0.5,
+                        textTransform: 'capitalize',
+                        bgcolor: label.color,
+                        color: (theme) => theme.palette.getContrastText(label.color || ''),
+                      }}
+                    >
+                      {label.name}
+                    </Label>
+                  );
+                })}
               </Box>
-              &nbsp;-&nbsp;
-              <Box
-                component="span"
-                sx={{
-                  ...(!mail.isUnread && { color: 'text.secondary' }),
-                }}
-              >
-                {mail.message}
-              </Box>
-            </Typography>
 
-            {isDesktop && (
-              <>
-                <Box sx={{ display: 'flex' }}>
-                  {mail.labelIds.map((labelId) => {
-                    const label = labels.find((_label) => _label.id === labelId);
-                    if (!label) return null;
-                    return (
-                      <Label
-                        key={label.id}
-                        sx={{
-                          mx: 0.5,
-                          textTransform: 'capitalize',
-                          bgcolor: label.color,
-                          color: (theme) => theme.palette.getContrastText(label.color || ''),
-                        }}
-                      >
-                        {label.name}
-                      </Label>
-                    );
-                  })}
-                </Box>
+              {isAttached && (
+                <Iconify
+                  icon={'eva:link-fill'}
+                  sx={{
+                    mx: 2,
+                    width: 20,
+                    height: 20,
+                    flexShrink: 0,
+                  }}
+                />
+              )}
+            </>
+          )}
 
-                {isAttached && (
-                  <Iconify
-                    icon={'eva:link-fill'}
-                    sx={{
-                      mx: 2,
-                      width: 20,
-                      height: 20,
-                      flexShrink: 0,
-                    }}
-                  />
-                )}
-              </>
-            )}
-
-            <Typography
-              variant="caption"
-              sx={{
-                flexShrink: 0,
-                minWidth: 120,
-                textAlign: 'right',
-                ...(!mail.isUnread && { fontWeight: 'fontWeightBold' }),
-              }}
-            >
-              {fDate(mail.createdAt)}
-            </Typography>
-          </Box>
-        </WrapStyle>
-      </NextLink>
+          <Typography
+            variant="caption"
+            sx={{
+              flexShrink: 0,
+              minWidth: 120,
+              textAlign: 'right',
+              ...(!mail.isUnread && { fontWeight: 'fontWeightBold' }),
+            }}
+          >
+            {fDate(mail.createdAt)}
+          </Typography>
+        </Box>
+      </WrapStyle>
 
       <MailItemAction className="showActions" />
     </RootStyle>

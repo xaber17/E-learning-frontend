@@ -8,16 +8,18 @@ import { isValidToken, setSession } from '../utils/jwt';
 
 const initialState = {
   isAuthenticated: false,
+  isChoosingRole: false,
   isInitialized: false,
   user: null,
 };
 
 const handlers = {
   INITIALIZE: (state, action) => {
-    const { isAuthenticated, user } = action.payload;
+    const { isAuthenticated, isChoosingRole, user } = action.payload;
     return {
       ...state,
       isAuthenticated,
+      isChoosingRole,
       isInitialized: true,
       user,
     };
@@ -28,12 +30,24 @@ const handlers = {
     return {
       ...state,
       isAuthenticated: true,
+      isChoosingRole: false,
+      user,
+    };
+  },
+  CHOOSINGROLE: (state, action) => {
+    const { user } = action.payload;
+
+    return {
+      ...state,
+      isAuthenticated: true,
+      isChoosingRole: true,
       user,
     };
   },
   LOGOUT: (state) => ({
     ...state,
     isAuthenticated: false,
+    isChoosingRole: false,
     user: null,
   }),
   REGISTER: (state, action) => {
@@ -55,6 +69,7 @@ const AuthContext = createContext({
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   register: () => Promise.resolve(),
+  choosingrole: () => Promise.resolve(),
 });
 
 // ----------------------------------------------------------------------
@@ -108,9 +123,9 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const login = async (username, password) => {
-    const response = await axios.post('/api/auth', {
-      username,
+  const login = async (email, password) => {
+    const response = await axios.post('/api/account/login', {
+      email,
       password,
     });
     const { accessToken, user } = response.data;

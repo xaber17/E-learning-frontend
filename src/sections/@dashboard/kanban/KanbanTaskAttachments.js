@@ -35,7 +35,6 @@ KanbanTaskAttachments.propTypes = {
 
 export default function KanbanTaskAttachments({ attachments }) {
   const [openLightbox, setOpenLightbox] = useState(false);
-
   const [selectedImage, setSelectedImage] = useState(0);
 
   const imagesLightbox = attachments;
@@ -51,7 +50,6 @@ export default function KanbanTaskAttachments({ attachments }) {
       {attachments.map((attachment) => (
         <Image
           key={attachment}
-          alt={attachment}
           src={attachment}
           onClick={() => handleOpenLightbox(attachment)}
           sx={{
@@ -126,7 +124,6 @@ function UploadFile() {
             }}
           >
             <Image
-              alt="preview"
               src={isString(file) ? file : preview}
               sx={{
                 height: 1,

@@ -28,11 +28,8 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 export default function ContactMap() {
   const theme = useTheme();
-
   const isLight = theme.palette.mode === 'light';
-
   const [tooltip, setTooltip] = useState(null);
-
   const [viewport, setViewport] = useState({
     latitude: 12,
     longitude: 42,

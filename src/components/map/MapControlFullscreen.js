@@ -1,5 +1,6 @@
-import { styled } from '@mui/material/styles';
 import { FullscreenControl } from 'react-map-gl';
+// @mui
+import { styled } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -17,6 +18,6 @@ const FullscreenControlStyle = styled(FullscreenControl)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function MapControlFullscreen(props) {
-  return <FullscreenControlStyle {...props} />;
+export default function MapControlFullscreen({ ...other }) {
+  return <FullscreenControlStyle {...other} />;
 }

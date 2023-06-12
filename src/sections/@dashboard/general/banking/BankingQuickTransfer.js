@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import { useState, useEffect, useRef } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
 import {
@@ -42,15 +43,11 @@ const RootStyle = styled(Card)(({ theme }) => ({
 
 export default function BankingQuickTransfer() {
   const theme = useTheme();
-
   const carouselRef = useRef(null);
 
   const [autoWidth, setAutoWidth] = useState(24);
-
   const [openConfirm, setOpenConfirm] = useState(false);
-
   const [selectContact, setSelectContact] = useState(0);
-
   const [amount, setAmount] = useState(0);
 
   const getContactInfo = _bankingQuickTransfer.find((_, index) => index === selectContact);
@@ -128,7 +125,9 @@ export default function BankingQuickTransfer() {
             <Typography variant="overline" sx={{ color: 'text.secondary' }}>
               Recent
             </Typography>
-            <Link sx={{ typography: 'button' }}>View All</Link>
+            <Link component={RouterLink} to="#" sx={{ typography: 'button' }}>
+              View All
+            </Link>
           </Stack>
 
           <Box sx={{ position: 'relative' }}>

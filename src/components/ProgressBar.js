@@ -1,37 +1,13 @@
-import { useEffect } from 'react';
 import NProgress from 'nprogress';
-// next
-import { useRouter } from 'next/router';
+import { useEffect, useMemo } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import GlobalStyles from '@mui/material/GlobalStyles';
+import { GlobalStyles } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-export default function ProgressBar() {
+export function ProgressBarStyle() {
   const theme = useTheme();
-  const router = useRouter();
-
-  NProgress.configure({ showSpinner: false });
-
-  useEffect(() => {
-    const handleStart = () => {
-      NProgress.start();
-    };
-    const handleStop = () => {
-      NProgress.done();
-    };
-
-    router.events.on('routeChangeStart', handleStart);
-    router.events.on('routeChangeComplete', handleStop);
-    router.events.on('routeChangeError', handleStop);
-
-    return () => {
-      router.events.off('routeChangeStart', handleStart);
-      router.events.off('routeChangeComplete', handleStop);
-      router.events.off('routeChangeError', handleStop);
-    };
-  }, [router]);
 
   return (
     <GlobalStyles
@@ -62,4 +38,20 @@ export default function ProgressBar() {
       }}
     />
   );
+}
+
+export default function ProgressBar() {
+  NProgress.configure({
+    showSpinner: false,
+  });
+
+  useMemo(() => {
+    NProgress.start();
+  }, []);
+
+  useEffect(() => {
+    NProgress.done();
+  }, []);
+
+  return null;
 }

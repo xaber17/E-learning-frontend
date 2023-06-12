@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import isString from 'lodash/isString';
+import PropTypes from 'prop-types';
 // @mui
 import { Box, Typography, Link } from '@mui/material';
 //
@@ -31,12 +31,20 @@ export default function HeaderBreadcrumbs({ links, action, heading, moreLink = '
 
       <Box sx={{ mt: 2 }}>
         {isString(moreLink) ? (
-          <Link href={moreLink} target="_blank" variant="body2">
+          <Link href={moreLink} target="_blank" rel="noopener" variant="body2">
             {moreLink}
           </Link>
         ) : (
           moreLink.map((href) => (
-            <Link noWrap key={href} href={href} variant="body2" target="_blank" sx={{ display: 'table' }}>
+            <Link
+              noWrap
+              key={href}
+              href={href}
+              variant="body2"
+              target="_blank"
+              rel="noopener"
+              sx={{ display: 'table' }}
+            >
               {href}
             </Link>
           ))

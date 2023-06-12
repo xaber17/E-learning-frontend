@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { m } from 'framer-motion';
 import { useRef } from 'react';
 import Slider from 'react-slick';
 // @mui
@@ -12,7 +11,7 @@ import Image from '../../components/Image';
 import Iconify from '../../components/Iconify';
 import { CarouselArrows } from '../../components/carousel';
 import SocialsButton from '../../components/SocialsButton';
-import { MotionViewport, varFade } from '../../components/animate';
+import { MotionInView, varFade } from '../../components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -43,28 +42,28 @@ export default function AboutTeam() {
   };
 
   const handlePrevious = () => {
-    carouselRef.current?.slickPrev();
+    carouselRef.current.slickPrev();
   };
 
   const handleNext = () => {
-    carouselRef.current?.slickNext();
+    carouselRef.current.slickNext();
   };
 
   return (
-    <Container component={MotionViewport} sx={{ pb: 10, textAlign: 'center' }}>
-      <m.div variants={varFade().inDown}>
+    <Container sx={{ pb: 10, textAlign: 'center' }}>
+      <MotionInView variants={varFade().inDown}>
         <Typography component="p" variant="overline" sx={{ mb: 2, color: 'text.secondary' }}>
           Dream team
         </Typography>
-      </m.div>
+      </MotionInView>
 
-      <m.div variants={varFade().inUp}>
+      <MotionInView variants={varFade().inUp}>
         <Typography variant="h2" sx={{ mb: 3 }}>
           Great team is the key
         </Typography>
-      </m.div>
+      </MotionInView>
 
-      <m.div variants={varFade().inUp}>
+      <MotionInView variants={varFade().inUp}>
         <Typography
           sx={{
             mx: 'auto',
@@ -75,15 +74,15 @@ export default function AboutTeam() {
           Minimal will provide you support if you have any problems, our support team will reply within a day and we
           also have detailed documentation.
         </Typography>
-      </m.div>
+      </MotionInView>
 
       <Box sx={{ position: 'relative' }}>
         <CarouselArrows filled onNext={handleNext} onPrevious={handlePrevious}>
           <Slider ref={carouselRef} {...settings}>
             {_carouselsMembers.map((member) => (
-              <Box key={member.id} component={m.div} variants={varFade().in} sx={{ px: 1.5, py: 10 }}>
+              <MotionInView key={member.id} variants={varFade().in} sx={{ px: 1.5, py: 10 }}>
                 <MemberCard member={member} />
-              </Box>
+              </MotionInView>
             ))}
           </Slider>
         </CarouselArrows>
@@ -122,7 +121,7 @@ function MemberCard({ member }) {
       <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
         {role}
       </Typography>
-      <Image alt={name} src={avatar} ratio="1/1" sx={{ borderRadius: 1.5 }} />
+      <Image src={avatar} ratio="1/1" sx={{ borderRadius: 1.5 }} />
       <Stack alignItems="center" sx={{ mt: 2, mb: 1 }}>
         <SocialsButton sx={{ color: 'action.active' }} />
       </Stack>

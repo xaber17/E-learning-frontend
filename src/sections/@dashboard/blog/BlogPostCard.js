@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import { paramCase } from 'change-case';
-// next
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { alpha, styled } from '@mui/material/styles';
-import { Box, Card, Avatar, Typography, CardContent, Link, Stack } from '@mui/material';
+import { styled, alpha } from '@mui/material/styles';
+import { Box, Link, Card, Avatar, Typography, CardContent, Stack } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
@@ -16,8 +15,8 @@ import { fShortenNumber } from '../../../utils/formatNumber';
 import Image from '../../../components/Image';
 import Iconify from '../../../components/Iconify';
 import TextMaxLine from '../../../components/TextMaxLine';
-import SvgIconStyle from '../../../components/SvgIconStyle';
 import TextIconLabel from '../../../components/TextIconLabel';
+import SvgIconStyle from '../../../components/SvgIconStyle';
 
 // ----------------------------------------------------------------------
 
@@ -154,13 +153,11 @@ export function PostContent({ title, view, comment, share, createdAt, index }) {
         {fDate(createdAt)}
       </Typography>
 
-      <NextLink href={linkTo} passHref>
-        <Link color="inherit">
-          <TextMaxLine variant={isDesktop && latestPostLarge ? 'h5' : 'subtitle2'} line={2} persistent>
-            {title}
-          </TextMaxLine>
-        </Link>
-      </NextLink>
+      <Link to={linkTo} color="inherit" component={RouterLink}>
+        <TextMaxLine variant={isDesktop && latestPostLarge ? 'h5' : 'subtitle2'} line={2} persistent>
+          {title}
+        </TextMaxLine>
+      </Link>
 
       <Stack
         flexWrap="wrap"

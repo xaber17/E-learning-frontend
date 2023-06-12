@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import NextLink from 'next/link';
+import { NavLink as RouterLink } from 'react-router-dom';
 // @mui
 import Masonry from '@mui/lab/Masonry';
 import { alpha } from '@mui/material/styles';
@@ -86,21 +86,22 @@ function MegaMenuItem({ parent }) {
                     {list.subheader}
                   </Typography>
                   {list.items.map((link) => (
-                    <NextLink key={link.title} href={link.path} passHref>
-                      <Link
-                        noWrap
-                        underline="none"
-                        sx={{
-                          typography: 'body2',
-                          color: 'text.primary',
-                          fontSize: 13,
-                          transition: (theme) => theme.transitions.create('all'),
-                          '&:hover': { color: 'primary.main' },
-                        }}
-                      >
-                        {link.title}
-                      </Link>
-                    </NextLink>
+                    <Link
+                      noWrap
+                      key={link.title}
+                      component={RouterLink}
+                      to={link.path}
+                      underline="none"
+                      sx={{
+                        typography: 'body2',
+                        color: 'text.primary',
+                        fontSize: 13,
+                        transition: (theme) => theme.transitions.create('all'),
+                        '&:hover': { color: 'primary.main' },
+                      }}
+                    >
+                      {link.title}
+                    </Link>
                   ))}
                 </Stack>
               ))}
@@ -108,9 +109,13 @@ function MegaMenuItem({ parent }) {
 
             {!!more && !!products && !!tags && (
               <Stack spacing={3}>
-                <NextLink href={more.path} passHref>
-                  <Link sx={{ typography: 'body2', display: 'inline-flex', fontSize: 13 }}>{more.title}</Link>
-                </NextLink>
+                <Link
+                  to={more.path}
+                  component={RouterLink}
+                  sx={{ typography: 'body2', display: 'inline-flex', fontSize: 13 }}
+                >
+                  {more.title}
+                </Link>
 
                 <Divider />
                 <MegaMenuCarousel products={products} numberShow={6} sx={{ '& .controlsArrows': { mt: 5 } }} />
@@ -137,33 +142,33 @@ ParentItem.propTypes = {
   title: PropTypes.string,
 };
 
-function ParentItem({ path = '', title, open, hasSub, ...other }) {
+function ParentItem({ path, title, open, hasSub, ...other }) {
   const activeStyle = {
     color: 'primary.main',
     bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.hoverOpacity),
   };
 
   return (
-    <NextLink href={path} passHref>
-      <ListItem
-        sx={{
-          pl: 2.5,
-          pr: 1.5,
-          height: PARENT_ITEM_HEIGHT,
-          cursor: 'pointer',
-          color: 'text.primary',
-          typography: 'subtitle2',
-          textTransform: 'capitalize',
-          justifyContent: 'space-between',
-          transition: (theme) => theme.transitions.create('all'),
-          '&:hover': activeStyle,
-          ...(open && activeStyle),
-        }}
-        {...other}
-      >
-        {title}
-        {hasSub && <Iconify icon={'eva:chevron-right-fill'} sx={{ ml: 1, width: 20, height: 20 }} />}
-      </ListItem>
-    </NextLink>
+    <ListItem
+      to={path}
+      component={RouterLink}
+      sx={{
+        pl: 2.5,
+        pr: 1.5,
+        height: PARENT_ITEM_HEIGHT,
+        cursor: 'pointer',
+        color: 'text.primary',
+        typography: 'subtitle2',
+        textTransform: 'capitalize',
+        justifyContent: 'space-between',
+        transition: (theme) => theme.transitions.create('all'),
+        '&:hover': activeStyle,
+        ...(open && activeStyle),
+      }}
+      {...other}
+    >
+      {title}
+      {hasSub && <Iconify icon={'eva:chevron-right-fill'} sx={{ ml: 1, width: 20, height: 20 }} />}
+    </ListItem>
   );
 }

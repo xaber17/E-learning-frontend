@@ -100,8 +100,6 @@ function LightboxModalStyles() {
   );
 }
 
-// ----------------------------------------------------------------------
-
 LightboxModal.propTypes = {
   images: PropTypes.array.isRequired,
   photoIndex: PropTypes.number,

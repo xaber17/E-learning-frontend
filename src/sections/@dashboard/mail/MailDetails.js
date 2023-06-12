@@ -1,7 +1,5 @@
-// next
-import { useRouter } from 'next/router';
-//
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Divider, Typography } from '@mui/material';
@@ -11,7 +9,6 @@ import { getMail } from '../../../redux/slices/mail';
 //
 import Markdown from '../../../components/Markdown';
 import Scrollbar from '../../../components/Scrollbar';
-//
 import MailDetailsToolbar from './MailDetailsToolbar';
 import MailDetailsReplyInput from './MailDetailsReplyInput';
 import MailDetailsAttachments from './MailDetailsAttachments';
@@ -24,7 +21,7 @@ const RootStyle = styled('div')({
   flexDirection: 'column',
 });
 
-const MarkdownWrapperStyle = styled('div')(({ theme }) => ({
+const MarkdownStyle = styled('div')(({ theme }) => ({
   '& > p': {
     ...theme.typography.body1,
     marginBottom: theme.spacing(2),
@@ -34,18 +31,13 @@ const MarkdownWrapperStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function MailDetails() {
-  const { query } = useRouter();
-
-  const { mailId = '' } = query;
-
+  const { mailId } = useParams();
   const dispatch = useDispatch();
-
-  const mail = useSelector((state) => state.mail.mails.byId[`${mailId}`]);
-
+  const mail = useSelector((state) => state.mail.mails.byId[mailId]);
   const isAttached = mail && mail.files.length > 0;
 
   useEffect(() => {
-    dispatch(getMail(`${mailId}`));
+    dispatch(getMail(mailId));
   }, [dispatch, mailId]);
 
   if (!mail) {
@@ -63,9 +55,9 @@ export default function MailDetails() {
           <Typography variant="h3" gutterBottom>
             {mail.subject}
           </Typography>
-          <MarkdownWrapperStyle>
+          <MarkdownStyle>
             <Markdown children={mail.message} />
-          </MarkdownWrapperStyle>
+          </MarkdownStyle>
         </Box>
       </Scrollbar>
 

@@ -1,10 +1,9 @@
 import * as Yup from 'yup';
 import { useCallback, useState } from 'react';
 import { useSnackbar } from 'notistack';
-// next
-import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom';
 // form
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 // @mui
 import { LoadingButton } from '@mui/lab';
@@ -12,7 +11,7 @@ import { styled } from '@mui/material/styles';
 import { Grid, Card, Chip, Stack, Button, TextField, Typography, Autocomplete } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
-//components
+// components
 import { RHFSwitch, RHFEditor, FormProvider, RHFTextField, RHFUploadSingleFile } from '../../../components/hook-form';
 //
 import BlogNewPostPreview from './BlogNewPostPreview';
@@ -44,7 +43,7 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function BlogNewPostForm() {
-  const { push } = useRouter();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
 
@@ -100,7 +99,7 @@ export default function BlogNewPostForm() {
       reset();
       handleClosePreview();
       enqueueSnackbar('Post success!');
-      push(PATH_DASHBOARD.blog.posts);
+      navigate(PATH_DASHBOARD.blog.posts);
     } catch (error) {
       console.error(error);
     }

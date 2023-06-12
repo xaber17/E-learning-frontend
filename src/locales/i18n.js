@@ -1,18 +1,12 @@
 import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 //
 import enLocales from './en.json';
 import deLocales from './de.json';
 import frLocales from './fr.json';
 
 // ----------------------------------------------------------------------
-
-let lng = 'en';
-
-if (typeof localStorage !== 'undefined') {
-  lng = localStorage.getItem('i18nextLng') || 'en';
-}
 
 i18n
   .use(LanguageDetector)
@@ -23,7 +17,7 @@ i18n
       de: { translations: deLocales },
       fr: { translations: frLocales }
     },
-    lng,
+    lng: localStorage.getItem('i18nextLng') || 'en',
     fallbackLng: 'en',
     debug: false,
     ns: ['translations'],

@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Typography, Box } from '@mui/material';
+import { Typography } from '@mui/material';
 //
 import Image from './Image';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled(Box)(({ theme }) => ({
+const RootStyle = styled('div')(({ theme }) => ({
   height: '100%',
   display: 'flex',
   textAlign: 'center',

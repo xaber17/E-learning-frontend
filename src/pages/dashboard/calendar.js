@@ -16,8 +16,6 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import useResponsive from '../../hooks/useResponsive';
-// layouts
-import Layout from '../../layouts';
 // components
 import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
@@ -25,12 +23,6 @@ import { DialogAnimate } from '../../components/animate';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // sections
 import { CalendarForm, CalendarStyle, CalendarToolbar } from '../../sections/@dashboard/calendar';
-
-// ----------------------------------------------------------------------
-
-Calendar.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
 
 // ----------------------------------------------------------------------
 

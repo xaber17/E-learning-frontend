@@ -7,8 +7,6 @@ import { useDispatch, useSelector } from '../../redux/store';
 import { getBoard, persistColumn, persistCard } from '../../redux/slices/kanban';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
-// layouts
-import Layout from '../../layouts';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -18,15 +16,8 @@ import { KanbanColumn, KanbanColumnAdd } from '../../sections/@dashboard/kanban'
 
 // ----------------------------------------------------------------------
 
-Kanban.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
-
-// ----------------------------------------------------------------------
-
 export default function Kanban() {
   const dispatch = useDispatch();
-
   const { board } = useSelector((state) => state.kanban);
 
   useEffect(() => {

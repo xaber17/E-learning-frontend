@@ -1,4 +1,5 @@
 import merge from 'lodash/merge';
+import ReactApexChart from 'react-apexcharts';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Card, Typography, Stack } from '@mui/material';
@@ -6,7 +7,7 @@ import { Card, Typography, Stack } from '@mui/material';
 import { fCurrency, fPercent } from '../../../../utils/formatNumber';
 // components
 import Iconify from '../../../../components/Iconify';
-import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
+import BaseOptionChart from '../../../../components/chart/BaseOptionChart';
 
 // ----------------------------------------------------------------------
 

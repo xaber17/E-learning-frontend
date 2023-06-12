@@ -1,6 +1,5 @@
 import sum from 'lodash/sum';
-// next
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Badge } from '@mui/material';
@@ -13,7 +12,7 @@ import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
+const RootStyle = styled(RouterLink)(({ theme }) => ({
   zIndex: 999,
   right: 0,
   display: 'flex',
@@ -41,12 +40,10 @@ export default function CartWidget() {
   const totalItems = sum(checkout.cart.map((item) => item.quantity));
 
   return (
-    <NextLink href={PATH_DASHBOARD.eCommerce.checkout}>
-      <RootStyle>
-        <Badge showZero badgeContent={totalItems} color="error" max={99}>
-          <Iconify icon={'eva:shopping-cart-fill'} width={24} height={24} />
-        </Badge>
-      </RootStyle>
-    </NextLink>
+    <RootStyle to={PATH_DASHBOARD.eCommerce.checkout}>
+      <Badge showZero badgeContent={totalItems} color="error" max={99}>
+        <Iconify icon={'eva:shopping-cart-fill'} width={24} height={24} />
+      </Badge>
+    </RootStyle>
   );
 }

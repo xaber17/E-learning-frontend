@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-// next
-import { useRouter } from 'next/router';
+import { useLocation } from 'react-router-dom';
 // @mui
 import { Box, List, Drawer, Button, Divider } from '@mui/material';
 // redux
@@ -26,7 +25,7 @@ MailSidebar.propTypes = {
 };
 
 export default function MailSidebar({ isOpenSidebar, onOpenCompose, onCloseSidebar }) {
-  const { pathname } = useRouter();
+  const { pathname } = useLocation();
 
   const { labels } = useSelector((state) => state.mail);
 

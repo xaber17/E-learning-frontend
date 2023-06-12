@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-// next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 // @mui
 import {
   Box,
@@ -31,7 +29,7 @@ MegaMenuMobile.propTypes = {
 };
 
 export default function MegaMenuMobile({ navConfig }) {
-  const { pathname } = useRouter();
+  const { pathname } = useLocation();
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -164,33 +162,31 @@ function SubMenu({ parent, pathname }) {
                       {subheader}
                     </Typography>
                     {items.map((link) => (
-                      <NextLink key={link.title} href={link.path} passHref>
-                        <ListItemButton sx={{ px: 1.5 }}>
-                          <ListItemIcon
+                      <ListItemButton key={link.title} component={RouterLink} to={link.path} sx={{ px: 1.5 }}>
+                        <ListItemIcon
+                          sx={{
+                            mr: 0.5,
+                            width: ICON.NAVBAR_ITEM,
+                            height: ICON.NAVBAR_ITEM,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Box
                             sx={{
-                              mr: 0.5,
-                              width: ICON.NAVBAR_ITEM,
-                              height: ICON.NAVBAR_ITEM,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
+                              width: 4,
+                              height: 4,
+                              bgcolor: 'currentColor',
+                              borderRadius: '50%',
                             }}
-                          >
-                            <Box
-                              sx={{
-                                width: 4,
-                                height: 4,
-                                bgcolor: 'currentColor',
-                                borderRadius: '50%',
-                              }}
-                            />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={link.title}
-                            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
                           />
-                        </ListItemButton>
-                      </NextLink>
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={link.title}
+                          primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+                        />
+                      </ListItemButton>
                     ))}
                   </List>
                 );
@@ -202,9 +198,5 @@ function SubMenu({ parent, pathname }) {
     );
   }
 
-  return (
-    <NextLink href={path} passHref>
-      <ParentItem title={title} icon={icon} />
-    </NextLink>
-  );
+  return <ParentItem component={RouterLink} title={title} icon={icon} to={path} />;
 }

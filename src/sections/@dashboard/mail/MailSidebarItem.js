@@ -1,11 +1,7 @@
 import PropTypes from 'prop-types';
-// next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { NavLink as RouterLink } from 'react-router-dom';
 // @mui
-import { Typography, ListItemText, ListItemButton } from '@mui/material';
-// @types
-import { ICON } from '../../../config';
+import { Typography, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
@@ -46,38 +42,33 @@ MailSidebarItem.propTypes = {
 };
 
 export default function MailSidebarItem({ label, ...other }) {
-  const { asPath } = useRouter();
-
-  const isActive = asPath === linkTo(label);
-
   const isUnread = label.unreadCount > 0;
 
   return (
-    <NextLink href={linkTo(label)}>
-      <ListItemButton
-        sx={{
-          px: 3,
-          height: 48,
-          typography: 'body2',
-          color: 'text.secondary',
-          textTransform: 'capitalize',
-          ...(isActive && {
-            color: 'text.primary',
-            fontWeight: 'fontWeightMedium',
-            bgcolor: 'action.selected',
-          }),
-        }}
-        {...other}
-      >
-        <Iconify
-          icon={LABEL_ICONS[label.id]}
-          sx={{ mr: 2, width: ICON.NAVBAR_ITEM, height: ICON.NAVBAR_ITEM, color: label.color }}
-        />
+    <ListItemButton
+      to={linkTo(label)}
+      component={RouterLink}
+      sx={{
+        px: 3,
+        height: 48,
+        typography: 'body2',
+        color: 'text.secondary',
+        textTransform: 'capitalize',
+        '&.active': {
+          color: 'text.primary',
+          fontWeight: 'fontWeightMedium',
+          bgcolor: 'action.selected',
+        },
+      }}
+      {...other}
+    >
+      <ListItemIcon>
+        <Iconify icon={LABEL_ICONS[label.id]} style={{ color: label.color }} width={24} height={24} />
+      </ListItemIcon>
 
-        <ListItemText disableTypography primary={label.name} />
+      <ListItemText disableTypography primary={label.name} />
 
-        {isUnread && <Typography variant="caption">{label.unreadCount}</Typography>}
-      </ListItemButton>
-    </NextLink>
+      {isUnread && <Typography variant="caption">{label.unreadCount}</Typography>}
+    </ListItemButton>
   );
 }

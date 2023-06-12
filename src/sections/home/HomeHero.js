@@ -1,5 +1,5 @@
 import { m } from 'framer-motion';
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Button, Box, Link, Container, Typography, Stack } from '@mui/material';
@@ -150,15 +150,15 @@ export default function HomeHero() {
             </Stack>
 
             <m.div variants={varFade().inRight}>
-              <NextLink href={PATH_DASHBOARD.root} passHref>
-                <Button
-                  size="large"
-                  variant="contained"
-                  startIcon={<Iconify icon={'eva:flash-fill'} width={20} height={20} />}
-                >
-                  Live Preview
-                </Button>
-              </NextLink>
+              <Button
+                size="large"
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.root}
+                startIcon={<Iconify icon={'eva:flash-fill'} width={20} height={20} />}
+              >
+                Live Preview
+              </Button>
             </m.div>
 
             <Stack spacing={2.5}>

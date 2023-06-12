@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import { m } from 'framer-motion';
 // @mui
 import { Typography, Box, Paper } from '@mui/material';
 // components
 import Image from '../../components/Image';
-import { MotionViewport, varFade } from '../../components/animate';
+import { MotionInView, varFade } from '../../components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -46,7 +45,6 @@ const CATEGORIES = [
 export default function FaqsCategory() {
   return (
     <Box
-      component={MotionViewport}
       sx={{
         mb: 15,
         display: 'grid',
@@ -60,9 +58,9 @@ export default function FaqsCategory() {
       }}
     >
       {CATEGORIES.map((category) => (
-        <m.div key={category.label} variants={varFade().in}>
+        <MotionInView key={category.label} variants={varFade().in}>
           <CategoryCard category={category} />
-        </m.div>
+        </MotionInView>
       ))}
     </Box>
   );
@@ -97,7 +95,7 @@ function CategoryCard({ category }) {
         },
       }}
     >
-      <Image alt={icon} visibleByDefault disabledEffect src={icon} sx={{ mb: 2, width: 80, height: 80 }} />
+      <Image visibleByDefault disabledEffect src={icon} sx={{ mb: 2, width: 80, height: 80 }} />
       <Typography variant="subtitle2">{label}</Typography>
     </Paper>
   );

@@ -1,6 +1,4 @@
-import { m } from 'framer-motion';
-// next
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { Box, Grid, Button, Container, Typography } from '@mui/material';
@@ -8,7 +6,7 @@ import { Box, Grid, Button, Container, Typography } from '@mui/material';
 import { PATH_PAGE } from '../../routes/paths';
 // components
 import Image from '../../components/Image';
-import { MotionViewport, varFade } from '../../components/animate';
+import { MotionInView, varFade } from '../../components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +24,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
   },
 }));
 
-const ScreenStyle = styled(m.div)(({ theme }) => ({
+const ScreenStyle = styled(MotionInView)(({ theme }) => ({
   paddingRight: 2,
   paddingBottom: 1,
   maxWidth: 160,
@@ -81,46 +79,45 @@ export default function HomeHugePackElements() {
 
   return (
     <RootStyle>
-      <Container component={MotionViewport}>
+      <Container>
         <Grid container spacing={5} justifyContent="center">
           <Grid item xs={12} md={4} sx={{ display: 'flex', alignItems: 'center' }}>
             <ContentStyle>
-              <m.div variants={varFade().inUp}>
-                <Typography
-                  component="div"
-                  variant="overline"
-                  sx={{ mb: 2, color: 'text.disabled' }}
-                >
+              <MotionInView variants={varFade().inUp}>
+                <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
                   Interface Starter Kit
                 </Typography>
-              </m.div>
+              </MotionInView>
 
-              <m.div variants={varFade().inUp}>
+              <MotionInView variants={varFade().inUp}>
                 <Typography variant="h2" sx={{ mb: 3 }}>
                   Huge pack <br />
                   of elements
                 </Typography>
-              </m.div>
+              </MotionInView>
 
-              <m.div variants={varFade().inUp}>
+              <MotionInView variants={varFade().inUp}>
                 <Typography
                   sx={{
                     mb: 5,
                     color: isLight ? 'text.secondary' : 'common.white',
                   }}
                 >
-                  We collected most popular elements. Menu, sliders, buttons, inputs etc. are all
-                  here. Just dive in!
+                  We collected most popular elements. Menu, sliders, buttons, inputs etc. are all here. Just dive in!
                 </Typography>
-              </m.div>
+              </MotionInView>
 
-              <m.div variants={varFade().inUp}>
-                <NextLink href={PATH_PAGE.components} passHref>
-                  <Button size="large" color="inherit" variant="outlined">
-                    View All Components
-                  </Button>
-                </NextLink>
-              </m.div>
+              <MotionInView variants={varFade().inUp}>
+                <Button
+                  size="large"
+                  color="inherit"
+                  variant="outlined"
+                  component={RouterLink}
+                  to={PATH_PAGE.components}
+                >
+                  View All Components
+                </Button>
+              </MotionInView>
             </ContentStyle>
           </Grid>
 
@@ -136,6 +133,7 @@ export default function HomeHugePackElements() {
               {[...Array(3)].map((_, index) => (
                 <ScreenStyle
                   key={index}
+                  threshold={0.72}
                   variants={{
                     ...(index === 0 && screenLeftAnimate),
                     ...(index === 1 && screenCenterAnimate),

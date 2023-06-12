@@ -142,7 +142,7 @@ function BookingItem({ item }) {
         >
           {roomType}
         </Label>
-        <Image alt={cover} src={cover} ratio="1/1" sx={{ borderRadius: 1.5 }} />
+        <Image src={cover} ratio="1/1" sx={{ borderRadius: 1.5 }} />
       </Box>
     </Paper>
   );

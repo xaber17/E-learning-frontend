@@ -1,5 +1,4 @@
-// next
-import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Link, Button, Divider, Typography, Stack } from '@mui/material';
@@ -29,13 +28,12 @@ const DialogStyle = styled(DialogAnimate)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function CheckoutOrderComplete({ ...other }) {
-  const { push } = useRouter();
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleResetStep = () => {
     dispatch(resetCart());
-    push(PATH_DASHBOARD.eCommerce.shop);
+    navigate(PATH_DASHBOARD.eCommerce.shop);
   };
 
   return (

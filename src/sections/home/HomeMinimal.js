@@ -1,10 +1,9 @@
-import { m } from 'framer-motion';
 // @mui
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { Box, Card, Container, Typography } from '@mui/material';
 // components
 import Image from '../../components/Image';
-import { MotionViewport, varFade } from '../../components/animate';
+import { MotionInView, varFade } from '../../components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -90,21 +89,21 @@ export default function HomeMinimal() {
 
   return (
     <RootStyle>
-      <Container component={MotionViewport}>
+      <Container>
         <Box
           sx={{
             textAlign: 'center',
             mb: { xs: 10, md: 25 },
           }}
         >
-          <m.div variants={varFade().inUp}>
+          <MotionInView variants={varFade().inUp}>
             <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
               Minimal
             </Typography>
-          </m.div>
-          <m.div variants={varFade().inDown}>
+          </MotionInView>
+          <MotionInView variants={varFade().inDown}>
             <Typography variant="h2">What minimal helps you?</Typography>
-          </m.div>
+          </MotionInView>
         </Box>
 
         <Box
@@ -115,7 +114,7 @@ export default function HomeMinimal() {
           }}
         >
           {CARDS.map((card, index) => (
-            <m.div variants={varFade().inUp} key={card.title}>
+            <MotionInView variants={varFade().inUp} key={card.title}>
               <CardStyle className={(index === 0 && 'cardLeft') || (index === 1 && 'cardCenter') || ''}>
                 <Image
                   src={card.icon}
@@ -139,7 +138,7 @@ export default function HomeMinimal() {
                 </Typography>
                 <Typography sx={{ color: isLight ? 'text.secondary' : 'common.white' }}>{card.description}</Typography>
               </CardStyle>
-            </m.div>
+            </MotionInView>
           ))}
         </Box>
       </Container>

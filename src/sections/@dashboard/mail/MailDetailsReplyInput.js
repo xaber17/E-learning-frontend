@@ -8,7 +8,6 @@ import Iconify from '../../../components/Iconify';
 
 export default function MailDetailsReplyInput() {
   const fileInputRef = useRef(null);
-
   const [message, setMessage] = useState('');
 
   const handleChangeMessage = (event) => {

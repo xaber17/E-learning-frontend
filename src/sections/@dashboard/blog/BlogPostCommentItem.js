@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 // @mui
 import {
   Box,
@@ -91,9 +91,10 @@ export default function BlogPostCommentItem({ name, avatarUrl, message, tagUser,
             fullWidth
             size="small"
             placeholder="Write comment"
-            InputProps={{
-              sx: {
-                border: (theme) => `solid 1px ${theme.palette.grey[500_32]} !important`,
+            sx={{
+              '& fieldset': {
+                borderWidth: `1px !important`,
+                borderColor: (theme) => `${theme.palette.grey[500_32]} !important`,
               },
             }}
           />

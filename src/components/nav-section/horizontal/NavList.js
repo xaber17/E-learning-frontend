@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect, useRef } from 'react';
-// next
-import { useRouter } from 'next/router';
+import { useLocation } from 'react-router-dom';
 //
 import { NavItemRoot, NavItemSub } from './NavItem';
 import { PaperStyle } from './style';
@@ -19,9 +18,9 @@ NavListRoot.propTypes = {
 export function NavListRoot({ list }) {
   const menuRef = useRef(null);
 
-  const { pathname, asPath } = useRouter();
+  const { pathname } = useLocation();
 
-  const active = getActive(list.path, pathname, asPath);
+  const active = getActive(list.path, pathname);
 
   const [open, setOpen] = useState(false);
 
@@ -87,9 +86,9 @@ NavListSub.propTypes = {
 function NavListSub({ list }) {
   const menuRef = useRef(null);
 
-  const { pathname, asPath } = useRouter();
+  const { pathname } = useLocation();
 
-  const active = getActive(list.path, pathname, asPath);
+  const active = getActive(list.path, pathname);
 
   const [open, setOpen] = useState(false);
 

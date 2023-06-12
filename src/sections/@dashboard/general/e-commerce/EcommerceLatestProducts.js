@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { Box, Link, Card, CardHeader, Typography, Stack } from '@mui/material';
 // utils
@@ -48,7 +49,9 @@ function ProductItem({ product }) {
       <Image alt={name} src={image} sx={{ width: 48, height: 48, borderRadius: 1.5, flexShrink: 0 }} />
 
       <Box sx={{ flexGrow: 1, minWidth: 200 }}>
-        <Link sx={{ color: 'text.primary', typography: 'subtitle2' }}>{name}</Link>
+        <Link component={RouterLink} to="#" sx={{ color: 'text.primary', typography: 'subtitle2' }}>
+          {name}
+        </Link>
 
         <Stack direction="row">
           {hasSale && (

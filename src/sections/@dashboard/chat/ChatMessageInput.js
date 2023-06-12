@@ -29,7 +29,6 @@ ChatMessageInput.propTypes = {
 
 export default function ChatMessageInput({ disabled, conversationId, onSend }) {
   const fileInputRef = useRef(null);
-
   const [message, setMessage] = useState('');
 
   const handleAttach = () => {

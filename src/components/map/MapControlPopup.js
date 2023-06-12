@@ -55,20 +55,11 @@ const PopupStyle = styled(Popup)(({ theme }) => {
 MapControlPopup.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func,
-  sx: PropTypes.object,
 };
 
-export default function MapControlPopup({ onClose, sx, children, ...other }) {
+export default function MapControlPopup({ children, onClose, ...other }) {
   return (
-    <PopupStyle
-      tipSize={8}
-      anchor="bottom"
-      onClose={onClose}
-      closeButton={true}
-      closeOnClick={false}
-      sx={sx}
-      {...other}
-    >
+    <PopupStyle tipSize={8} anchor="bottom" onClose={onClose} closeButton closeOnClick={false} {...other}>
       {children}
     </PopupStyle>
   );

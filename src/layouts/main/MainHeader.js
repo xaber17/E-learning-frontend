@@ -1,5 +1,4 @@
-// next
-import { useRouter } from 'next/router';
+import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
 import { Box, Button, AppBar, Toolbar, Container } from '@mui/material';
@@ -51,7 +50,7 @@ export default function MainHeader() {
 
   const theme = useTheme();
 
-  const { pathname } = useRouter();
+  const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'md');
 

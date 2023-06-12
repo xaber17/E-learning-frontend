@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import { paramCase } from 'change-case';
 import { useState } from 'react';
-// next
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { MenuItem, IconButton } from '@mui/material';
 // routes
@@ -59,12 +58,10 @@ export default function UserMoreMenu({ onDelete, userName }) {
           Delete
         </MenuItem>
 
-        <NextLink href={`${PATH_DASHBOARD.user.root}/${paramCase(userName)}/edit`}>
-          <MenuItem>
-            <Iconify icon={'eva:edit-fill'} sx={{ mr: 2, width: 24, height: 24 }} />
-            Edit
-          </MenuItem>
-        </NextLink>
+        <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.user.root}/${paramCase(userName)}/edit`}>
+          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
+          Edit
+        </MenuItem>
       </MenuPopover>
     </>
   );

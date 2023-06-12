@@ -19,11 +19,6 @@ const menuConfig = [
     path: '/',
   },
   {
-    title: 'Components',
-    icon: <Iconify icon={'ic:round-grain'} {...ICON_SIZE} />,
-    path: PATH_PAGE.components,
-  },
-  {
     title: 'Pages',
     path: '/pages',
     icon: <Iconify icon={'eva:file-fill'} {...ICON_SIZE} />,

@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import merge from 'lodash/merge';
+import ReactApexChart from 'react-apexcharts';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
 import { Card, Typography, Box } from '@mui/material';
 // utils
 import { fNumber } from '../../../../utils/formatNumber';
+import { BaseOptionChart } from '../../../../components/chart';
 // components
 import Iconify from '../../../../components/Iconify';
-import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
 
 // ----------------------------------------------------------------------
 

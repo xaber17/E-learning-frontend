@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { paramCase } from 'change-case';
-// next
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { Box, Card, Link, Typography, Stack } from '@mui/material';
 // routes
@@ -46,13 +45,11 @@ export default function ShopProductCard({ product }) {
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
-        <NextLink href={linkTo} passHref>
-          <Link color="inherit">
-            <Typography variant="subtitle2" noWrap>
-              {name}
-            </Typography>
-          </Link>
-        </NextLink>
+        <Link to={linkTo} color="inherit" component={RouterLink}>
+          <Typography variant="subtitle2" noWrap>
+            {name}
+          </Typography>
+        </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <ColorPreview colors={colors} />

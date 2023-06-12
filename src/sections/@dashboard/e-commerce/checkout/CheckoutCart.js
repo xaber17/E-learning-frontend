@@ -1,6 +1,5 @@
 import sum from 'lodash/sum';
-// next
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { Grid, Card, Button, CardHeader, Typography } from '@mui/material';
 // redux
@@ -89,11 +88,14 @@ export default function CheckoutCart() {
           )}
         </Card>
 
-        <NextLink href={PATH_DASHBOARD.eCommerce.root} passHref>
-          <Button color="inherit" startIcon={<Iconify icon={'eva:arrow-ios-back-fill'} />}>
-            Continue Shopping
-          </Button>
-        </NextLink>
+        <Button
+          color="inherit"
+          component={RouterLink}
+          to={PATH_DASHBOARD.eCommerce.root}
+          startIcon={<Iconify icon={'eva:arrow-ios-back-fill'} />}
+        >
+          Continue Shopping
+        </Button>
       </Grid>
 
       <Grid item xs={12} md={4}>

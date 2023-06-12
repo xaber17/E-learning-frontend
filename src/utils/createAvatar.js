@@ -15,7 +15,7 @@ function getAvatarColor(name) {
   if (INFO_NAME.includes(getFirstCharacter(name))) return 'info';
   if (SUCCESS_NAME.includes(getFirstCharacter(name))) return 'success';
   if (WARNING_NAME.includes(getFirstCharacter(name))) return 'warning';
-  if (ERROR_NAME.includes(getFirstCharacter(name))) return 'error';
+  if (ERROR_NAME.includes(getFirstCharacter(name))) return 'warning';
   return 'default';
 }
 

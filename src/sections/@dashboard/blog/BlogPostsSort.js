@@ -12,23 +12,9 @@ BlogPostsSort.propTypes = {
 
 export default function BlogPostsSort({ query, options, onSort }) {
   return (
-    <TextField
-      select
-      size="small"
-      value={query}
-      onChange={(event) => onSort(event.target.value)}
-      sx={{
-        '& .MuiSelect-select': {
-          typography: 'body2',
-        },
-      }}
-    >
+    <TextField select size="small" value={query} onChange={(e) => onSort(e.target.value)}>
       {options.map((option) => (
-        <MenuItem
-          key={option.value}
-          value={option.value}
-          sx={{ typography: 'body2', mx: 1, my: 0.5, borderRadius: 0.75 }}
-        >
+        <MenuItem key={option.value} value={option.value} sx={{ mx: 1, my: 0.5, borderRadius: 1 }}>
           {option.label}
         </MenuItem>
       ))}

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
-// next
-import NextLink from 'next/link';
+import { NavLink as RouterLink } from 'react-router-dom';
 // @mui
 import { Box, Link } from '@mui/material';
 // config
@@ -29,11 +28,9 @@ export const NavItemRoot = forwardRef(({ item, active, open, onMouseEnter, onMou
       <NavItemContent icon={icon} title={title} children={children} />
     </ListItemStyle>
   ) : (
-    <NextLink href={path}>
-      <ListItemStyle activeRoot={active}>
-        <NavItemContent icon={icon} title={title} children={children} />
-      </ListItemStyle>
-    </NextLink>
+    <ListItemStyle component={RouterLink} to={path} activeRoot={active}>
+      <NavItemContent icon={icon} title={title} children={children} />
+    </ListItemStyle>
   );
 });
 
@@ -76,11 +73,9 @@ export const NavItemSub = forwardRef(({ item, active, open, onMouseEnter, onMous
       <NavItemContent icon={icon} title={title} children={children} subItem />
     </ListItemStyle>
   ) : (
-    <NextLink href={path}>
-      <ListItemStyle disableRipple activeSub={active} subItem>
-        <NavItemContent icon={icon} title={title} children={children} subItem />
-      </ListItemStyle>
-    </NextLink>
+    <ListItemStyle disableRipple component={RouterLink} to={path} activeSub={active} subItem>
+      <NavItemContent icon={icon} title={title} children={children} subItem />
+    </ListItemStyle>
   );
 });
 

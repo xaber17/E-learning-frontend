@@ -4,7 +4,7 @@ import { CognitoUser, CognitoUserPool, AuthenticationDetails } from 'amazon-cogn
 // utils
 import axios from '../utils/axios';
 // routes
-import { PATH_AUTH } from '../routes/paths';
+import { PATH_AUTH, PATH_PAGE } from '../routes/paths';
 //
 import { COGNITO_API } from '../config';
 
@@ -192,7 +192,7 @@ function AuthProvider({ children }) {
             return;
           }
           resolve();
-          window.location.href = PATH_AUTH.login;
+          window.location.href = PATH_PAGE.login;
         }
       )
     );

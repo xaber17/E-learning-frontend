@@ -45,11 +45,7 @@ export default function PaymentSummary() {
           <Typography variant="h2" sx={{ mx: 1 }}>
             9.99
           </Typography>
-          <Typography
-            component="span"
-            variant="body2"
-            sx={{ mb: 1, alignSelf: 'flex-end', color: 'text.secondary' }}
-          >
+          <Typography component="span" variant="body2" sx={{ mb: 1, alignSelf: 'flex-end', color: 'text.secondary' }}>
             /mo
           </Typography>
         </Stack>

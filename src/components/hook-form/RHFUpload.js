@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { useFormContext, Controller } from 'react-hook-form';
 // @mui
 import { FormHelperText } from '@mui/material';
-//
-import { UploadAvatar, UploadSingleFile, UploadMultiFile } from '../upload';
+// type
+import { UploadAvatar, UploadMultiFile, UploadSingleFile } from '../upload';
 
 // ----------------------------------------------------------------------
 

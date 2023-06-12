@@ -1,10 +1,14 @@
 import PropTypes from 'prop-types';
+import { useState, useMemo, useEffect } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar } from '@mui/material';
 // hooks
 import useOffSetTop from '../../../hooks/useOffSetTop';
 import useResponsive from '../../../hooks/useResponsive';
+
+import { useDispatch, useSelector } from '../../../redux/store';
+import { getNotifikasiByAuth, getNotifikasi } from '../../../redux/slices/notifikasi';
 // utils
 import cssStyles from '../../../utils/cssStyles';
 // config
@@ -52,8 +56,8 @@ const RootStyle = styled(AppBar, {
 // ----------------------------------------------------------------------
 
 DashboardHeader.propTypes = {
-  isCollapse: PropTypes.bool,
   onOpenSidebar: PropTypes.func,
+  isCollapse: PropTypes.bool,
   verticalLayout: PropTypes.bool,
 };
 
@@ -69,6 +73,7 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
           minHeight: '100% !important',
           px: { lg: 5 },
         }}
+        style={{ backgroundColor: '#f7f7f7' }}
       >
         {isDesktop && verticalLayout && <Logo sx={{ mr: 2.5 }} />}
 
@@ -78,13 +83,13 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
           </IconButtonAnimate>
         )}
 
-        <Searchbar />
+        {/* <Searchbar /> */}
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <LanguagePopover />
+          {/* <LanguagePopover /> */}
           <NotificationsPopover />
-          <ContactsPopover />
+          {/* <ContactsPopover /> */}
           <AccountPopover />
         </Stack>
       </Toolbar>

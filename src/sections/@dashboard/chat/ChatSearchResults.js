@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Avatar, Typography, ListItemButton } from '@mui/material';
+import { List, Avatar, Typography, ListItemText, ListItemAvatar, ListItemButton } from '@mui/material';
 //
 import SearchNotFound from '../../../components/SearchNotFound';
 
@@ -21,21 +21,29 @@ export default function ChatSearchResults({ query, results, onSelectContact }) {
         Contacts
       </Typography>
 
-      {results.map((result) => (
-        <ListItemButton
-          key={result.id}
-          onClick={() => onSelectContact(result)}
-          sx={{
-            px: 3,
-            py: 1.5,
-            typography: 'subtitle2',
-          }}
-        >
-          <Avatar alt={result.name} src={result.avatar} sx={{ mr: 2 }} />
-          {result.name}
-        </ListItemButton>
-      ))}
-
+      <List disablePadding>
+        {results.map((result) => (
+          <ListItemButton
+            key={result.id}
+            onClick={() => onSelectContact(result)}
+            sx={{
+              py: 1.5,
+              px: 3,
+            }}
+          >
+            <ListItemAvatar>
+              <Avatar alt={result.name} src={result.avatar} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={result.name}
+              primaryTypographyProps={{
+                noWrap: true,
+                variant: 'subtitle2',
+              }}
+            />
+          </ListItemButton>
+        ))}
+      </List>
       {!isFound && (
         <SearchNotFound
           searchQuery={query}

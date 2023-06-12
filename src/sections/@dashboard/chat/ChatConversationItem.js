@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { formatDistanceToNowStrict } from 'date-fns';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Avatar, ListItemButton, ListItemText, ListItemAvatar } from '@mui/material';
+import { Box, Avatar, ListItemText, ListItemAvatar, ListItemButton } from '@mui/material';
 //
 import BadgeStatus from '../../../components/BadgeStatus';
 
@@ -16,20 +16,19 @@ const RootStyle = styled(ListItemButton)(({ theme }) => ({
   transition: theme.transitions.create('all'),
 }));
 
-const AvatarWrapperStyle = styled('div')(() => ({
+const AvatarWrapperStyle = styled('div')({
   position: 'relative',
   width: AVATAR_SIZE,
   height: AVATAR_SIZE,
   '& .MuiAvatar-img': { borderRadius: '50%' },
   '& .MuiAvatar-root': { width: '100%', height: '100%' },
-}));
+});
 
 // ----------------------------------------------------------------------
 
 const getDetails = (conversation, currentUserId) => {
   const otherParticipants = conversation.participants.filter((participant) => participant.id !== currentUserId);
-  const displayNames = otherParticipants.map((participant) => participant.name).join(', ');
-
+  const displayNames = otherParticipants.reduce((names, participant) => [...names, participant.name], []).join(', ');
   let displayText = '';
   const lastMessage = conversation.messages[conversation.messages.length - 1];
   if (lastMessage) {
@@ -47,7 +46,7 @@ ChatConversationItem.propTypes = {
   onSelectConversation: PropTypes.func,
 };
 
-export default function ChatConversationItem({ isSelected, conversation, onSelectConversation, isOpenSidebar }) {
+export default function ChatConversationItem({ isSelected, conversation, isOpenSidebar, onSelectConversation }) {
   const details = getDetails(conversation, '8864c717-587d-472a-929a-8e5f298024da-0');
 
   const displayLastActivity = conversation.messages[conversation.messages.length - 1].createdAt;
@@ -58,7 +57,6 @@ export default function ChatConversationItem({ isSelected, conversation, onSelec
 
   return (
     <RootStyle
-      disableGutters
       onClick={onSelectConversation}
       sx={{
         ...(isSelected && { bgcolor: 'action.selected' }),
@@ -91,11 +89,12 @@ export default function ChatConversationItem({ isSelected, conversation, onSelec
           {details.otherParticipants.slice(0, 2).map((participant) => (
             <AvatarWrapperStyle className="avatarWrapper" key={participant.id}>
               <Avatar alt={participant.name} src={participant.avatar} />
-              {!isGroup && participant?.status && (
+              {!isGroup && (
                 <BadgeStatus status={participant.status} sx={{ right: 2, bottom: 2, position: 'absolute' }} />
               )}
             </AvatarWrapperStyle>
           ))}
+
           {isOnlineGroup && <BadgeStatus status="online" sx={{ right: 2, bottom: 2, position: 'absolute' }} />}
         </Box>
       </ListItemAvatar>

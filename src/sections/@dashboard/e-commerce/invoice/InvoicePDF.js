@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 import PropTypes from 'prop-types';
 import sum from 'lodash/sum';
 import { Page, View, Text, Image, Document } from '@react-pdf/renderer';
@@ -15,9 +14,7 @@ InvoicePDF.propTypes = {
 
 export default function InvoicePDF({ invoice }) {
   const { id, items, taxes, status, discount, invoiceTo, invoiceFrom } = invoice;
-
   const subTotal = sum(items.map((item) => item.price * item.qty));
-
   const total = subTotal - discount + taxes;
 
   return (

@@ -43,7 +43,6 @@ OrderItem.propTypes = {
 
 function OrderItem({ item, isLast }) {
   const { type, title, time } = item;
-
   return (
     <TimelineItem>
       <TimelineSeparator>

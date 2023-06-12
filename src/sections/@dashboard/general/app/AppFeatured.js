@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import { m } from 'framer-motion';
 import { useState, useRef } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { CardContent, Box, Card, Typography, Link } from '@mui/material';
@@ -49,11 +50,11 @@ export default function AppFeatured() {
   };
 
   const handlePrevious = () => {
-    carouselRef.current?.slickPrev();
+    carouselRef.current.slickPrev();
   };
 
   const handleNext = () => {
-    carouselRef.current?.slickNext();
+    carouselRef.current.slickNext();
   };
 
   return (
@@ -121,7 +122,7 @@ function CarouselItem({ item, isActive }) {
           </Typography>
         </m.div>
         <m.div variants={varFade().inRight}>
-          <Link color="inherit" underline="none">
+          <Link component={RouterLink} to="#" color="inherit" underline="none">
             <Typography variant="h5" gutterBottom noWrap>
               {title}
             </Typography>

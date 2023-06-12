@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { Box, Card, Button, CardContent, Typography } from '@mui/material';
@@ -78,7 +79,9 @@ function CarouselItem({ item }) {
         <Typography noWrap variant="h5" sx={{ mt: 1, mb: 3 }}>
           {name}
         </Typography>
-        <Button variant="contained">Buy Now</Button>
+        <Button to="#" variant="contained" component={RouterLink}>
+          Buy Now
+        </Button>
       </CardContent>
       <OverlayStyle />
       <Image alt={name} src={image} sx={{ height: { xs: 280, xl: 320 } }} />

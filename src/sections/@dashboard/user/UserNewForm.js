@@ -2,11 +2,10 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useSnackbar } from 'notistack';
-// next
-import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom';
 // form
 import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { Box, Card, Grid, Stack, Switch, Typography, FormControlLabel } from '@mui/material';
@@ -27,8 +26,8 @@ UserNewForm.propTypes = {
   currentUser: PropTypes.object,
 };
 
-export default function UserNewForm({ isEdit = false, currentUser }) {
-  const { push } = useRouter();
+export default function UserNewForm({ isEdit, currentUser }) {
+  const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -96,7 +95,7 @@ export default function UserNewForm({ isEdit = false, currentUser }) {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
       enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
-      push(PATH_DASHBOARD.user.list);
+      navigate(PATH_DASHBOARD.user.list);
     } catch (error) {
       console.error(error);
     }

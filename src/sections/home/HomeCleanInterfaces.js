@@ -1,10 +1,9 @@
-import { m } from 'framer-motion';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
 import { Box, Container, Typography, useTheme } from '@mui/material';
 // components
 import Image from '../../components/Image';
-import { MotionViewport, varFade } from '../../components/animate';
+import { MotionInView, varFade } from '../../components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -36,15 +35,15 @@ export default function HomeCleanInterfaces() {
 
   return (
     <RootStyle>
-      <Container component={MotionViewport}>
+      <Container>
         <ContentStyle>
-          <m.div variants={varFade().inUp}>
+          <MotionInView variants={varFade().inUp}>
             <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
               clean & clear
             </Typography>
-          </m.div>
+          </MotionInView>
 
-          <m.div variants={varFade().inUp}>
+          <MotionInView variants={varFade().inUp}>
             <Typography
               variant="h2"
               paragraph
@@ -56,14 +55,13 @@ export default function HomeCleanInterfaces() {
             >
               Beautiful, modern and clean user interfaces
             </Typography>
-          </m.div>
+          </MotionInView>
         </ContentStyle>
 
         <Box sx={{ position: 'relative' }}>
           {IMG.map((_, index) => (
-            <Box
+            <MotionInView
               key={index}
-              component={m.div}
               variants={varFade().inUp}
               sx={{
                 top: 0,
@@ -77,11 +75,9 @@ export default function HomeCleanInterfaces() {
                 disabledEffect
                 visibleByDefault
                 alt={`clean-${index + 1}`}
-                src={`https://minimal-assets-api.vercel.app/assets/images/home/clean-${
-                  index + 1
-                }.png`}
+                src={`https://minimal-assets-api.vercel.app/assets/images/home/clean-${index + 1}.png`}
               />
-            </Box>
+            </MotionInView>
           ))}
         </Box>
       </Container>

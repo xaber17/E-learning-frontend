@@ -53,9 +53,7 @@ export default function KanbanTaskDetails({ card, isOpen, onClose, onDeleteTask 
   const isDesktop = useResponsive('up', 'sm');
 
   const fileInputRef = useRef(null);
-
   const [taskCompleted, setTaskCompleted] = useState(card.completed);
-
   const [prioritize, setPrioritize] = useState('low');
 
   const { name, description, due, assignee, attachments, comments } = card;
@@ -104,10 +102,10 @@ export default function KanbanTaskDetails({ card, isOpen, onClose, onDeleteTask 
             size="small"
             variant="outlined"
             color={taskCompleted ? 'primary' : 'inherit'}
-            startIcon={taskCompleted && <Iconify icon={'eva:checkmark-fill'} width={16} height={16} />}
+            startIcon={!taskCompleted && <Iconify icon={'eva:checkmark-fill'} width={16} height={16} />}
             onClick={handleToggleCompleted}
           >
-            {taskCompleted ? 'Complete' : 'Mark as complete'}
+            {taskCompleted ? 'Complete' : 'Mark complete'}
           </Button>
 
           <Stack direction="row" spacing={1} justifyContent="flex-end" flexGrow={1}>

@@ -1,8 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 // markdown plugins
 import rehypeRaw from 'rehype-raw';
-// next
-import NextLink from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Link, Typography, Divider } from '@mui/material';
@@ -99,11 +97,5 @@ const components = {
   hr: ({ ...props }) => <Divider sx={{ my: 3 }} {...props} />,
   img: ({ ...props }) => <Image alt={props.alt} ratio="16/9" sx={{ borderRadius: 2, my: 5 }} {...props} />,
   a: ({ ...props }) =>
-    props.href.includes('http') ? (
-      <Link target="_blank" rel="noopener" {...props} />
-    ) : (
-      <NextLink href={props.href} passHref>
-        <Link {...props}>{props.children}</Link>
-      </NextLink>
-    ),
+    props.href.includes('http') ? <Link target="_blank" rel="noopener" {...props} /> : <Link {...props} />,
 };

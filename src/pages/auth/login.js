@@ -1,6 +1,5 @@
 import { capitalCase } from 'change-case';
-// next
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography } from '@mui/material';
@@ -9,14 +8,14 @@ import { PATH_AUTH } from '../../routes/paths';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
-// guards
-import GuestGuard from '../../guards/GuestGuard';
 // components
 import Page from '../../components/Page';
 import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import { LoginForm } from '../../sections/auth/login';
+import illustrartionLogin from '../../assets/illustration_login.png';
+import appLogo from '../../assets/appLogo.jpeg';
 
 // ----------------------------------------------------------------------
 
@@ -71,73 +70,72 @@ export default function Login() {
   const mdUp = useResponsive('up', 'md');
 
   return (
-    <GuestGuard>
-      <Page title="Login">
-        <RootStyle>
-          <HeaderStyle>
-            <Logo />
-            {smUp && (
-              <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-                Don’t have an account? {''}
-                <NextLink href={PATH_AUTH.register} passHref>
-                  <Link variant="subtitle2">Get started</Link>
-                </NextLink>
-              </Typography>
-            )}
-          </HeaderStyle>
-
-          {mdUp && (
-            <SectionStyle>
-              <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-                Hi, Welcome Back
-              </Typography>
-              <Image
-                src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
-                alt="login"
-              />
-            </SectionStyle>
+    <Page title="Login">
+      <RootStyle>
+        {/* <HeaderStyle>
+          <Logo />
+          {smUp && (
+            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
+              Don’t have an account? {''}
+              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
+                Get started
+              </Link>
+            </Typography>
           )}
+        </HeaderStyle> */}
 
-          <Container maxWidth="sm">
-            <ContentStyle>
-              <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Typography variant="h4" gutterBottom>
-                    Sign in to Minimal
-                  </Typography>
-                  <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
-                </Box>
+        {mdUp && (
+          <SectionStyle>
+            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+              Hai, Selamat Datang
+            </Typography>
+            <Image
+              alt="login"
+              src={illustrartionLogin}
+              // src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
+            />
+          </SectionStyle>
+        )}
 
-                <Tooltip title={capitalCase(method)} placement="right">
-                  <>
-                    <Image
-                      disabledEffect
-                      alt={method}
-                      src={`https://minimal-assets-api.vercel.app/assets/icons/auth/ic_${method}.png`}
-                      sx={{ width: 32, height: 32 }}
-                    />
-                  </>
-                </Tooltip>
-              </Stack>
-
-              <Alert severity="info" sx={{ mb: 3 }}>
-                Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-              </Alert>
-
-              <LoginForm />
-
-              {!smUp && (
-                <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                  Don’t have an account?{' '}
-                  <NextLink href={PATH_AUTH.register} passHref>
-                    <Link variant="subtitle2">Get started</Link>
-                  </NextLink>
+        <Container maxWidth="sm">
+          <ContentStyle>
+            <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="h5" gutterBottom style={{ textAlign: 'center' }} sx={{ mb: 5 }}>
+                  Sistem E-Learning
                 </Typography>
-              )}
-            </ContentStyle>
-          </Container>
-        </RootStyle>
-      </Page>
-    </GuestGuard>
+                {/* <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography> */}
+                <Image disabledEffect src={appLogo} />
+              </Box>
+
+              {/* <Tooltip title={capitalCase(method)} placement="right">
+                <>
+                  <Image
+                    disabledEffect
+                    src={`https://minimal-assets-api.vercel.app/assets/icons/auth/ic_${method}.png`}
+                    sx={{ width: 32, height: 32 }}
+                  />
+                </>
+              </Tooltip> */}
+            </Stack>
+
+            {/* <Alert severity="info" sx={{ mb: 3 }}>
+              Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
+            </Alert> */}
+
+            <LoginForm />
+
+            {/* {!smUp && (
+              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+                Don’t have an account?{' '}
+                <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
+                  Get started
+                </Link>
+              </Typography>
+            )} */}
+          </ContentStyle>
+        </Container>
+      </RootStyle>
+    </Page>
   );
 }

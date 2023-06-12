@@ -42,9 +42,7 @@ export default function MailToolbar({
   const mdUp = useResponsive('up', 'md');
 
   const handleSelectChange = (checked) => (checked ? onSelectAll() : onDeselectAll());
-
   const selectedAllMails = selectedMails === mails && mails > 0;
-
   const selectedSomeMails = selectedMails > 0 && selectedMails < mails;
 
   return (
