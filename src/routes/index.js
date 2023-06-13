@@ -143,13 +143,18 @@ export default function Router() {
     },
     {
       path: '/',
-      element: <MainLayout />,
-      children: [
-        { element: <HomePage />, index: true },
-        { path: 'about-us', element: <About /> },
-        { path: 'contact-us', element: <Contact /> },
-        { path: 'faqs', element: <Faqs /> },
-      ],
+      element: (
+        <GuestGuard>
+          <Login />
+        </GuestGuard>
+      ),
+      // children: [
+      //   // { element: <HomePage />, index: true },
+      //   { element: <Login />, index: true },
+      //   { path: 'about-us', element: <About /> },
+      //   { path: 'contact-us', element: <Contact /> },
+      //   { path: 'faqs', element: <Faqs /> },
+      // ],
     },
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
@@ -158,8 +163,8 @@ export default function Router() {
 // IMPORT COMPONENTS
 
 // Authentication
-const Login = Loadable(lazy(() => import('../pages/auth/Login')));
-const Register = Loadable(lazy(() => import('../pages/auth/Register')));
+const Login = Loadable(lazy(() => import('../pages/auth/login')));
+const Register = Loadable(lazy(() => import('../pages/auth/register')));
 const ResetPassword = Loadable(lazy(() => import('../pages/auth/ResetPassword')));
 const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
 // Dashboard
@@ -184,8 +189,8 @@ const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
 const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
-const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
-const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
+const Calendar = Loadable(lazy(() => import('../pages/dashboard/calendar')));
+const Kanban = Loadable(lazy(() => import('../pages/dashboard/kanban')));
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/Home')));
 const About = Loadable(lazy(() => import('../pages/About')));
