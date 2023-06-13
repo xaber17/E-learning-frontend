@@ -29,7 +29,7 @@ const navConfig = [
   {
     items: [
       { title: 'Dashboard', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
-      { title: 'Users', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
+      { title: 'Users', path: PATH_DASHBOARD.users, icon: ICONS.user },
       { title: 'Kelas', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
       // { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
       // { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
