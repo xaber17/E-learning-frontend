@@ -12,10 +12,5 @@ export * from './_ecommerce';
 export * from './_analytics';
 export * from './_countries';
 export * from './_top100Films';
-export * from './_roles';
-export * from './_bank';
-export * from './_agama';
-export * from './_jenisKelamin';
-export * from './_statusPerkawinan'
 
 export default _mock;

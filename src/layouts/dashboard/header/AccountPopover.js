@@ -1,20 +1,17 @@
 import { useSnackbar } from 'notistack';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 // routes
-import { PATH_DASHBOARD, PATH_AUTH, PATH_PAGE } from '../../../routes/paths';
-import { getAuth } from '../../../redux/slices/auth';
-import { useDispatch, useSelector } from '../../../redux/store';
+import { PATH_DASHBOARD, PATH_AUTH } from '../../../routes/paths';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import MyAvatar from '../../../components/MyAvatar';
 import MenuPopover from '../../../components/MenuPopover';
-import Iconify from '../../../components/Iconify';
 import { IconButtonAnimate } from '../../../components/animate';
 
 // ----------------------------------------------------------------------
@@ -39,21 +36,13 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const navigate = useNavigate();
 
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   const isMountedRef = useIsMountedRef();
 
   const { enqueueSnackbar } = useSnackbar();
 
   const [open, setOpen] = useState(null);
-
-  const dispatch = useDispatch();
-
-  const { auth } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    dispatch(getAuth());
-  }, [dispatch]);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -66,8 +55,7 @@ export default function AccountPopover() {
   const handleLogout = async () => {
     try {
       await logout();
-      window.localStorage.clear();
-      navigate(PATH_PAGE.login, { replace: true });
+      navigate(PATH_AUTH.login, { replace: true });
 
       if (isMountedRef.current) {
         handleClose();
@@ -92,13 +80,12 @@ export default function AccountPopover() {
               height: '100%',
               borderRadius: '50%',
               position: 'absolute',
-              bgcolor: '919EAB',
+              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
             },
           }),
         }}
       >
-        {/* <MyAvatar /> */}
-        <Iconify icon={'bx:user-circle'} width={30} height={30} />
+        <MyAvatar />
       </IconButtonAnimate>
 
       <MenuPopover
@@ -117,15 +104,15 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {auth?.nama_lengkap}
+            {user?.displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {auth?.email}
+            {user?.email}
           </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
-        {/* 
+
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
             <MenuItem key={option.label} to={option.linkTo} component={RouterLink} onClick={handleClose}>
@@ -134,10 +121,10 @@ export default function AccountPopover() {
           ))}
         </Stack>
 
-        <Divider sx={{ borderStyle: 'dashed' }} /> */}
+        <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          Keluar
+          Logout
         </MenuItem>
       </MenuPopover>
     </>

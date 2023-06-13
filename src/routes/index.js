@@ -7,9 +7,9 @@ import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // guards
 import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
-import RoleBasedGuard from '../guards/RoleBasedGuard';
+// import RoleBasedGuard from '../guards/RoleBasedGuard';
 // config
-import { PATH_AFTER_CHOOSEROLE, PATH_AFTER_LOGIN } from '../config';
+import { PATH_AFTER_LOGIN } from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 
@@ -28,47 +28,32 @@ const Loadable = (Component) => (props) => {
 
 export default function Router() {
   return useRoutes([
-    // {
-    //   path: 'auth',
-    //   children: [
-    //     {
-    //       path: 'login',
-    //       element: (
-    //         <GuestGuard>
-    //           <Login />
-    //         </GuestGuard>
-    //       ),
-    //     },
-    //     {
-    //       path: 'register',
-    //       element: (
-    //         <GuestGuard>
-    //           <Register />
-    //         </GuestGuard>
-    //       ),
-    //     },
-    //     { path: 'login-unprotected', element: <Login /> },
-    //     { path: 'register-unprotected', element: <Register /> },
-    //     { path: 'reset-password', element: <ResetPassword /> },
-    //     { path: 'verify', element: <VerifyCode /> },
-    //   ],
-    // },
     {
-      path: '/',
-      element: (
-        <GuestGuard>
-          <Login />
-        </GuestGuard>
-      ),
+      path: 'auth',
+      children: [
+        {
+          path: 'login',
+          element: (
+            <GuestGuard>
+              <Login />
+            </GuestGuard>
+          ),
+        },
+        {
+          path: 'register',
+          element: (
+            <GuestGuard>
+              <Register />
+            </GuestGuard>
+          ),
+        },
+        { path: 'login-unprotected', element: <Login /> },
+        { path: 'register-unprotected', element: <Register /> },
+        { path: 'reset-password', element: <ResetPassword /> },
+        { path: 'verify', element: <VerifyCode /> },
+      ],
     },
-    {
-      path: 'role',
-      element: (
-        <AuthGuard>
-          <ChooseRole />
-        </AuthGuard>
-      ),
-    },
+
     // Dashboard Routes
     {
       path: 'dashboard',
@@ -78,20 +63,10 @@ export default function Router() {
         </AuthGuard>
       ),
       children: [
-        { element: <Navigate to={PATH_AFTER_CHOOSEROLE} replace />, index: true },
+        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'app', element: <GeneralApp /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
-        { path: 'admin', element: <DashboardAdmin /> },
-        { path: 'dirut', element: <DashboardDirut /> },
-        { path: 'gm', element: <DashboardGm /> },
-        { path: 'manhrd', element: <DashboardManHrd /> },
-        { path: 'manpro', element: <DashboardManPro /> },
-        { path: 'manfin', element: <DashboardManFin /> },
-        { path: 'stafpayroll', element: <DashboardStafPayroll /> },
-        { path: 'stafabs', element: <DashboardStafAbs /> },
-        { path: 'stafinv', element: <DashboardStafInv /> },
-        { path: 'pegawai', element: <DashboardPegawai /> },
         { path: 'banking', element: <GeneralBanking /> },
         { path: 'booking', element: <GeneralBooking /> },
 
@@ -118,132 +93,6 @@ export default function Router() {
             { path: 'new', element: <UserCreate /> },
             { path: ':name/edit', element: <UserCreate /> },
             { path: 'account', element: <UserAccount /> },
-          ],
-        },
-        {
-          path: 'users',
-          children: [
-            { element: <Navigate to="/dashboard/users/list" replace />, index: true },
-            { path: 'list', element: <UsersList /> },
-            { path: 'form', element: <UsersForm /> },
-          ],
-        },
-        {
-          path: 'bagian',
-          children: [
-            { element: <Navigate to="/dashboard/bagian/list" replace />, index: true },
-            { path: 'list', element: <BagianList /> },
-            { path: 'form', element: <BagianForm /> },
-          ],
-        },
-        {
-          path: 'tarif-ptkp',
-          children: [
-            { element: <Navigate to="/dashboard/tarif-ptkp/list" replace />, index: true },
-            { path: 'list', element: <TarifPtkpList /> },
-            { path: 'form', element: <TarifPtkpForm /> },
-          ],
-        },
-        {
-          path: 'jabatan',
-          children: [
-            { element: <Navigate to="/dashboard/jabatan/list" replace />, index: true },
-            { path: 'list', element: <JabatanList /> },
-            { path: 'form', element: <JabatanForm /> },
-          ],
-        },
-        {
-          path: 'akun',
-          element: <Akun />,
-          index: true,
-        },
-        {
-          path: 'data-induk',
-          element: <DataInduk />,
-          index: true,
-        },
-        {
-          path: 'absensi',
-          children: [
-            { element: <Navigate to="/dashboard/absensi/list" replace />, index: true },
-            { path: 'list', element: <AbsensiList /> },
-            { path: 'form', element: <AbsensiForm /> },
-            { path: 'validation', element: <AbsensiValidation /> },
-          ],
-        },
-        {
-          path: 'slip-gaji',
-          children: [
-            { element: <Navigate to="/dashboard/slip-gaji/list" replace />, index: true },
-            { path: 'list', element: <SlipGajiList /> },
-            { path: 'detail', element: <SlipGajiDetail /> },
-          ],
-        },
-        {
-          path: 'penggajian',
-          children: [
-            { element: <Navigate to="/dashboard/penggajian/list" replace />, index: true },
-            { path: 'list', element: <PenggajianList /> },
-            { path: 'form', element: <PenggajianForm /> },
-            { path: 'detail', element: <PenggajianDetail /> },
-            { path: 'detail/tunjangan-lain', element: <TunjanganLainForm /> },
-            { path: 'detail/bonus-thr', element: <BonusThrForm /> },
-            { path: 'detail/potongan', element: <PotonganForm /> },
-            { path: 'status', element: <StatusPenggajianDetail /> },
-          ],
-        },
-        {
-          path: 'status-penggajian',
-          children: [
-            { element: <Navigate to="/dashboard/status-penggajian/index" replace />, index: true },
-            { path: 'index', element: <StatusPenggajian /> },
-            { path: 'list', element: <StatusPenggajianList /> },
-            { path: 'detail', element: <StatusPenggajianDetail /> },
-          ],
-        },
-        {
-          path: 'gaji-pokok-tunjangan',
-          children: [
-            { element: <Navigate to="/dashboard/gaji-pokok-tunjangan/list" replace />, index: true },
-            { path: 'list', element: <GajiPokokTunjanganList /> },
-            { path: 'form', element: <GajiPokokTunjanganForm /> },
-          ],
-        },
-        {
-          path: 'penilaian-kinerja',
-          children: [
-            { element: <Navigate to="/dashboard/penilaian-kinerja/list" replace />, index: true },
-            { path: 'list', element: <PenilaianKinerjaList /> },
-            { path: 'form', element: <PenilaianKinerjaForm /> },
-          ],
-        },
-        {
-          path: 'lembur',
-          children: [
-            { element: <Navigate to="/dashboard/lembur/list" replace />, index: true },
-            { path: 'list', element: <LemburList /> },
-            { path: 'form', element: <LemburForm /> },
-          ],
-        },
-        {
-          path: 'laporan-penggajian-pajak',
-          element: <LaporanPenggajianPajak />,
-          index: true,
-        },
-        {
-          path: 'validasi-penggajian',
-          children: [
-            { element: <Navigate to="/dashboard/validasi-penggajian/list" replace />, index: true },
-            { path: 'list', element: <ValidasiPenggajianList /> },
-            { path: 'form', element: <ValidasiPenggajianForm /> },
-          ],
-        },
-        {
-          path: 'verifikasi-penggajian',
-          children: [
-            { element: <Navigate to="/dashboard/verifikasi-penggajian/list" replace />, index: true },
-            { path: 'list', element: <VerifikasiPenggajianList /> },
-            { path: 'form', element: <VerifikasiPenggajianForm /> },
           ],
         },
         {
@@ -292,16 +141,16 @@ export default function Router() {
         { path: '*', element: <Navigate to="/404" replace /> },
       ],
     },
-    // {
-    //   path: '/',
-    //   element: <MainLayout />,
-    //   children: [
-    //     { element: <HomePage />, index: true },
-    //     { path: 'about-us', element: <About /> },
-    //     { path: 'contact-us', element: <Contact /> },
-    //     { path: 'faqs', element: <Faqs /> },
-    //   ],
-    // },
+    {
+      path: '/',
+      element: <MainLayout />,
+      children: [
+        { element: <HomePage />, index: true },
+        { path: 'about-us', element: <About /> },
+        { path: 'contact-us', element: <Contact /> },
+        { path: 'faqs', element: <Faqs /> },
+      ],
+    },
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
@@ -310,7 +159,6 @@ export default function Router() {
 
 // Authentication
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
-const ChooseRole = Loadable(lazy(() => import('../pages/auth/ChooseRole')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const ResetPassword = Loadable(lazy(() => import('../pages/auth/ResetPassword')));
 const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
@@ -318,16 +166,6 @@ const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
 const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralEcommerce')));
 const GeneralAnalytics = Loadable(lazy(() => import('../pages/dashboard/GeneralAnalytics')));
-const DashboardAdmin = Loadable(lazy(() => import('../pages/dashboard/DashboardAdmin')));
-const DashboardDirut = Loadable(lazy(() => import('../pages/dashboard/DashboardDirut')));
-const DashboardGm = Loadable(lazy(() => import('../pages/dashboard/DashboardGm')));
-const DashboardManHrd = Loadable(lazy(() => import('../pages/dashboard/DashboardManHrd')));
-const DashboardManPro = Loadable(lazy(() => import('../pages/dashboard/DashboardManPro')));
-const DashboardManFin = Loadable(lazy(() => import('../pages/dashboard/DashboardManFin')));
-const DashboardStafPayroll = Loadable(lazy(() => import('../pages/dashboard/DashboardStafPayroll')));
-const DashboardStafInv = Loadable(lazy(() => import('../pages/dashboard/DashboardStafInv')));
-const DashboardStafAbs = Loadable(lazy(() => import('../pages/dashboard/DashboardStafAbs')));
-const DashboardPegawai = Loadable(lazy(() => import('../pages/dashboard/DashboardPegawai')));
 const GeneralBanking = Loadable(lazy(() => import('../pages/dashboard/GeneralBanking')));
 const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBooking')));
 const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
@@ -348,73 +186,6 @@ const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
 const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
 const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
 const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
-
-// USERS
-const UsersList = Loadable(lazy(() => import('../pages/users/UsersList')));
-const UsersForm = Loadable(lazy(() => import('../pages/users/UsersForm')));
-
-// MASTER DATA
-const BagianList = Loadable(lazy(() => import('../pages/masterdatabagian/BagianList')));
-const BagianForm = Loadable(lazy(() => import('../pages/masterdatabagian/BagianForm')));
-const JabatanList = Loadable(
-  lazy(() => import('../pages/masterdatajabatan/JabatanList'))
-);
-const JabatanForm = Loadable(
-  lazy(() => import('../pages/masterdatajabatan/JabatanForm'))
-);
-const TarifPtkpList = Loadable(lazy(() => import('../pages/masterdatatarifptkp/TarifPtkpList')));
-const TarifPtkpForm = Loadable(lazy(() => import('../pages/masterdatatarifptkp/TarifPtkpForm')));
-
-// Akun
-const Akun = Loadable(lazy(() => import('../pages/akun')));
-
-// Data Induk
-const DataInduk = Loadable(lazy(() => import('../pages/datainduk')));
-
-// ABSENSI
-const AbsensiList = Loadable(lazy(() => import('../pages/absensi/AbsensiList')));
-const AbsensiForm = Loadable(lazy(() => import('../pages/absensi/AbsensiForm')));
-const AbsensiValidation = Loadable(lazy(() => import('../pages/absensi/AbsensiValidation')));
-
-// SLIP GAJI
-const SlipGajiList = Loadable(lazy(() => import('../pages/slipgaji/SlipGajiList')));
-const SlipGajiDetail = Loadable(lazy(() => import('../pages/slipgaji/SlipGajiDetail')));
-
-// PENGGAJIAN
-const PenggajianList = Loadable(lazy(() => import('../pages/penggajian/PenggajianList')));
-const PenggajianForm = Loadable(lazy(() => import('../pages/penggajian/PenggajianForm')));
-const PenggajianDetail = Loadable(lazy(() => import('../pages/penggajian/PenggajianDetail')));
-const TunjanganLainForm = Loadable(lazy(() => import('../pages/penggajian/TunjanganLainForm')));
-const BonusThrForm = Loadable(lazy(() => import('../pages/penggajian/BonusThrForm')));
-const PotonganForm = Loadable(lazy(() => import('../pages/penggajian/PotonganForm')));
-
-// STATUS PENGGAJIAN
-const StatusPenggajian = Loadable(lazy(() => import('../pages/penggajian/StatusPenggajian')));
-const StatusPenggajianList = Loadable(lazy(() => import('../pages/statuspenggajian/StatusPenggajianList')));
-const StatusPenggajianDetail = Loadable(lazy(() => import('../pages/statuspenggajian/StatusPenggajianDetail')));
-
-// JABATAN GAJI
-const GajiPokokTunjanganList = Loadable(lazy(() => import('../pages/gajipokoktunjangan/GajiPokokTunjanganList')));
-const GajiPokokTunjanganForm = Loadable(lazy(() => import('../pages/gajipokoktunjangan/GajiPokokTunjanganForm')));
-
-// PENILAIAN KINERJA
-const PenilaianKinerjaList = Loadable(lazy(() => import('../pages/penilaiankinerja/PenilaianKinerjaList')));
-const PenilaianKinerjaForm = Loadable(lazy(() => import('../pages/penilaiankinerja/PenilaianKinerjaForm')));
-
-// LEMBUR
-const LemburList = Loadable(lazy(() => import('../pages/lembur/LemburList')));
-const LemburForm = Loadable(lazy(() => import('../pages/lembur/LemburForm')));
-
-// LAPORAN PENGGAJIAN & PAJAK
-const LaporanPenggajianPajak = Loadable(lazy(() => import('../pages/laporanpenggajianpajak/LaporanPenggajianPajak')));
-
-// VALIDASI PENGGAJIAN
-const ValidasiPenggajianList = Loadable(lazy(() => import('../pages/validasipenggajian/ValidasiPenggajianList')));
-const ValidasiPenggajianForm = Loadable(lazy(() => import('../pages/validasipenggajian/ValidasiPenggajianForm')));
-
-// VERIFIKASI PENGGAJIAN
-const VerifikasiPenggajianList = Loadable(lazy(() => import('../pages/verifikasipenggajian/VerifikasiPenggajianList')));
-const VerifikasiPenggajianForm = Loadable(lazy(() => import('../pages/verifikasipenggajian/VerifikasiPenggajianForm')));
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/Home')));
 const About = Loadable(lazy(() => import('../pages/About')));

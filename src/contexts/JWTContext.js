@@ -8,18 +8,16 @@ import { isValidToken, setSession } from '../utils/jwt';
 
 const initialState = {
   isAuthenticated: false,
-  isChoosingRole: false,
   isInitialized: false,
   user: null,
 };
 
 const handlers = {
   INITIALIZE: (state, action) => {
-    const { isAuthenticated, isChoosingRole, user } = action.payload;
+    const { isAuthenticated, user } = action.payload;
     return {
       ...state,
       isAuthenticated,
-      isChoosingRole,
       isInitialized: true,
       user,
     };
@@ -30,24 +28,12 @@ const handlers = {
     return {
       ...state,
       isAuthenticated: true,
-      isChoosingRole: false,
-      user,
-    };
-  },
-  CHOOSINGROLE: (state, action) => {
-    const { user } = action.payload;
-
-    return {
-      ...state,
-      isAuthenticated: true,
-      isChoosingRole: true,
       user,
     };
   },
   LOGOUT: (state) => ({
     ...state,
     isAuthenticated: false,
-    isChoosingRole: false,
     user: null,
   }),
   REGISTER: (state, action) => {
@@ -69,7 +55,6 @@ const AuthContext = createContext({
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   register: () => Promise.resolve(),
-  choosingrole: () => Promise.resolve(),
 });
 
 // ----------------------------------------------------------------------

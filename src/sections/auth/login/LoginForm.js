@@ -1,22 +1,17 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Link, Stack, Alert, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-
-import { useDispatch, useSelector } from '../../../redux/store';
-import { doLogin, doLogout, getAuth } from '../../../redux/slices/auth';
 // routes
 import { PATH_AUTH } from '../../../routes/paths';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-
 // components
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
@@ -24,23 +19,21 @@ import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hoo
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
-  const { oauth } = useAuth();
-
-  const { enqueueSnackbar } = useSnackbar();
+  const { login } = useAuth();
 
   const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    username: Yup.string().required('Username is required'),
+    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
   });
 
   const defaultValues = {
-    username: '',
-    password: '',
-    // remember: true,
+    email: 'demo@minimals.cc',
+    password: 'demo1234',
+    remember: true,
   };
 
   const methods = useForm({
@@ -56,32 +49,23 @@ export default function LoginForm() {
   } = methods;
 
   const onSubmit = async (data) => {
-    console.log('DATA ON SUBMIT', data);
-    // try {
-    await oauth(data.username, data.password)
-      .then((x) => {
-        console.log('login', x);
-        enqueueSnackbar('Berhasil Login');
-      })
-      .catch((error) => {
-        console.error(error);
-        reset();
-        if (isMountedRef.current) {
-          setError('afterSubmit', error);
-        }
-      });
+    try {
+      await login(data.email, data.password);
+    } catch (error) {
+      console.error(error);
+      reset();
+      if (isMountedRef.current) {
+        setError('afterSubmit', error);
+      }
+    }
   };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        {!!errors.afterSubmit && (
-          <Alert severity="error">
-            {'Anda memasukan username/password yang salah. Isi data yang benar lalu coba lagi'}
-          </Alert>
-        )}
+        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField name="username" label="Username" />
+        <RHFTextField name="email" label="Email address" />
 
         <RHFTextField
           name="password"
@@ -100,14 +84,14 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        {/* <RHFCheckbox name="remember" label="Remember me" />
+        <RHFCheckbox name="remember" label="Remember me" />
         <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
           Forgot password?
-        </Link> */}
+        </Link>
       </Stack>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting} color="primary">
-        Masuk
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+        Login
       </LoadingButton>
     </FormProvider>
   );

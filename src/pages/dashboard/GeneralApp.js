@@ -23,7 +23,7 @@ import {
 // ----------------------------------------------------------------------
 
 export default function GeneralApp() {
-  const { auth } = useAuth();
+  const { user } = useAuth();
   const theme = useTheme();
   const { themeStretch } = useSettings();
 
@@ -32,7 +32,7 @@ export default function GeneralApp() {
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <AppWelcome displayName={auth?.nama_lengkap} />
+            <AppWelcome displayName={user?.displayName} />
           </Grid>
 
           <Grid item xs={12} md={4}>

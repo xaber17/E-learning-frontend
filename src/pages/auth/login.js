@@ -14,8 +14,6 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import { LoginForm } from '../../sections/auth/login';
-import illustrartionLogin from '../../assets/illustration_login.png';
-import appLogo from '../../assets/appLogo.jpeg';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +70,7 @@ export default function Login() {
   return (
     <Page title="Login">
       <RootStyle>
-        {/* <HeaderStyle>
+        <HeaderStyle>
           <Logo />
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
@@ -82,17 +80,16 @@ export default function Login() {
               </Link>
             </Typography>
           )}
-        </HeaderStyle> */}
+        </HeaderStyle>
 
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hai, Selamat Datang
+              Hi, Welcome Back
             </Typography>
             <Image
               alt="login"
-              src={illustrartionLogin}
-              // src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
+              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
             />
           </SectionStyle>
         )}
@@ -101,14 +98,13 @@ export default function Login() {
           <ContentStyle>
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="h5" gutterBottom style={{ textAlign: 'center' }} sx={{ mb: 5 }}>
-                  Sistem E-Learning
+                <Typography variant="h4" gutterBottom>
+                  Sign in to Minimal
                 </Typography>
-                {/* <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography> */}
-                <Image disabledEffect src={appLogo} />
+                <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
               </Box>
 
-              {/* <Tooltip title={capitalCase(method)} placement="right">
+              <Tooltip title={capitalCase(method)} placement="right">
                 <>
                   <Image
                     disabledEffect
@@ -116,23 +112,23 @@ export default function Login() {
                     sx={{ width: 32, height: 32 }}
                   />
                 </>
-              </Tooltip> */}
+              </Tooltip>
             </Stack>
 
-            {/* <Alert severity="info" sx={{ mb: 3 }}>
+            <Alert severity="info" sx={{ mb: 3 }}>
               Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-            </Alert> */}
+            </Alert>
 
             <LoginForm />
 
-            {/* {!smUp && (
+            {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
                 Don’t have an account?{' '}
                 <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
                   Get started
                 </Link>
               </Typography>
-            )} */}
+            )}
           </ContentStyle>
         </Container>
       </RootStyle>

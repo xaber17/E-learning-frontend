@@ -7,7 +7,7 @@ import { Box, Card, Link, Container, Typography, Tooltip } from '@mui/material';
 import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
 // routes
-import { PATH_AUTH, PATH_PAGE} from '../../routes/paths';
+import { PATH_AUTH } from '../../routes/paths';
 // components
 import Page from '../../components/Page';
 import Logo from '../../components/Logo';
@@ -74,7 +74,7 @@ export default function Register() {
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Already have an account?{' '}
-              <Link variant="subtitle2" component={RouterLink} to={PATH_PAGE.login}>
+              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.login}>
                 Login
               </Link>
             </Typography>
@@ -130,7 +130,7 @@ export default function Register() {
             {!smUp && (
               <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
                 Already have an account?{' '}
-                <Link variant="subtitle2" to={PATH_PAGE.login} component={RouterLink}>
+                <Link variant="subtitle2" to={PATH_AUTH.login} component={RouterLink}>
                   Login
                 </Link>
               </Typography>

@@ -1,5 +1,5 @@
 // routes
-import { PATH_DASHBOARD, PATH_PAGE } from './routes/paths';
+import { PATH_DASHBOARD } from './routes/paths';
 
 // API
 // ----------------------------------------------------------------------
@@ -29,11 +29,9 @@ export const AUTH0_API = {
 
 export const MAPBOX_API = process.env.REACT_APP_MAPBOX;
 
-// ROOT PATH AFTER LOGIN SUCCESSFUL
-export const PATH_AFTER_LOGIN = PATH_PAGE.role;
 
-// ROOT PATH AFTER CHOOSEROLE SUCCESSFUL
-export const PATH_AFTER_CHOOSEROLE = PATH_DASHBOARD.general.analytics; // as '/dashboard/app'
+// ROOT PATH AFTER LOGIN SUCCESSFUL
+export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.app; // as '/dashboard/app'
 
 // LAYOUT
 // ----------------------------------------------------------------------
