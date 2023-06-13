@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
@@ -40,6 +40,8 @@ NavbarVertical.propTypes = {
 };
 
 export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
+  const [nav, setNav] = useState(navConfig('admin'));
+
   const theme = useTheme();
 
   const { pathname } = useLocation();
@@ -84,7 +86,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
         <NavbarAccount isCollapse={isCollapse} />
       </Stack>
 
-      <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} />
+      <NavSectionVertical navConfig={nav} isCollapse={isCollapse} />
 
       <Box sx={{ flexGrow: 1 }} />
 

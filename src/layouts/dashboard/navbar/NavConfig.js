@@ -23,18 +23,27 @@ const ICONS = {
   booking: getIcon('ic_booking'),
 };
 
-const navConfig = [
+function navConfig(role) {
+  let nav = {
+    subheader: null,
+    items: [],
+  };
   // GENERAL
   // ----------------------------------------------------------------------
-  {
-    items: [
-      { title: 'Dashboard', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
-      { title: 'Users', path: PATH_DASHBOARD.users, icon: ICONS.user },
-      { title: 'Kelas', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
-      // { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
-      // { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
-    ],
-  },
+
+  if (role === 'admin') {
+    nav = [
+      {
+        items: [
+          { title: 'Dashboard', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
+          { title: 'Users', path: PATH_DASHBOARD.users.root, icon: ICONS.user },
+          { title: 'Kelas', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
+          { title: 'Ujian', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
+          { title: 'Akun', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
+        ],
+      },
+    ];
+  }
 
   // MANAGEMENT
   // ----------------------------------------------------------------------
@@ -110,6 +119,7 @@ const navConfig = [
   //     },
   //   ],
   // },
-];
+  return nav;
+}
 
 export default navConfig;

@@ -43,7 +43,6 @@ import { DialogAnimate } from '../../components/animate';
 import LoadingScreen from '../../components/LoadingScreen';
 // sections
 import { UsersListHead, UsersListToolbar, UsersMoreMenu } from '../../sections/@dashboard/users/list';
-import { role } from 'src/_mock/role';
 
 // ----------------------------------------------------------------------
 
@@ -239,7 +238,7 @@ export default function UsersList() {
   };
 
   const handleDeleteMultiUser = (selected) => {
-    const deleteUsers = usersList.filter((user) => !selected.includes(user.nama_lengkap));
+    const deleteUsers = dummyUsers.filter((user) => !selected.includes(user.namaLengkap));
     setSelected([]);
     // setUsersList(deleteUsers);
   };
@@ -266,11 +265,11 @@ export default function UsersList() {
     setOpenErrorModal(false);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyUsers.length) : 0;
 
-  const filteredUsers = applySortFilter(usersList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(dummyUsers, getComparator(order, orderBy), filterName);
 
-  const isNotFound = !dummyUsers.length && Boolean(filterName);
+  const isNotFound = !filteredUsers.length && Boolean(filterName);
 
   if (loading) {
     return <LoadingScreen />;
@@ -309,15 +308,15 @@ export default function UsersList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={usersList.length}
+                  rowCount={dummyUsers.length}
                   // numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {dummyUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     // const idUser = row.id_user;
-                    // const namaLengkap = row.nama_lengkap;
+                    // const namaLengkap = row.namaLengkap;
                     // const email = row.email;
                     // const password = row.password;
                     // const idJabatan = row.id_jabatan;
@@ -416,7 +415,7 @@ export default function UsersList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={usersList.length}
+            count={dummyUsers.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
@@ -466,14 +465,14 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
+  const stabilizedThis = array?.map((el, index) => [el, index]);
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
   if (query) {
-    return array.filter((_user) => _user.nama_lengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return array?.filter((_user) => _user?.namaLengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
