@@ -23,10 +23,10 @@ export default function App() {
           <RtlLayout>
             <NotistackProvider>
               <MotionLazyContainer>
-                <ProgressBarStyle />
-                <ChartStyle />
+                {/* <ProgressBarStyle /> */}
+                {/* <ChartStyle /> */}
                 {/* <Settings /> */}
-                <ScrollToTop />
+                {/* <ScrollToTop /> */}
                 <Router />
               </MotionLazyContainer>
             </NotistackProvider>

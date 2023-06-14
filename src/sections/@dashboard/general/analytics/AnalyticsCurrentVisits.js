@@ -31,19 +31,14 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [4344, 5435, 1443, 4443];
+const CHART_DATA = [10000, 5435];
 
 export default function AnalyticsCurrentVisits() {
   const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {
-    colors: [
-      theme.palette.primary.main,
-      theme.palette.chart.blue[0],
-      theme.palette.chart.violet[0],
-      theme.palette.chart.yellow[0],
-    ],
-    labels: ['America', 'Asia', 'Europe', 'Africa'],
+    colors: [theme.palette.primary.main, theme.palette.chart.yellow[0]],
+    labels: ['Materi', 'Ujian'],
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
@@ -63,7 +58,7 @@ export default function AnalyticsCurrentVisits() {
 
   return (
     <Card>
-      <CardHeader title="Current Visits" />
+      {/* <CardHeader title="Current Visits" /> */}
       <ChartWrapperStyle dir="ltr">
         <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
       </ChartWrapperStyle>

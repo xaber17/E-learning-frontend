@@ -70,25 +70,32 @@ export default function Router() {
         { path: 'banking', element: <GeneralBanking /> },
         { path: 'booking', element: <GeneralBooking /> },
 
-        {
-          path: 'e-commerce',
-          children: [
-            { element: <Navigate to="/dashboard/e-commerce/shop" replace />, index: true },
-            { path: 'shop', element: <EcommerceShop /> },
-            { path: 'product/:name', element: <EcommerceProductDetails /> },
-            { path: 'list', element: <EcommerceProductList /> },
-            { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
-            { path: 'checkout', element: <EcommerceCheckout /> },
-            { path: 'invoice', element: <EcommerceInvoice /> },
-          ],
-        },
+        // {
+        //   path: 'e-commerce',
+        //   children: [
+        //     { element: <Navigate to="/dashboard/e-commerce/shop" replace />, index: true },
+        //     { path: 'shop', element: <EcommerceShop /> },
+        //     { path: 'product/:name', element: <EcommerceProductDetails /> },
+        //     { path: 'list', element: <EcommerceProductList /> },
+        //     { path: 'product/new', element: <EcommerceProductCreate /> },
+        //     { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
+        //     { path: 'checkout', element: <EcommerceCheckout /> },
+        //     { path: 'invoice', element: <EcommerceInvoice /> },
+        //   ],
+        // },
         {
           path: 'users',
           children: [
             { element: <Navigate to="/dashboard/users/list" replace />, index: true },
             { path: 'list', element: <UsersList /> },
             { path: 'form', element: <UsersForm /> },
+          ],
+        },
+        {
+          path: 'kelas',
+          children: [
+            { element: <Navigate to="/dashboard/kelas/list" replace />, index: true },
+            { path: 'list', element: <KelasList /> },
           ],
         },
         {
@@ -171,8 +178,8 @@ export default function Router() {
 // IMPORT COMPONENTS
 
 // Authentication
-const Login = Loadable(lazy(() => import('../pages/auth/Login')));
-const Register = Loadable(lazy(() => import('../pages/auth/Register')));
+const Login = Loadable(lazy(() => import('../pages/auth/login')));
+const Register = Loadable(lazy(() => import('../pages/auth/register')));
 const ResetPassword = Loadable(lazy(() => import('../pages/auth/ResetPassword')));
 const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
 // Dashboard
@@ -197,12 +204,15 @@ const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
 const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
-const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
-const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
+const Calendar = Loadable(lazy(() => import('../pages/dashboard/calendar')));
+const Kanban = Loadable(lazy(() => import('../pages/dashboard/kanban')));
 
 // USERS
 const UsersList = Loadable(lazy(() => import('../pages/users/UsersList')));
 const UsersForm = Loadable(lazy(() => import('../pages/users/UsersForm')));
+
+// KELAS
+const KelasList = Loadable(lazy(() => import('../pages/kelas/KelasList')));
 
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/Home')));

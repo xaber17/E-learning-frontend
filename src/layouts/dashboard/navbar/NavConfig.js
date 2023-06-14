@@ -37,9 +37,9 @@ function navConfig(role) {
         items: [
           { title: 'Dashboard', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
           { title: 'Users', path: PATH_DASHBOARD.users.root, icon: ICONS.user },
-          { title: 'Kelas', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
-          { title: 'Ujian', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
-          { title: 'Akun', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
+          { title: 'Kelas', path: PATH_DASHBOARD.kelas.root, icon: ICONS.kanban },
+          { title: 'Ujian', path: PATH_DASHBOARD.general.banking, icon: ICONS.kanban },
+          { title: 'Akun', path: PATH_DASHBOARD.general.booking, icon: ICONS.user },
         ],
       },
     ];

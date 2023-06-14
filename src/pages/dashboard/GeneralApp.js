@@ -1,6 +1,6 @@
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Container, Grid, Stack } from '@mui/material';
+import { Card, CardHeader, Container, Grid, List, ListItem, Stack } from '@mui/material';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
@@ -19,6 +19,7 @@ import {
   AppCurrentDownload,
   AppTopInstalledCountries,
 } from '../../sections/@dashboard/general/app';
+import { AnalyticsCurrentVisits, AnalyticsWidgetSummary } from '../../sections/@dashboard/general/analytics';
 
 // ----------------------------------------------------------------------
 
@@ -32,72 +33,48 @@ export default function GeneralApp() {
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <AppWelcome displayName={user?.displayName} />
         <Grid container spacing={3}>
-          {/* <Grid item xs={12} md={8}>
-          </Grid> */}
-
-          {/* <Grid item xs={12} md={4}>
-            <AppFeatured />
-          </Grid> */}
-
-          <Grid item xs={12} md={4}>
-            <AppWidgetSummary
-              title="Total Active Users"
-              percent={2.6}
-              total={18765}
-              chartColor={theme.palette.primary.main}
-              chartData={[5, 18, 12, 51, 68, 11, 39, 37, 27, 20]}
-            />
+          <Grid item xs={12} sm={6} md={4}>
+            <AnalyticsWidgetSummary title="Total Users" total={71} icon={'mdi:user-group'} />
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <AppWidgetSummary
-              title="Total Installed"
-              percent={0.2}
-              total={4876}
-              chartColor={theme.palette.chart.blue[0]}
-              chartData={[20, 41, 63, 33, 28, 35, 50, 46, 11, 26]}
-            />
+          <Grid item xs={12} sm={6} md={4}>
+            <AnalyticsWidgetSummary title="Total Siswa" total={13} color="info" icon={'mdi:user'} />
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <AppWidgetSummary
-              title="Total Downloads"
-              percent={-0.1}
-              total={678}
-              chartColor={theme.palette.chart.red[0]}
-              chartData={[8, 9, 31, 8, 16, 37, 8, 33, 46, 31]}
-            />
+          <Grid item xs={12} sm={6} md={4}>
+            <AnalyticsWidgetSummary title="Total Guru" total={17} color="warning" icon={'mdi:user'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentDownload />
+            <AnalyticsCurrentVisits />
           </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AppAreaInstalled />
-          </Grid>
-
-          <Grid item xs={12} lg={8}>
-            <AppNewInvoice />
-          </Grid>
-
           <Grid item xs={12} md={6} lg={4}>
-            <AppTopRelated />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AppTopInstalledCountries />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AppTopAuthors />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <Stack spacing={3}>
-              <AppWidget title="Conversion" total={38566} icon={'eva:person-fill'} chartData={48} />
-              <AppWidget title="Applications" total={55566} icon={'eva:email-fill'} color="warning" chartData={75} />
-            </Stack>
+            <Card>
+              <CardHeader title="Materi Terbaru" />
+              <List
+                sx={{
+                  listStyleType: 'disc',
+                  listStylePosition: 'inside',
+                }}
+              >
+                <ListItem sx={{ display: 'list-item' }}>Materi 1</ListItem>
+                <ListItem sx={{ display: 'list-item' }}>Materi 2</ListItem>
+                <ListItem sx={{ display: 'list-item' }}>Materi 3</ListItem>
+              </List>
+            </Card>
+            <Card sx={{ mt: 3 }}>
+              <CardHeader title="Ujian Berlangsung" />
+              <List
+                sx={{
+                  listStyleType: 'disc',
+                  listStylePosition: 'inside',
+                }}
+              >
+                <ListItem sx={{ display: 'list-item' }}>Ujian A</ListItem>
+                <ListItem sx={{ display: 'list-item' }}>Ujian B</ListItem>
+                <ListItem sx={{ display: 'list-item' }}>Ujian C</ListItem>
+              </List>
+            </Card>
           </Grid>
         </Grid>
       </Container>
