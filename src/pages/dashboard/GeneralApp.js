@@ -29,7 +29,7 @@ export default function GeneralApp() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="General: App">
+    <Page title="Dashboard">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <AppWelcome displayName={user?.displayName} />
         <Grid container spacing={3}>
