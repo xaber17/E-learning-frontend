@@ -123,11 +123,13 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
-      email,
+  const login = async (username, password) => {
+    console.log(username, password, ' Payload Login ')
+    const response = await axios.post('/api/auth', {
+      username,
       password,
     });
+    console.log(' response data ', response)
     const { accessToken, user } = response.data;
 
     setSession(accessToken);

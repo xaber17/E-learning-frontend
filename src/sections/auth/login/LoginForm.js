@@ -24,7 +24,7 @@ import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hoo
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
-  const { oauth } = useAuth();
+  const { login } = useAuth();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -56,20 +56,16 @@ export default function LoginForm() {
   } = methods;
 
   const onSubmit = async (data) => {
-    console.log('DATA ON SUBMIT', data);
-    // try {
-    await oauth(data.username, data.password)
-      .then((x) => {
-        console.log('login', x);
-        enqueueSnackbar('Berhasil Login');
-      })
-      .catch((error) => {
-        console.error(error);
-        reset();
-        if (isMountedRef.current) {
-          setError('afterSubmit', error);
-        }
-      });
+    try {
+      console.log('Data on Submit ', data)
+      await login(data.username, data.password);
+    } catch (error) {
+      console.error(error);
+      reset();
+      if (isMountedRef.current) {
+        setError('afterSubmit', error);
+      }
+    }
   };
 
   return (
