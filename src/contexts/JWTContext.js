@@ -108,13 +108,19 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
-      email,
+  const login = async (username, password) => {
+    console.log("Payload Login: ", username, password)
+    // const response = await axios.post('/api/account/login', {
+    //   email,
+    //   password,
+    // });
+    const response = await axios.post('/auth', {
+      username,
       password,
     });
     const { accessToken, user } = response.data;
-
+    console.log("Data User: ", response.data);
+    user.displayName = user.nama_user;
     setSession(accessToken);
     dispatch({
       type: 'LOGIN',

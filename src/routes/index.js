@@ -7,7 +7,7 @@ import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // guards
 import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
-// import RoleBasedGuard from '../guards/RoleBasedGuard';
+import RoleBasedGuard from '../guards/RoleBasedGuard';
 // config
 import { PATH_AFTER_LOGIN } from '../config';
 // components
@@ -86,7 +86,11 @@ export default function Router() {
         {
           path: 'users',
           children: [
-            { element: <Navigate to="/dashboard/users/list" replace />, index: true },
+            { element: (
+              <RoleBasedGuard accessibleRoles={['admin']}>
+                <Navigate to="/dashboard/users/list" replace />
+              </RoleBasedGuard>
+              ), index: true },
             { path: 'list', element: <UsersList /> },
             { path: 'form', element: <UsersForm /> },
           ],
