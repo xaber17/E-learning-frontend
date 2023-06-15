@@ -39,6 +39,8 @@ export default function UsersForm() {
     const a = window.localStorage.getItem('action');
 
     setAction(a);
+
+    console.log('action', a);
   }, []);
 
   console.log('CURRENT DATA DI USERS FORM', currentUser);

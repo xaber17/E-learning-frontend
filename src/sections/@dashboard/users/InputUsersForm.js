@@ -27,8 +27,6 @@ import { fData } from '../../../utils/formatNumber';
 import { useDispatch, useSelector } from '../../../redux/store';
 
 import { createUser, getUsers, resetUser, updateUser } from '../../../redux/slices/users';
-
-// routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // _mock
 import { countries, roles } from '../../../_mock';
@@ -47,22 +45,22 @@ InputUsersForm.propTypes = {
 };
 
 const statusUser = [
-  { id: 1, code: 'aktif', label: 'Aktif' },
-  { id: 2, code: 'non_aktif', label: 'Tidak Aktif' },
+  { id: 1, code: true, label: 'Aktif' },
+  { id: 2, code: false, label: 'Non-Aktif' },
 ];
 
-const isAdmin = [
-  { id: 1, label: 'Ya' },
-  { id: 2, label: 'Tidak' },
+const roleOptions = [
+  { id: 1, code: 'admin', label: 'Admin' },
+  { id: 2, code: 'guru', label: 'Guru' },
+  { id: 3, code: 'siswa', label: 'Siswa' },
 ];
 
-let roleOptions = [];
-
-try {
-  roleOptions = roles;
-} catch (e) {
-  console.log(e);
-}
+const kelasOptions = [
+  { kelas_id: 1, nama_kelas: 'Kelas A', deskripsi: 'Deskripsi Kelas A' },
+  { kelas_id: 2, nama_kelas: 'Kelas B', deskripsi: 'Deskripsi Kelas B' },
+  { kelas_id: 3, nama_kelas: 'Kelas C', deskripsi: 'Deskripsi Kelas C' },
+  { kelas_id: 4, nama_kelas: 'Kelas D', deskripsi: 'Deskripsi Kelas D' },
+];
 
 export default function InputUsersForm({ currentData, menu, action }) {
   console.log('INPUT USER FORM', currentData);
@@ -78,12 +76,8 @@ export default function InputUsersForm({ currentData, menu, action }) {
   const [message, setMessage] = useState('');
 
   const NewUserSchema = Yup.object().shape({
-    akun: Yup.boolean(),
-    namaLengkap: Yup.string().when('akun', { is: false, then: Yup.string().required('Nama Lengkap wajib diisi') }),
-    username: Yup.string().when('akun', {
-      is: false,
-      then: Yup.string().required('Username wajib diisi'),
-    }),
+    nomor_induk: Yup.string().required('Nomor Induk wajib diisi'),
+    nama_user: Yup.string().required('Nama Lengkap wajib diisi'),
     changePassword: Yup.boolean(),
     password: Yup.string().when('changePassword', {
       is: true,
@@ -95,29 +89,52 @@ export default function InputUsersForm({ currentData, menu, action }) {
         .required('Ketik Ulang Kata Sandi wajib diisi')
         .oneOf([Yup.ref('password'), null], 'Kata sandi tidak sama'),
     }),
-    role: Yup.string().when('akun', {
-      is: false,
-      then: Yup.string().required('Role wajib dipilih'),
-    }),
+    kelas_id: Yup.string().required('Kelas wajib dipilih'),
+    role: Yup.string().required('Role wajib dipilih'),
+    status: Yup.string().required('Status wajib dipilih'),
+    username: Yup.string().required('Username wajib diisi'),
+    // akun: Yup.boolean(),
+    // nama_user: Yup.string().when('akun', { is: false, then: Yup.string().required('Nama Lengkap wajib diisi') }),
+    // username: Yup.string().when('akun', {
+    //   is: false,
+    //   then: Yup.string().required('username wajib diisi'),
+    // }),
 
-    kelas: Yup.string().when('akun', {
-      is: false,
-      then: Yup.string().required('Kelas Wajib Diisi'),
-    }),
+    // role: Yup.string().when('akun', {
+    //   is: false,
+    //   then: Yup.string().required('Role wajib dipilih'),
+    // }),
+    // is_admin: Yup.string().when('akun', {
+    //   is: false,
+    //   then: Yup.string().required('Admin wajib dipilih'),
+    // }),
+    // kelas_id: Yup.string().when('akun', {
+    //   is: false,
+    //   then: Yup.string().required('Jabatan wajib dipilih'),
+    // }),
+    // status: Yup.string().when('akun', {
+    //   is: false,
+    //   then: Yup.string().required('Status wajib dipilih'),
+    // }),
+    // id_bagian: Yup.string().when('akun', {
+    //   is: false,
+    //   then: Yup.string().required('Bagian wajib dipilih'),
+    // }),
   });
 
   const defaultValues = useMemo(
     () => ({
-      namaLengkap: currentData?.namaLengkap || '',
+      nama_user: currentData?.nama_user || '',
+      nomor_induk: currentData?.nomor_induk || '',
       username: currentData?.username || '',
       role: currentData?.role || '',
       password: '',
       password_confirmation: '',
-      status_user: currentData?.status_user || '',
-      kelas: currentData?.kelas || '',
-      noInduk: currentData?.noInduk || '',
+      status: currentData?.status || false,
+      kelas_id: currentData?.kelas_id || '',
+      user_id: currentData?.user_id || '',
       changePassword: currentData?.changePassword,
-      akun: currentData?.akun || false,
+      // akun: currentData?.akun || false,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentData]
@@ -142,7 +159,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
 
   console.log('VALUE INPUT', values);
 
-  if (action === 'update' && menu === 'Akun' && values.namaLengkap === '') {
+  if (action === 'update' && menu === 'Akun' && values.nama_user === '') {
     window.location.reload();
   }
   console.log('CURRENTDATA', currentData);
@@ -172,33 +189,39 @@ export default function InputUsersForm({ currentData, menu, action }) {
     // try {
     const newUser = {
       username: data.username,
-      namaLengkap: data.namaLengkap,
+      kelas_id: data.kelas_id,
+      nama_user: data.nama_user,
       password: data.password,
       password_confirmation: data.password_confirmation,
       role: data.role,
+      status: data.status,
+      nomor_induk: data.nomor_induk,
     };
 
     const updateUserAll = {
-      kelas: data.kelas,
       username: data.username,
-      namaLengkap: data.namaLengkap,
+      kelas_id: data.kelas_id,
+      nama_user: data.nama_user,
       password: data.password,
       password_confirmation: data.password_confirmation,
       role: data.role,
+      status: data.status,
+      nomor_induk: data.nomor_induk,
     };
 
     const updateUserNoPassword = {
-      kelas: data.kelas,
       username: data.username,
-      namaLengkap: data.namaLengkap,
+      kelas_id: data.kelas_id,
+      nama_user: data.nama_user,
       role: data.role,
+      status: data.status,
+      nomor_induk: data.nomor_induk,
     };
 
     const updateAkun = {
-      username: currentData?.username,
-      kelas: currentData?.kelas,
-      namaLengkap: currentData?.namaLengkap,
-      role: currentData?.role,
+      username: data.username,
+      kelas_id: data.kelas_id,
+      nama_user: data.nama_user,
       password: data.password,
       password_confirmation: data.password_confirmation,
     };
@@ -233,7 +256,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
       console.log('jalan update');
       if (menu === 'Akun') {
         console.log('jalan update akun true');
-        dispatch(updateUser(data.noInduk, updateAkun))
+        dispatch(updateUser(data.user_id, updateAkun))
           .then((update) => {
             console.log(update);
             reset();
@@ -259,7 +282,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
       } else if (menu === 'Users Form') {
         if (data.changePassword) {
           console.log('jalan change password true');
-          dispatch(updateUser(data.noInduk, updateUserAll))
+          dispatch(updateUser(data.user_id, updateUserAll))
             .then((update) => {
               console.log(update);
               reset();
@@ -284,7 +307,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
             });
         } else {
           console.log('jalan change password false');
-          dispatch(updateUser(data.noInduk, updateUserNoPassword))
+          dispatch(updateUser(data.user_id, updateUserNoPassword))
             .then((update) => {
               console.log(update);
               reset();
@@ -331,7 +354,9 @@ export default function InputUsersForm({ currentData, menu, action }) {
   };
 
   if (loading) {
-    return <LoadingScreen />;
+    setTimeout(() => {
+      return <LoadingScreen />;
+    }, 1000);
   }
 
   return (
@@ -347,18 +372,71 @@ export default function InputUsersForm({ currentData, menu, action }) {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-              <RHFTextField name="namaLengkap" label="Nama Lengkap" disabled={menu === 'Akun'} />
-              <RHFTextField name="userName" label="Username" disabled={menu === 'Akun'} />
-              <RHFTextField name="kelas" label="Kelas" disabled={menu === 'Akun'} />
+              <RHFTextField name="nama_user" label="Nama Lengkap" />
+              <RHFTextField name="username" label="Username" />
+              <RHFTextField name="nomor_induk" label="No. Induk" />
+              <RHFSelect name="kelas_id" label="Kelas" placeholder="Kelas">
+                <option value="" />
+                {kelasOptions.map((option) => (
+                  <option key={option.kelas_id} value={option.kelas_id}>
+                    {option.nama_kelas}
+                  </option>
+                ))}
+              </RHFSelect>
 
-              {menu === 'Akun' && (
+              {currentData !== null ? (
+                <>
+                  <RHFSwitch name="changePassword" label="Ubah kata sandi?" />
+                  <Box />
+                  {values.changePassword === true && (
+                    <>
+                      <RHFTextField
+                        name="password"
+                        label="Kata Sandi"
+                        type="password"
+                        disabled={!values.changePassword}
+                      />
+                      <RHFTextField
+                        name="password_confirmation"
+                        label="Ketik Ulang Kata Sandi"
+                        type="password"
+                        disabled={!values.changePassword}
+                      />
+                    </>
+                  )}
+                </>
+              ) : (
                 <>
                   <RHFTextField name="password" label="Kata Sandi" type="password" />
                   <RHFTextField name="password_confirmation" label="Ketik Ulang Kata Sandi" type="password" />
                 </>
               )}
+              <RHFSelect name="role" label="Tipe User" placeholder="Tipe User">
+                <option value="" />
+                {roleOptions.map((option) => (
+                  <option key={option.id} value={option.code}>
+                    {option.label}
+                  </option>
+                ))}
+              </RHFSelect>
 
-              {menu === 'Users Form' && (
+              <RHFSelect name="status" label="Status" placeholder="Status">
+                <option value="" />
+                {statusUser.map((option) => (
+                  <option key={option.id} value={option.code}>
+                    {option.label}
+                  </option>
+                ))}
+              </RHFSelect>
+
+              {/* {menu === 'Akun' && (
+                <>
+                  <RHFTextField name="password" label="Kata Sandi" type="password" />
+                  <RHFTextField name="password_confirmation" label="Ketik Ulang Kata Sandi" type="password" />
+                </>
+              )} */}
+
+              {/* {menu === 'Users Form' && (
                 <>
                   {currentData !== null ? (
                     <>
@@ -387,7 +465,41 @@ export default function InputUsersForm({ currentData, menu, action }) {
                       <RHFTextField name="password_confirmation" label="Ketik Ulang Kata Sandi" type="password" />
                     </>
                   )}
+                  <RHFSelect name="is_admin" label="Admin" placeholder="Admin">
+                    <option value="" />
+                    {isAdmin.map((option) => (
+                      <option key={option.id} value={option.id.toString()}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </RHFSelect>
+                  <RHFSelect name="status" label="Status User" placeholder="Status User">
+                    <option value="" />
+                    {statusUser.map((option) => (
+                      <option key={option.code} value={option.code}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </RHFSelect>
 
+                  <RHFSelect name="id_bagian" label="Bagian" placeholder="Bagian">
+                    <option value="" />
+                    {masterBagianList?.map((option) => (
+                      <option key={option.id_bagian} value={option.id_bagian}>
+                        {option.nama_bagian}
+                      </option>
+                    ))}
+                  </RHFSelect>
+                  {idBagian && (
+                    <RHFSelect name="kelas_id" label="Jabatan" placeholder="Jabatan">
+                      <option value="" />
+                      {jabatanOption?.map((option) => (
+                        <option key={option.kelas_id} value={option.kelas_id}>
+                          {option.nama_jabatan}
+                        </option>
+                      ))}
+                    </RHFSelect>
+                  )}
                   <RHFSelect name="role" label="Role" placeholder="Role">
                     <option value="" />
                     {roleOptions.map((option) => (
@@ -397,7 +509,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
                     ))}
                   </RHFSelect>
                 </>
-              )}
+              )} */}
             </Box>
 
             <Box>

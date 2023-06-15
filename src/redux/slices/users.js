@@ -105,10 +105,10 @@ export async function getUsers() {
         Authorization: `Bearer ${accessToken}`,
       },
     };
-    const response = await axios.get('/user', header);
+    const response = await axios.get('/user/users', header);
     console.log('redux getUsers', response);
-    window.localStorage.setItem('usersList', JSON.stringify(response.data.data));
-    dispatch(slice.actions.getUsersSuccess(response.data));
+    window.localStorage.setItem('usersList', JSON.stringify(response.data));
+    dispatch(slice.actions.getUsersSuccess(response));
   } catch (error) {
     dispatch(slice.actions.hasError(error));
   }
@@ -148,7 +148,7 @@ export function createUser(newUser) {
         Authorization: `Bearer ${accessToken}`,
       },
     };
-    const response = await axios.post('/user', newUser, header);
+    const response = await axios.post('/user/registration', newUser, header);
 
     const status = response.status;
     const data = response.data;
