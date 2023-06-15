@@ -43,6 +43,7 @@ import { DialogAnimate } from '../../components/animate';
 import LoadingScreen from '../../components/LoadingScreen';
 // sections
 import { UsersListHead, UsersListToolbar, UsersMoreMenu } from '../../sections/@dashboard/users/list';
+import useAuth from '../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -67,6 +68,12 @@ const dummyUsers = [
 // ----------------------------------------------------------------------
 
 export default function UsersList() {
+  const { guru, siswa } = useAuth();
+  const dataUser = [
+    ...guru,
+    ...siswa
+  ]
+  console.log("Data Semua User: ", dataUser);
   const theme = useTheme();
   const { themeStretch } = useSettings();
   const [list, setList] = useState();
@@ -238,7 +245,7 @@ export default function UsersList() {
   };
 
   const handleDeleteMultiUser = (selected) => {
-    const deleteUsers = dummyUsers.filter((user) => !selected.includes(user.namaLengkap));
+    const deleteUsers = dataUser.filter((user) => !selected.includes(user.namaLengkap));
     setSelected([]);
     // setUsersList(deleteUsers);
   };
@@ -265,9 +272,9 @@ export default function UsersList() {
     setOpenErrorModal(false);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyUsers.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataUser.length) : 0;
 
-  const filteredUsers = applySortFilter(dummyUsers, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(dataUser, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && Boolean(filterName);
 
@@ -308,7 +315,7 @@ export default function UsersList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={dummyUsers.length}
+                  rowCount={dataUser.length}
                   // numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   // onSelectAllClick={handleSelectAllClick}
@@ -323,10 +330,10 @@ export default function UsersList() {
                     // const isAdmin = row.is_admin;
                     // const role = row.role;
                     // const statusUser = row.status_user;
-                    const noInduk = row.noInduk;
-                    const namaLengkap = row.namaLengkap;
+                    const noInduk = row.nomor_induk;
+                    const namaLengkap = row.nama_user;
                     const username = row.username;
-                    const kelas = row.kelas;
+                    const kelas = row.kelas_id;
                     const userRole = row.role;
 
                     // let userRole = '';
@@ -415,7 +422,7 @@ export default function UsersList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={dummyUsers.length}
+            count={dataUser.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

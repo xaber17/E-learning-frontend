@@ -24,9 +24,10 @@ import { AnalyticsCurrentVisits, AnalyticsWidgetSummary } from '../../sections/@
 // ----------------------------------------------------------------------
 
 export default function GeneralApp() {
-  const { user } = useAuth();
+  const { user, guru, siswa } = useAuth();
   const theme = useTheme();
   const { themeStretch } = useSettings();
+  console.log('Data guru dan siswa: ', guru, siswa)
 
   return (
     <Page title="Dashboard">
@@ -34,15 +35,15 @@ export default function GeneralApp() {
         <AppWelcome displayName={user?.displayName} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={4}>
-            <AnalyticsWidgetSummary title="Total Users" total={71} icon={'mdi:user-group'} />
+            <AnalyticsWidgetSummary title="Total Users" total={siswa?.length + guru?.length} icon={'mdi:user-group'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <AnalyticsWidgetSummary title="Total Siswa" total={13} color="info" icon={'mdi:user'} />
+            <AnalyticsWidgetSummary title="Total Siswa" total={siswa?.length} color="info" icon={'mdi:user'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <AnalyticsWidgetSummary title="Total Guru" total={17} color="warning" icon={'mdi:user'} />
+            <AnalyticsWidgetSummary title="Total Guru" total={guru?.length} color="warning" icon={'mdi:user'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>

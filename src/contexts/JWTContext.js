@@ -10,31 +10,39 @@ const initialState = {
   isAuthenticated: false,
   isInitialized: false,
   user: null,
+  guru: null,
+  siswa: null,
 };
 
 const handlers = {
   INITIALIZE: (state, action) => {
-    const { isAuthenticated, user } = action.payload;
+    const { isAuthenticated, user, guru, siswa } = action.payload;
     return {
       ...state,
       isAuthenticated,
       isInitialized: true,
       user,
+      guru,
+      siswa
     };
   },
   LOGIN: (state, action) => {
-    const { user } = action.payload;
+    const { user, guru, siswa } = action.payload;
 
     return {
       ...state,
       isAuthenticated: true,
       user,
+      guru,
+      siswa
     };
   },
   LOGOUT: (state) => ({
     ...state,
     isAuthenticated: false,
     user: null,
+    guru: null,
+    siswa: null,
   }),
   REGISTER: (state, action) => {
     const { user } = action.payload;
@@ -73,15 +81,18 @@ function AuthProvider({ children }) {
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
+          const response = await axios.get('/user');
+          const { user, guru, siswa } = response.data.result;
+          console.log("Response Data: ", response.data)
 
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
-
+          user.displayName = user.nama_user;
           dispatch({
             type: 'INITIALIZE',
             payload: {
               isAuthenticated: true,
               user,
+              guru,
+              siswa
             },
           });
         } else {
@@ -120,12 +131,17 @@ function AuthProvider({ children }) {
     });
     const { accessToken, user } = response.data;
     console.log("Data User: ", response.data);
+
+    const { guru, siswa } = response.data?.allUser;
     user.displayName = user.nama_user;
+
     setSession(accessToken);
     dispatch({
       type: 'LOGIN',
       payload: {
         user,
+        guru,
+        siswa,
       },
     });
   };
