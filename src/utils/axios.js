@@ -5,7 +5,7 @@ import { HOST_API } from '../config';
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({
-  baseURL: HOST_API,
+  baseURL: 'http://localhost:3002/api',
 });
 
 axiosInstance.interceptors.response.use(

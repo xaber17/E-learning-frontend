@@ -12,13 +12,13 @@ import MenuPopover from '../../../../components/MenuPopover';
 
 // ----------------------------------------------------------------------
 
-KelasMoreMenu.propTypes = {
+MateriMoreMenu.propTypes = {
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func,
   userName: PropTypes.string,
 };
 
-export default function KelasMoreMenu({ onDelete, view, onUpdate }) {
+export default function MateriMoreMenu({ onDelete, view, onUpdate }) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -54,11 +54,11 @@ export default function KelasMoreMenu({ onDelete, view, onUpdate }) {
           '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
         }}
       >
-        <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.kelas.form}>
+        <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.materi.form}>
           <Iconify icon={'mdi:form-select'} sx={{ ...ICON }} />
           Lihat
         </MenuItem>
-        <MenuItem onClick={onUpdate} component={RouterLink} to={PATH_DASHBOARD.kelas.form}>
+        <MenuItem onClick={onUpdate} component={RouterLink} to={PATH_DASHBOARD.materi.form}>
           <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
           Ubah
         </MenuItem>
