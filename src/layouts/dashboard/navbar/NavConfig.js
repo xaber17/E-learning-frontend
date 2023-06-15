@@ -39,7 +39,7 @@ function navConfig(role) {
           { title: 'Users', path: PATH_DASHBOARD.users.root, icon: ICONS.user },
           { title: 'Kelas', path: PATH_DASHBOARD.kelas.root, icon: ICONS.kanban },
           { title: 'Ujian', path: PATH_DASHBOARD.general.banking, icon: ICONS.kanban },
-          { title: 'Akun', path: PATH_DASHBOARD.general.booking, icon: ICONS.user },
+          { title: 'Materi', path: PATH_DASHBOARD.materi.root, icon: ICONS.booking },
         ],
       },
     ];

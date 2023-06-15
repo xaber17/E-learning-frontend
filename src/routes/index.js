@@ -104,6 +104,14 @@ export default function Router() {
           ],
         },
         {
+          path: 'materi',
+          children: [
+            { element: <Navigate to="/dashboard/materi/list" replace />, index: true },
+            { path: 'list', element: <MateriList /> },
+            { path: 'form', element: <MateriForm /> },
+          ],
+        },
+        {
           path: 'user',
           children: [
             { element: <Navigate to="/dashboard/user/profile" replace />, index: true },
@@ -219,6 +227,10 @@ const UsersForm = Loadable(lazy(() => import('../pages/users/UsersForm')));
 // KELAS
 const KelasList = Loadable(lazy(() => import('../pages/kelas/KelasList')));
 const KelasForm = Loadable(lazy(() => import('../pages/kelas/KelasForm')));
+
+// KELAS
+const MateriList = Loadable(lazy(() => import('../pages/materi/MateriList')));
+const MateriForm = Loadable(lazy(() => import('../pages/materi/MateriForm')));
 
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/Home')));
