@@ -129,6 +129,7 @@ function AuthProvider({ children }) {
       username,
       password,
     });
+    console.log(' response data ', response)
     const { accessToken, user } = response.data;
     console.log("Data User: ", response.data);
 
