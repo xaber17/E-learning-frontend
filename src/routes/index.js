@@ -96,6 +96,7 @@ export default function Router() {
           children: [
             { element: <Navigate to="/dashboard/kelas/list" replace />, index: true },
             { path: 'list', element: <KelasList /> },
+            { path: 'form', element: <KelasForm /> },
           ],
         },
         {
@@ -213,6 +214,7 @@ const UsersForm = Loadable(lazy(() => import('../pages/users/UsersForm')));
 
 // KELAS
 const KelasList = Loadable(lazy(() => import('../pages/kelas/KelasList')));
+const KelasForm = Loadable(lazy(() => import('../pages/kelas/KelasForm')));
 
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/Home')));
