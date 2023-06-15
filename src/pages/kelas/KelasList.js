@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Button,
   Card,
   Container,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Table,
   TableBody,
   TableCell,
   TableContainer,
+  TablePagination,
   TableRow,
   Typography,
   useTheme,
@@ -28,6 +34,9 @@ import Scrollbar from '../../components/Scrollbar';
 
 // sections
 import { KelasListHead, KelasListToolbar, KelasMoreMenu } from '../../sections/@dashboard/kelas/list';
+import { DialogAnimate } from '../../components/animate';
+import LoadingScreen from '../../components/LoadingScreen';
+import SearchNotFound from '../../components/SearchNotFound';
 
 // ----------------------------------------------------------------------
 
@@ -113,7 +122,15 @@ export default function KelasList() {
     setPage(0);
   };
 
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyKelas.length) : 0;
+
   const filteredUsers = applySortFilter(dummyKelas, getComparator(order, orderBy), filterName);
+
+  const isNotFound = !filteredUsers.length && Boolean(filterName);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   const handleDeleteUser = async (userId) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -158,8 +175,8 @@ export default function KelasList() {
     setOpenErrorModal(false);
   };
 
-  const handleOpenDeleteModal = (idUser) => {
-    setDeleteIdUser(parseInt(idUser, 10));
+  const handleOpenDeleteModal = (idKelas) => {
+    setDeleteIdUser(parseInt(idKelas, 10));
     setOpen(true);
   };
 
@@ -180,8 +197,8 @@ export default function KelasList() {
             <Button
               //   onClick={() => handleCreateUser()}
               variant="contained"
-              //   component={RouterLink}
-              //   to={PATH_DASHBOARD.users.form}
+              component={RouterLink}
+              to={PATH_DASHBOARD.kelas.form}
               startIcon={<Iconify icon={'eva:plus-fill'} />}
             >
               Tambah
@@ -254,11 +271,53 @@ export default function KelasList() {
                       </TableRow>
                     );
                   })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
+                  )}
                 </TableBody>
+                {isNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
               </Table>
             </TableContainer>
           </Scrollbar>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={dummyKelas.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={(e, page) => setPage(page)}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </Card>
+        <DialogAnimate open={open} onClose={handleCloseModal}>
+          <DialogTitle>Konfirmasi Hapus Data</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Data akan terhapus secara permanen. Apakah anda yakin?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseModal}>Kembali</Button>
+            <Button onClick={() => handleDeleteUser(deleteIdUser)} autoFocus color="error">
+              Yakin
+            </Button>
+          </DialogActions>
+        </DialogAnimate>
+
+        <DialogAnimate open={openErrorModal} onClose={handleCloseErrorModal}>
+          <DialogTitle>Gagal menambah data</DialogTitle>
+          <DialogContent>
+            <DialogContentText>{errorMessage}</DialogContentText>
+          </DialogContent>
+        </DialogAnimate>
       </Container>
     </Page>
   );
