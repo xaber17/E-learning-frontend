@@ -39,23 +39,9 @@ NavbarVertical.propTypes = {
   onCloseSidebar: PropTypes.func,
 };
 
-// ----------------------------------------------------------------------
-
 export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
-  const [role, setRole] = useState(window.localStorage.getItem('choosenRole'));
-  const [nav, setNav] = useState(navConfig(role));
-  console.log('role di navbar', role);
+  const [nav, setNav] = useState(navConfig('admin'));
 
-  // try {
-  //   if (role) {
-  //     setNav(navConfig(role));
-  //   } else {
-  //     setRole(window.localStorage.getItem('choosenRole'));
-  //     setNav(navConfig(role));
-  //   }
-  // } catch (e) {
-  //   console.log(e);
-  // }
   const theme = useTheme();
 
   const { pathname } = useLocation();
@@ -78,7 +64,6 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
         height: 1,
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
-      style={{ backgroundColor: '#f7f7f7' }}
     >
       <Stack
         spacing={3}
@@ -93,9 +78,9 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Logo />
 
-          {/* {isDesktop && !isCollapse && (
+          {isDesktop && !isCollapse && (
             <CollapseButton onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />
-          )} */}
+          )}
         </Stack>
 
         <NavbarAccount isCollapse={isCollapse} />

@@ -51,15 +51,19 @@ export default function GeneralAnalytics() {
             <AnalyticsWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AnalyticsWebsiteVisits />
+          </Grid> */}
+
+          <Grid item xs={12} md={6} lg={4}>
+            <AnalyticsCurrentVisits />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
             <AnalyticsCurrentVisits />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AnalyticsConversionRates />
           </Grid>
 
@@ -81,7 +85,7 @@ export default function GeneralAnalytics() {
 
           <Grid item xs={12} md={6} lg={8}>
             <AnalyticsTasks />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>

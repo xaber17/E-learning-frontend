@@ -5,7 +5,7 @@ import { Box, Button, Link, Container, Typography } from '@mui/material';
 // layouts
 import LogoOnlyLayout from '../../layouts/LogoOnlyLayout';
 // routes
-import { PATH_AUTH, PATH_PAGE } from '../../routes/paths';
+import { PATH_AUTH } from '../../routes/paths';
 // components
 import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
@@ -34,7 +34,7 @@ export default function VerifyCode() {
             <Button
               size="small"
               component={RouterLink}
-              to={PATH_PAGE.login}
+              to={PATH_AUTH.login}
               startIcon={<Iconify icon={'eva:arrow-ios-back-fill'} width={20} height={20} />}
               sx={{ mb: 3 }}
             >

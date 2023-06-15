@@ -8,47 +8,41 @@ import { isValidToken, setSession } from '../utils/jwt';
 
 const initialState = {
   isAuthenticated: false,
-  isChoosingRole: false,
   isInitialized: false,
   user: null,
+  guru: null,
+  siswa: null,
 };
 
 const handlers = {
   INITIALIZE: (state, action) => {
-    const { isAuthenticated, isChoosingRole, user } = action.payload;
+    const { isAuthenticated, user, guru, siswa } = action.payload;
     return {
       ...state,
       isAuthenticated,
-      isChoosingRole,
       isInitialized: true,
       user,
+      guru,
+      siswa
     };
   },
   LOGIN: (state, action) => {
-    const { user } = action.payload;
+    const { user, guru, siswa } = action.payload;
 
     return {
       ...state,
       isAuthenticated: true,
-      isChoosingRole: false,
       user,
-    };
-  },
-  CHOOSINGROLE: (state, action) => {
-    const { user } = action.payload;
-
-    return {
-      ...state,
-      isAuthenticated: true,
-      isChoosingRole: true,
-      user,
+      guru,
+      siswa
     };
   },
   LOGOUT: (state) => ({
     ...state,
     isAuthenticated: false,
-    isChoosingRole: false,
     user: null,
+    guru: null,
+    siswa: null,
   }),
   REGISTER: (state, action) => {
     const { user } = action.payload;
@@ -69,7 +63,6 @@ const AuthContext = createContext({
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   register: () => Promise.resolve(),
-  choosingrole: () => Promise.resolve(),
 });
 
 // ----------------------------------------------------------------------
@@ -88,15 +81,18 @@ function AuthProvider({ children }) {
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
+          const response = await axios.get('/user');
+          const { user, guru, siswa } = response.data.result;
+          console.log("Response Data: ", response.data)
 
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
-
+          user.displayName = user.nama_user;
           dispatch({
             type: 'INITIALIZE',
             payload: {
               isAuthenticated: true,
               user,
+              guru,
+              siswa
             },
           });
         } else {
@@ -124,19 +120,29 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (username, password) => {
-    console.log(username, password, ' Payload Login ')
-    const response = await axios.post('/api/auth', {
+    console.log("Payload Login: ", username, password)
+    // const response = await axios.post('/api/account/login', {
+    //   email,
+    //   password,
+    // });
+    const response = await axios.post('/auth', {
       username,
       password,
     });
     console.log(' response data ', response)
     const { accessToken, user } = response.data;
+    console.log("Data User: ", response.data);
+
+    const { guru, siswa } = response.data?.allUser;
+    user.displayName = user.nama_user;
 
     setSession(accessToken);
     dispatch({
       type: 'LOGIN',
       payload: {
         user,
+        guru,
+        siswa,
       },
     });
   };

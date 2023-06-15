@@ -42,21 +42,38 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { DialogAnimate } from '../../components/animate';
 import LoadingScreen from '../../components/LoadingScreen';
 // sections
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@dashboard/users/list';
+import { UsersListHead, UsersListToolbar, UsersMoreMenu } from '../../sections/@dashboard/users/list';
+import useAuth from '../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: 'noInduk', label: 'No. Induk', alignRight: false },
   { id: 'namaLengkap', label: 'Nama Lengkap', alignRight: false },
-  { id: 'email', label: 'Email', alignRight: false },
+  { id: 'username', label: 'Username', alignRight: false },
+  { id: 'kelas', label: 'Kelas', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
-  { id: 'statusUsers', label: 'Status', alignRight: false },
   { id: '' },
+];
+
+const dummyUsers = [
+  { noInduk: 1, namaLengkap: 'Getar', username: 'getarmetal', kelas: 'X.1', role: 'siswa' },
+  { noInduk: 2, namaLengkap: 'Farah', username: 'getarmetal', kelas: 'X.1', role: 'guru' },
+  { noInduk: 3, namaLengkap: 'Adli', username: 'getarmetal', kelas: 'X.1', role: 'admin' },
+  { noInduk: 4, namaLengkap: 'Qila', username: 'getarmetal', kelas: 'X.1', role: 'siswa' },
+  { noInduk: 5, namaLengkap: 'Siddiq', username: 'getarmetal', kelas: 'X.1', role: 'siswa' },
+  { noInduk: 6, namaLengkap: 'Frisky', username: 'getarmetal', kelas: 'X.1', role: 'siswa' },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function UsersList() {
+  const { guru, siswa } = useAuth();
+  const dataUser = [
+    ...guru,
+    ...siswa
+  ]
+  console.log("Data Semua User: ", dataUser);
   const theme = useTheme();
   const { themeStretch } = useSettings();
   const [list, setList] = useState();
@@ -138,7 +155,7 @@ export default function UsersList() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('id_user');
+  const [orderBy, setOrderBy] = useState('noInduk');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -228,7 +245,7 @@ export default function UsersList() {
   };
 
   const handleDeleteMultiUser = (selected) => {
-    const deleteUsers = usersList.filter((user) => !selected.includes(user.nama_lengkap));
+    const deleteUsers = dataUser.filter((user) => !selected.includes(user.namaLengkap));
     setSelected([]);
     // setUsersList(deleteUsers);
   };
@@ -255,9 +272,9 @@ export default function UsersList() {
     setOpenErrorModal(false);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataUser.length) : 0;
 
-  const filteredUsers = applySortFilter(usersList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(dataUser, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && Boolean(filterName);
 
@@ -284,7 +301,7 @@ export default function UsersList() {
           }
         />
         <Card>
-          <UserListToolbar
+          <UsersListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -294,54 +311,59 @@ export default function UsersList() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <UsersListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={usersList.length}
+                  rowCount={dataUser.length}
                   // numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const idUser = row.id_user;
-                    const namaLengkap = row.nama_lengkap;
-                    const email = row.email;
-                    const password = row.password;
-                    const idJabatan = row.id_jabatan;
-                    const isAdmin = row.is_admin;
-                    const role = row.role;
-                    const statusUser = row.status_user;
+                    // const idUser = row.id_user;
+                    // const namaLengkap = row.namaLengkap;
+                    // const email = row.email;
+                    // const password = row.password;
+                    // const idJabatan = row.id_jabatan;
+                    // const isAdmin = row.is_admin;
+                    // const role = row.role;
+                    // const statusUser = row.status_user;
+                    const noInduk = row.nomor_induk;
+                    const namaLengkap = row.nama_user;
+                    const username = row.username;
+                    const kelas = row.kelas_id;
+                    const userRole = row.role;
 
-                    let userRole = '';
-                    let role1 = '';
-                    let role2 = '';
-                    try {
-                      if (isAdmin === '1') {
-                        role1 = 'Admin';
-                        if (role) {
-                          role2 = roles.find((x) => x.code === role);
-                          role2 = role2.label;
-                          userRole = role1.concat(', ', role2);
-                        } else {
-                          userRole = role1;
-                        }
-                      } else {
-                        role1 = roles.find((x) => x.code === role);
-                        role1 = role1.label;
-                        userRole = role1;
-                      }
-                    } catch (e) {
-                      console.log(e);
-                    }
+                    // let userRole = '';
+                    // let role1 = '';
+                    // let role2 = '';
+                    // try {
+                    //   if (isAdmin === '1') {
+                    //     role1 = 'Admin';
+                    //     if (role) {
+                    //       role2 = roles.find((x) => x.code === role);
+                    //       role2 = role2.label;
+                    //       userRole = role1.concat(', ', role2);
+                    //     } else {
+                    //       userRole = role1;
+                    //     }
+                    //   } else {
+                    //     role1 = roles.find((x) => x.code === role);
+                    //     role1 = role1.label;
+                    //     userRole = role1;
+                    //   }
+                    // } catch (e) {
+                    //   console.log(e);
+                    // }
 
-                    const isItemSelected = selected.indexOf(idUser) !== -1;
+                    const isItemSelected = selected.indexOf(noInduk) !== -1;
 
                     return (
                       <TableRow
                         hover
-                        key={idUser}
+                        key={noInduk}
                         tabIndex={-1}
                         role="checkbox"
                         selected={isItemSelected}
@@ -350,26 +372,28 @@ export default function UsersList() {
                         {/* <TableCell padding="checkbox">
                           <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} />
                         </TableCell> */}
+                        <TableCell align="left">{noInduk}</TableCell>
                         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                           <Typography variant="subtitle2" noWrap>
                             {namaLengkap}
                           </Typography>
                         </TableCell>
-                        <TableCell align="left">{email}</TableCell>
+                        <TableCell align="left">{username}</TableCell>
+                        <TableCell align="left">{kelas}</TableCell>
                         <TableCell align="left">{userRole}</TableCell>
                         {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
-                        <TableCell align="left">
+                        {/* <TableCell align="left">
                           <Label
                             variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                             color={statusUser === 'non-aktif' ? 'error' : 'success'}
                           >
                             {statusUser === 'non-aktif' ? 'Non Aktif' : 'Aktif'}
                           </Label>
-                        </TableCell>
+                        </TableCell> */}
 
                         <TableCell align="right">
-                          <UserMoreMenu
-                            onDelete={() => handleOpenDeleteModal(idUser)}
+                          <UsersMoreMenu
+                            onDelete={() => handleOpenDeleteModal(noInduk)}
                             onUpdate={() => handleUpdateUser(row)}
                           />
                         </TableCell>
@@ -398,7 +422,7 @@ export default function UsersList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={usersList.length}
+            count={dataUser.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
@@ -448,14 +472,14 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
+  const stabilizedThis = array?.map((el, index) => [el, index]);
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
   if (query) {
-    return array.filter((_user) => _user.nama_lengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return array?.filter((_user) => _user?.namaLengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }

@@ -92,7 +92,7 @@ export default function DashboardLayout() {
 
       <NavbarVertical isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
 
-      <MainStyle collapseClick={collapseClick} style={{backgroundColor:'#f7f7f7'}}>
+      <MainStyle collapseClick={collapseClick}>
         <Outlet />
       </MainStyle>
     </Box>
