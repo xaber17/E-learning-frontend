@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Card, CardHeader, Container, Grid, List, ListItem, Stack } from '@mui/material';
+import { useDispatch, useSelector } from '../../redux/store';
+import { getUsers } from '../../redux/slices/users';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
@@ -24,27 +27,45 @@ import { AnalyticsCurrentVisits, AnalyticsWidgetSummary } from '../../sections/@
 // ----------------------------------------------------------------------
 
 export default function GeneralApp() {
+  const dispatch = useDispatch();
   const { user, guru, siswa } = useAuth();
   const theme = useTheme();
   const { themeStretch } = useSettings();
-  console.log('Data guru dan siswa: ', guru, siswa)
+  console.log('Data guru dan siswa: ', guru, siswa);
+
+  useEffect(() => {
+    try {
+      dispatch(getUsers());
+    } catch (e) {
+      console.log('ERROR', e);
+    }
+  }, [dispatch]);
 
   return (
     <Page title="Dashboard">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <AppWelcome displayName={user?.displayName} />
         <Grid container spacing={3}>
-          {user.role === 'admin' ? 
-            <><Grid item xs={12} sm={6} md={4}>
-              <AnalyticsWidgetSummary title="Total Users" total={siswa?.length + guru?.length} icon={'mdi:user-group'} />
-            </Grid><Grid item xs={12} sm={6} md={4}>
+          {user.role === 'admin' ? (
+            <>
+              <Grid item xs={12} sm={6} md={4}>
+                <AnalyticsWidgetSummary
+                  title="Total Users"
+                  total={siswa?.length + guru?.length}
+                  icon={'mdi:user-group'}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
                 <AnalyticsWidgetSummary title="Total Siswa" total={siswa?.length} color="info" icon={'mdi:user'} />
-              </Grid><Grid item xs={12} sm={6} md={4}>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
                 <AnalyticsWidgetSummary title="Total Guru" total={guru?.length} color="warning" icon={'mdi:user'} />
-              </Grid><Grid item xs={12} md={6} lg={4}>
+              </Grid>
+              <Grid item xs={12} md={6} lg={4}>
                 <AnalyticsCurrentVisits />
-              </Grid></>
-          : null }
+              </Grid>
+            </>
+          ) : null}
           <Grid item xs={12} md={6} lg={4}>
             <AnalyticsCurrentVisits />
           </Grid>

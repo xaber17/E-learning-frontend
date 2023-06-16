@@ -56,6 +56,7 @@ const roleOptions = [
 ];
 
 const kelasOptions = [
+  { kelas_id: 0, nama_kelas: 'Admin(Bukan Kelas)', deskripsi: 'Admin' },
   { kelas_id: 1, nama_kelas: 'Kelas A', deskripsi: 'Deskripsi Kelas A' },
   { kelas_id: 2, nama_kelas: 'Kelas B', deskripsi: 'Deskripsi Kelas B' },
   { kelas_id: 3, nama_kelas: 'Kelas C', deskripsi: 'Deskripsi Kelas C' },
@@ -79,24 +80,25 @@ export default function InputUsersForm({ currentData, menu, action }) {
     nomor_induk: Yup.string().required('Nomor Induk wajib diisi'),
     nama_user: Yup.string().required('Nama Lengkap wajib diisi'),
     changePassword: Yup.boolean(),
-    password: Yup.string()
-      .required('Kata Sandi wajib diisi')
-      .when('changePassword', {
-        is: true,
-        then: Yup.string().required('Kata Sandi wajib diisi'),
-      }),
-    password_confirmation: Yup.string()
-      .required('Kata Sandi wajib diisi')
-      .oneOf([Yup.ref('password')], 'Kata sandi tidak sama')
-      .when('changePassword', {
-        is: true,
-        then: Yup.string()
-          .required('Ketik Ulang Kata Sandi wajib diisi')
-          .oneOf([Yup.ref('password'), null], 'Kata sandi tidak sama'),
-      }),
+    password: Yup.string().when('changePassword', {
+      is: true,
+      then: Yup.string().required('Kata Sandi wajib diisi'),
+    }),
+    password_confirmation: Yup.string().when('changePassword', {
+      is: true,
+      then: Yup.string()
+        .required('Ketik Ulang Kata Sandi wajib diisi')
+        .oneOf([Yup.ref('password'), null], 'Kata sandi tidak sama'),
+    }),
     kelas_id: Yup.string().required('Kelas wajib dipilih'),
-    role: Yup.string().required('Role wajib dipilih'),
-    status: Yup.string().required('Status wajib dipilih'),
+    role: Yup.string().when('akun', {
+      is: false,
+      then: Yup.string().required('Role wajib dipilih'),
+    }),
+    status: Yup.string().when('akun', {
+      is: false,
+      then: Yup.string().required('Status wajib dipilih'),
+    }),
     username: Yup.string().required('Username wajib diisi'),
     // akun: Yup.boolean(),
     // nama_user: Yup.string().when('akun', { is: false, then: Yup.string().required('Nama Lengkap wajib diisi') }),
@@ -226,6 +228,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
     const updateAkun = {
       username: data.username,
       kelas_id: data.kelas_id,
+      nomor_induk: data.nomor_induk,
       nama_user: data.nama_user,
       password: data.password,
       password_confirmation: data.password_confirmation,
@@ -389,7 +392,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
                 ))}
               </RHFSelect>
 
-              {currentData !== null ? (
+              {currentData !== null && menu !== 'Akun' ? (
                 <>
                   <RHFSwitch name="changePassword" label="Ubah kata sandi?" />
                   <Box />
@@ -416,23 +419,27 @@ export default function InputUsersForm({ currentData, menu, action }) {
                   <RHFTextField name="password_confirmation" label="Ketik Ulang Kata Sandi" type="password" />
                 </>
               )}
-              <RHFSelect name="role" label="Tipe User" placeholder="Tipe User">
-                <option value="" />
-                {roleOptions.map((option) => (
-                  <option key={option.id} value={option.code}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
+              {menu !== 'Akun' && (
+                <>
+                  <RHFSelect name="role" label="Tipe User" placeholder="Tipe User">
+                    <option value="" />
+                    {roleOptions.map((option) => (
+                      <option key={option.id} value={option.code}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </RHFSelect>
 
-              <RHFSelect name="status" label="Status" placeholder="Status">
-                <option value="" />
-                {statusUser.map((option) => (
-                  <option key={option.id} value={option.code}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
+                  <RHFSelect name="status" label="Status" placeholder="Status">
+                    <option value="" />
+                    {statusUser.map((option) => (
+                      <option key={option.id} value={option.code}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </RHFSelect>
+                </>
+              )}
 
               {/* {menu === 'Akun' && (
                 <>

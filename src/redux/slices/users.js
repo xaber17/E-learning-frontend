@@ -99,7 +99,7 @@ export async function getUsers() {
   dispatch(slice.actions.startLoading());
   try {
     const accessToken = window.localStorage.getItem('accessToken');
-    console.log("Access token current User: ", accessToken);
+    console.log('Access token current User: ', accessToken);
     const header = {
       headers: {
         Authorization: `Bearer ${accessToken}`,

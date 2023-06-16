@@ -3,6 +3,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import Label from '../../../components/Label';
 import SvgIconStyle from '../../../components/SvgIconStyle';
+import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +22,17 @@ const ICONS = {
   analytics: getIcon('ic_analytics'),
   dashboard: getIcon('ic_dashboard'),
   booking: getIcon('ic_booking'),
+  users: getIcon('ic_user_group'),
+};
+
+const getIconify = (name) => <Iconify icon={name} sx={{ width: 1, height: 1 }} />;
+
+const ICONIFY = {
+  users: getIconify('fa6-solid:user-group'),
+  file: getIconify('akar-icons:file'),
+  view: getIconify('material-symbols:calendar-view-month'),
+  alarm: getIconify('mdi:alarm-clock-check'),
+  clock: getIconify('mdi:clock-time-three-outline'),
 };
 
 function navConfig(role) {
@@ -36,11 +48,11 @@ function navConfig(role) {
       {
         items: [
           { title: 'Dashboard', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
-          { title: 'Users', path: PATH_DASHBOARD.users.root, icon: ICONS.user },
+          { title: 'Users', path: PATH_DASHBOARD.users.root, icon: ICONIFY.users },
           { title: 'Kelas', path: PATH_DASHBOARD.kelas.root, icon: ICONS.kanban },
           { title: 'Materi', path: PATH_DASHBOARD.materi.root, icon: ICONS.booking },
           { title: 'Ujian', path: PATH_DASHBOARD.general.banking, icon: ICONS.kanban },
-          { title: 'Akun', path: PATH_DASHBOARD.materi.root, icon: ICONS.booking },
+          { title: 'Akun', path: PATH_DASHBOARD.akun, icon: ICONS.user },
         ],
       },
     ];
@@ -52,7 +64,7 @@ function navConfig(role) {
           { title: 'Kelas', path: PATH_DASHBOARD.kelas.root, icon: ICONS.kanban },
           { title: 'Materi', path: PATH_DASHBOARD.materi.root, icon: ICONS.booking },
           { title: 'Ujian', path: PATH_DASHBOARD.general.banking, icon: ICONS.kanban },
-          { title: 'Akun', path: PATH_DASHBOARD.materi.root, icon: ICONS.booking },
+          { title: 'Akun', path: PATH_DASHBOARD.akun, icon: ICONS.user },
         ],
       },
     ];
@@ -63,7 +75,7 @@ function navConfig(role) {
           { title: 'Dashboard', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
           { title: 'Materi', path: PATH_DASHBOARD.materi.root, icon: ICONS.booking },
           { title: 'Ujian', path: PATH_DASHBOARD.general.banking, icon: ICONS.kanban },
-          { title: 'Akun', path: PATH_DASHBOARD.materi.root, icon: ICONS.booking },
+          { title: 'Akun', path: PATH_DASHBOARD.materi.akun, icon: ICONS.user },
         ],
       },
     ];

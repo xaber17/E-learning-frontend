@@ -156,6 +156,11 @@ export default function Router() {
         },
         { path: 'calendar', element: <Calendar /> },
         { path: 'kanban', element: <Kanban /> },
+        {
+          path: 'akun',
+          element: <Akun />,
+          index: true,
+        },
       ],
     },
 
@@ -236,6 +241,9 @@ const KelasForm = Loadable(lazy(() => import('../pages/kelas/KelasForm')));
 const MateriList = Loadable(lazy(() => import('../pages/materi/MateriList')));
 const MateriForm = Loadable(lazy(() => import('../pages/materi/MateriForm')));
 const MateriDetail = Loadable(lazy(() => import('../pages/materi/MateriDetail')));
+
+// AKUN
+const Akun = Loadable(lazy(() => import('../pages/akun')));
 
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/Home')));
