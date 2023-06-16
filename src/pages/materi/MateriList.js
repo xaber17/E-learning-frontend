@@ -33,27 +33,29 @@ import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
 
 // sections
-import { KelasListHead, KelasListToolbar, KelasMoreMenu } from '../../sections/@dashboard/kelas/list';
 import { DialogAnimate } from '../../components/animate';
 import LoadingScreen from '../../components/LoadingScreen';
 import SearchNotFound from '../../components/SearchNotFound';
+import { MateriListHead, MateriListToolbar, MateriMoreMenu } from '../../sections/@dashboard/materi/list';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  //   { id: 'idKelas', label: 'ID Kelas', alignRight: false },
-  { id: 'kelas', label: 'Kelas', alignRight: false },
+  //   { id: 'idMateri', label: 'ID Kelas', alignRight: false },
+  { id: 'judul', label: 'Judul', alignRight: false },
+  { id: 'guru', label: 'Guru', alignRight: false },
   { id: 'deskripsi', label: 'Deskripsi', alignRight: false },
+  { id: 'kelas', label: 'Kelas', alignRight: false },
   { id: '' },
 ];
 
-const dummyKelas = [
-  { kelas: 'X.IPA.1', deskripsi: 'Angkatan Tahun 2023' },
-  { kelas: 'X.IPS.1', deskripsi: 'Angkatan Tahun 2023' },
-  { kelas: 'X.IPS.2', deskripsi: 'Angkatan Tahun 2023' },
+const dummyMateri = [
+  { judul: 'Materi A', guru: 'Lizza', kelas: 'X.IPA.1', deskripsi: 'Deskripsi' },
+  { judul: 'Materi B', guru: 'Dhiya', kelas: 'X.IPS.1', deskripsi: 'Deskripsi' },
+  { judul: 'Materi C', guru: 'Didi', kelas: 'X.IPS.2', deskripsi: 'Deskripsi' },
 ];
 
-export default function KelasList() {
+export default function MateriList() {
   const theme = useTheme();
   const { themeStretch } = useSettings();
   const [list, setList] = useState();
@@ -122,9 +124,9 @@ export default function KelasList() {
     setPage(0);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyKelas.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyMateri.length) : 0;
 
-  const filteredUsers = applySortFilter(dummyKelas, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(dummyMateri, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && Boolean(filterName);
 
@@ -175,8 +177,8 @@ export default function KelasList() {
     setOpenErrorModal(false);
   };
 
-  const handleOpenDeleteModal = (idKelas) => {
-    setDeleteIdUser(parseInt(idKelas, 10));
+  const handleOpenDeleteModal = (idMateri) => {
+    setDeleteIdUser(parseInt(idMateri, 10));
     setOpen(true);
   };
 
@@ -188,17 +190,17 @@ export default function KelasList() {
   };
 
   return (
-    <Page title="Kelas">
+    <Page title="Materi">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Kelas"
-          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Kelas' }]}
+          heading="Materi"
+          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Materi' }]}
           action={
             <Button
               //   onClick={() => handleCreateUser()}
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.kelas.form}
+              to={PATH_DASHBOARD.materi.form}
               startIcon={<Iconify icon={'eva:plus-fill'} />}
             >
               Tambah
@@ -206,7 +208,7 @@ export default function KelasList() {
           }
         />
         <Card>
-          <KelasListToolbar
+          <MateriListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -216,26 +218,28 @@ export default function KelasList() {
           <Scrollbar>
             <TableContainer>
               <Table>
-                <KelasListHead
+                <MateriListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={dummyKelas.length}
+                  rowCount={dummyMateri.length}
                   // numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const idKelas = row.idKelas;
+                    const idMateri = row.idMateri;
+                    const judul = row.judul;
+                    const guru = row.guru;
                     const kelas = row.kelas;
                     const deskripsi = row.deskripsi;
-                    const isItemSelected = selected.indexOf(idKelas) !== -1;
+                    const isItemSelected = selected.indexOf(idMateri) !== -1;
 
                     return (
                       <TableRow
                         hover
-                        key={idKelas}
+                        key={idMateri}
                         tabIndex={-1}
                         role="checkbox"
                         selected={isItemSelected}
@@ -244,13 +248,15 @@ export default function KelasList() {
                         {/* <TableCell padding="checkbox">
                           <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} />
                         </TableCell> */}
-                        {/* <TableCell align="left">{idKelas}</TableCell> */}
+                        {/* <TableCell align="left">{idMateri}</TableCell> */}
                         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                           <Typography variant="subtitle2" noWrap>
-                            {kelas}
+                            {judul}
                           </Typography>
                         </TableCell>
+                        <TableCell align="left">{guru}</TableCell>
                         <TableCell align="left">{deskripsi}</TableCell>
+                        <TableCell align="left">{kelas}</TableCell>
                         {/* <TableCell align="left">{userRole}</TableCell> */}
                         {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
                         {/* <TableCell align="left">
@@ -263,9 +269,9 @@ export default function KelasList() {
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <KelasMoreMenu
-                            // onUpdate={() => handleUpdateUser(row)} => handle detail kelas
-                            onDelete={() => handleOpenDeleteModal(idKelas)}
+                          <MateriMoreMenu
+                            // onUpdate={() => handleUpdateUser(row)}  => handle detail materi
+                            onDelete={() => handleOpenDeleteModal(idMateri)}
                             onUpdate={() => handleUpdateUser(row)}
                           />
                         </TableCell>
@@ -293,7 +299,7 @@ export default function KelasList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={dummyKelas.length}
+            count={dummyMateri.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

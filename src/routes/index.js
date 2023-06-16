@@ -96,6 +96,15 @@ export default function Router() {
           children: [
             { element: <Navigate to="/dashboard/kelas/list" replace />, index: true },
             { path: 'list', element: <KelasList /> },
+            { path: 'form', element: <KelasForm /> },
+          ],
+        },
+        {
+          path: 'materi',
+          children: [
+            { element: <Navigate to="/dashboard/materi/list" replace />, index: true },
+            { path: 'list', element: <MateriList /> },
+            { path: 'form', element: <MateriForm /> },
           ],
         },
         { 
@@ -221,6 +230,11 @@ const UsersForm = Loadable(lazy(() => import('../pages/users/UsersForm')));
 
 // KELAS
 const KelasList = Loadable(lazy(() => import('../pages/kelas/KelasList')));
+const KelasForm = Loadable(lazy(() => import('../pages/kelas/KelasForm')));
+
+// KELAS
+const MateriList = Loadable(lazy(() => import('../pages/materi/MateriList')));
+const MateriForm = Loadable(lazy(() => import('../pages/materi/MateriForm')));
 
 // UJIAN
 const UjianList = Loadable(lazy(() => import('../pages/ujian/UjianList')));

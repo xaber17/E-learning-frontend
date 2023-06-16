@@ -71,7 +71,7 @@ export default function Login() {
     <Page title="Login">
       <RootStyle>
         <HeaderStyle>
-          <Logo />
+          {/* <Logo />
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Don’t have an account? {''}
@@ -79,18 +79,21 @@ export default function Login() {
                 Get started
               </Link>
             </Typography>
-          )}
+          )} */}
         </HeaderStyle>
 
         {mdUp && (
           <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <Image
+          <Image
               alt="login"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
+              src="/logo/ayat.jpg"
             />
+            <Typography variant="h5" sx={{ px: 3, mt: 5, mb: 3 }} textAlign={'justify'}>
+              ... Dan apabila dikatakan, “Berdirilah kamu,” maka berdirilah, niscaya Allah akan mengangkat (derajat) orang-orang yang beriman di antaramu dan orang-orang yang diberi ilmu beberapa derajat. Dan Allah Maha teliti apa yang kamu kerjakan.
+            </Typography>
+            <Typography variant="h5" sx={{ px: 5, mb: 5 }} textAlign={'center'}>
+               ( QS. Al-Mujadalah ayat 11 )
+            </Typography>
           </SectionStyle>
         )}
 
@@ -99,36 +102,36 @@ export default function Login() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to Minimal
+                  E-Learning Madinatul Ilmi
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>Selamat datang di halaman login</Typography>
               </Box>
 
               <Tooltip title={capitalCase(method)} placement="right">
                 <>
-                  <Image
+                <Image
                     disabledEffect
-                    src={`https://minimal-assets-api.vercel.app/assets/icons/auth/ic_${method}.png`}
-                    sx={{ width: 32, height: 32 }}
+                    src={`/logo/logo_sekolah.png`}
+                    sx={{ width: 100, height: 100 }}
                   />
                 </>
               </Tooltip>
             </Stack>
 
-            <Alert severity="info" sx={{ mb: 3 }}>
+            {/* <Alert severity="info" sx={{ mb: 3 }}>
               Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-            </Alert>
+            </Alert> */}
 
             <LoginForm />
 
-            {!smUp && (
+            {/* {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
                 Don’t have an account?{' '}
                 <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
                   Get started
                 </Link>
               </Typography>
-            )}
+            )} */}
           </ContentStyle>
         </Container>
       </RootStyle>

@@ -49,6 +49,12 @@ export const PATH_DASHBOARD = {
   kelas: {
     root: path(ROOTS_DASHBOARD, '/kelas'),
     list: path(ROOTS_DASHBOARD, '/kelas/list'),
+    form: path(ROOTS_DASHBOARD, '/kelas/form'),
+  },
+  materi: {
+    root: path(ROOTS_DASHBOARD, '/materi'),
+    list: path(ROOTS_DASHBOARD, '/materi/list'),
+    form: path(ROOTS_DASHBOARD, '/materi/form'),
   },
   ujian: {
     root: path(ROOTS_DASHBOARD, '/ujian'),
