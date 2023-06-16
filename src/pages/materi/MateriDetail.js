@@ -29,11 +29,18 @@ export default function MateriForm() {
                 // gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-              <p>Materi Kelas</p>
-              <p>Materi Kelas</p>
-              <p>Materi Kelas</p>
-              <p>Materi Kelas</p>
-              <p>Materi Kelas</p>
+              <div>
+                <h5>Judul</h5>
+                <h4>Materi A</h4>
+              </div>
+              <div>
+                <h5>Pemateri</h5>
+                <h4>Guru A</h4>
+              </div>
+              <div>
+                <h5>Deskripsi</h5>
+                <h4>Deskripsi Materi Lorem Ipsum</h4>
+              </div>
             </Box>
           </Card>
         </Grid>
