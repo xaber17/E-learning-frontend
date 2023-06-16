@@ -199,7 +199,6 @@ export default function InputUsersForm({ currentData, menu, action }) {
       kelas_id: data.kelas_id,
       nama_user: data.nama_user,
       password: data.password,
-      password_confirmation: data.password_confirmation,
       role: data.role,
       status: data.status,
       nomor_induk: data.nomor_induk,
@@ -210,7 +209,6 @@ export default function InputUsersForm({ currentData, menu, action }) {
       kelas_id: data.kelas_id,
       nama_user: data.nama_user,
       password: data.password,
-      password_confirmation: data.password_confirmation,
       role: data.role,
       status: data.status,
       nomor_induk: data.nomor_induk,
@@ -231,7 +229,6 @@ export default function InputUsersForm({ currentData, menu, action }) {
       nomor_induk: data.nomor_induk,
       nama_user: data.nama_user,
       password: data.password,
-      password_confirmation: data.password_confirmation,
     };
     console.log('pushed button');
     await new Promise((resolve) => setTimeout(resolve, 1000));
