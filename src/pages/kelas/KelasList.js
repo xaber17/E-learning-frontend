@@ -41,7 +41,7 @@ import SearchNotFound from '../../components/SearchNotFound';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  //   { id: 'idKelas', label: 'ID Kelas', alignRight: false },
+  { id: 'idKelas', label: 'Id', alignRight: false },
   { id: 'kelas', label: 'Kelas', alignRight: false },
   { id: 'deskripsi', label: 'Deskripsi', alignRight: false },
   { id: '' },
@@ -69,8 +69,8 @@ export default function KelasList() {
   const { kelas } = useSelector((state) => state.kelas);
   let kelasList = [];
   try {
-    kelasList = kelas?.data;
-    console.log(kelasList);
+    kelasList = kelas?.data?.result;
+    console.log("Kelas list data: ", kelasList);
   } catch (e) {
     console.log(e);
   }
@@ -122,9 +122,9 @@ export default function KelasList() {
     setPage(0);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyKelas.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - kelasList.length) : 0;
 
-  const filteredKelas = applySortFilter(dummyKelas, getComparator(order, orderBy), filterName);
+  const filteredKelas = applySortFilter(kelasList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredKelas.length && Boolean(filterName);
 
@@ -171,6 +171,12 @@ export default function KelasList() {
     window.location.reload();
   };
 
+  const handleCreateKelas = () => {
+    dispatch(resetKelas());
+    window.localStorage.removeItem('currentKelas');
+    window.localStorage.setItem('action', 'create');
+  };
+
   const handleCloseErrorModal = () => {
     setOpenErrorModal(false);
   };
@@ -195,7 +201,7 @@ export default function KelasList() {
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Kelas' }]}
           action={
             <Button
-              //   onClick={() => handleCreateKelas()}
+              onClick={() => handleCreateKelas()}
               variant="contained"
               component={RouterLink}
               to={PATH_DASHBOARD.kelas.form}
@@ -220,15 +226,15 @@ export default function KelasList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={dummyKelas.length}
+                  rowCount={kelasList.length}
                   // numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredKelas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const idKelas = row.idKelas;
-                    const kelas = row.kelas;
+                    const idKelas = row.kelas_id;
+                    const kelas = row.kelas_name;
                     const deskripsi = row.deskripsi;
                     const isItemSelected = selected.indexOf(idKelas) !== -1;
 
@@ -241,27 +247,13 @@ export default function KelasList() {
                         selected={isItemSelected}
                         aria-checked={isItemSelected}
                       >
-                        {/* <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} />
-                        </TableCell> */}
-                        {/* <TableCell align="left">{idKelas}</TableCell> */}
                         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                           <Typography variant="subtitle2" noWrap>
-                            {kelas}
+                            {idKelas}
                           </Typography>
                         </TableCell>
+                        <TableCell align="left">{kelas}</TableCell>
                         <TableCell align="left">{deskripsi}</TableCell>
-                        {/* <TableCell align="left">{kelasRole}</TableCell> */}
-                        {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
-                        {/* <TableCell align="left">
-                          <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={statusKelas === 'non-aktif' ? 'error' : 'success'}
-                          >
-                            {statusKelas === 'non-aktif' ? 'Non Aktif' : 'Aktif'}
-                          </Label>
-                        </TableCell> */}
-
                         <TableCell align="right">
                           <KelasMoreMenu
                             // onUpdate={() => handleUpdateKelas(row)} => handle detail kelas
@@ -293,7 +285,7 @@ export default function KelasList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={dummyKelas.length}
+            count={kelasList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

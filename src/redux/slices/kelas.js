@@ -103,7 +103,7 @@ export async function getKelas() {
         Authorization: `Bearer ${accessToken}`,
       },
     };
-    const response = await axios.get('/kelas', header);
+    const response = await axios.get('/kelas/all', header);
     console.log('redux getKelas', response);
     window.localStorage.setItem('kelasList', JSON.stringify(response.data));
     dispatch(slice.actions.getKelasSuccess(response));
@@ -169,7 +169,7 @@ export function updateKelas(kelasId, updateKelas) {
       },
     };
 
-    const response = await axios.post(`/kelas/update/${kelasId}`, updateKelas, header);
+    const response = await axios.patch(`/kelas/update/${kelasId}`, updateKelas, header);
 
     const status = response.status;
     const data = response.data;
