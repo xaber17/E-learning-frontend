@@ -54,7 +54,7 @@ export default function MateriMoreMenu({ onDelete, view, onUpdate }) {
           '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
         }}
       >
-        <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.materi.form}>
+        <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.materi.detail}>
           <Iconify icon={'mdi:form-select'} sx={{ ...ICON }} />
           Lihat
         </MenuItem>
