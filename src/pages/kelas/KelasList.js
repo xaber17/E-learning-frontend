@@ -70,17 +70,17 @@ export default function KelasList() {
   let kelasList = [];
   try {
     kelasList = kelas?.data?.result;
-    console.log("Kelas list data: ", kelasList);
+    console.log('Kelas list data: ', kelasList);
   } catch (e) {
     console.log(e);
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     setLoading(true);
     const action = window.localStorage.getItem('action');
     window.localStorage.removeItem('currentKelas');
     try {
-      dispatch(getKelas());
+      await dispatch(getKelas());
     } catch (e) {
       console.log('ERROR', e);
     }

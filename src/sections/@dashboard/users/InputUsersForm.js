@@ -27,6 +27,7 @@ import { fData } from '../../../utils/formatNumber';
 import { useDispatch, useSelector } from '../../../redux/store';
 
 import { createUser, getUsers, resetUser, updateUser } from '../../../redux/slices/users';
+import { getKelas } from '../../../redux/slices/kelas';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // _mock
 import { countries, roles } from '../../../_mock';
@@ -75,6 +76,25 @@ export default function InputUsersForm({ currentData, menu, action }) {
   const dispatch = useDispatch();
 
   const [message, setMessage] = useState('');
+
+  const { kelas } = useSelector((state) => state.kelas);
+  let kelasList = [];
+  try {
+    kelasList = kelas?.data?.result;
+  } catch (e) {
+    console.log(e);
+  }
+  useEffect(() => {
+    setLoading(true);
+    try {
+      dispatch(getKelas());
+    } catch (e) {
+      console.log('ERROR', e);
+    }
+    setLoading(false);
+  }, [dispatch]);
+
+  console.log('kelas list', kelasList);
 
   const NewUserSchema = Yup.object().shape({
     nomor_induk: Yup.string().required('Nomor Induk wajib diisi'),
@@ -267,6 +287,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
             reset();
             dispatch(resetUser());
             enqueueSnackbar('Berhasil Mengubah Data');
+            window.location.reload();
           })
           .catch((e) => {
             console.log('ERROR', e);
@@ -382,9 +403,9 @@ export default function InputUsersForm({ currentData, menu, action }) {
               <RHFTextField name="nomor_induk" label="No. Induk" />
               <RHFSelect name="kelas_id" label="Kelas" placeholder="Kelas">
                 <option value="" />
-                {kelasOptions.map((option) => (
+                {kelasList.map((option) => (
                   <option key={option.kelas_id} value={option.kelas_id}>
-                    {option.nama_kelas}
+                    {option.kelas_name}
                   </option>
                 ))}
               </RHFSelect>

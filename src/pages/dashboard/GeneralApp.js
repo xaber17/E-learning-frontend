@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { Card, CardHeader, Container, Grid, List, ListItem, Stack } from '@mui/material';
 import { useDispatch, useSelector } from '../../redux/store';
 import { getUsers } from '../../redux/slices/users';
+import { getKelas } from '../../redux/slices/kelas';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
@@ -36,6 +37,14 @@ export default function GeneralApp() {
   useEffect(() => {
     try {
       dispatch(getUsers());
+    } catch (e) {
+      console.log('ERROR', e);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    try {
+      dispatch(getKelas());
     } catch (e) {
       console.log('ERROR', e);
     }
