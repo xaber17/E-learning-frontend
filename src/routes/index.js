@@ -116,6 +116,15 @@ export default function Router() {
           ],
         },
         {
+          path: 'ujian',
+          children: [
+            { element: <Navigate to="/dashboard/ujian/list" replace />, index: true },
+            { path: 'list', element: <UjianList /> },
+            { path: 'form', element: <UjianForm /> },
+            { path: 'hasil', element: <HasilUjian /> },
+          ],
+        },
+        {
           path: 'user',
           children: [
             { element: <Navigate to="/dashboard/user/profile" replace />, index: true },
@@ -244,6 +253,10 @@ const MateriDetail = Loadable(lazy(() => import('../pages/materi/MateriDetail'))
 
 // AKUN
 const Akun = Loadable(lazy(() => import('../pages/akun')));
+// UJIAN
+const UjianList = Loadable(lazy(() => import('../pages/ujian/UjianList')));
+const UjianForm = Loadable(lazy(() => import('../pages/ujian/UjianForm')));
+const HasilUjian = Loadable(lazy(() => import('../pages/ujian/HasilUjian')));
 
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/Home')));
