@@ -5,7 +5,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 // routes
-import { PATH_DASHBOARD, PATH_AUTH } from '../../../routes/paths';
+import { PATH_DASHBOARD, PATH_AUTH, PATH_MAIN } from '../../../routes/paths';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -55,7 +55,7 @@ export default function AccountPopover() {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate(PATH_AUTH.login, { replace: true });
+      navigate(PATH_MAIN.root, { replace: true });
 
       if (isMountedRef.current) {
         handleClose();

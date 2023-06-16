@@ -28,31 +28,31 @@ const Loadable = (Component) => (props) => {
 
 export default function Router() {
   return useRoutes([
-    {
-      path: 'auth',
-      children: [
-        {
-          path: 'login',
-          element: (
-            <GuestGuard>
-              <Login />
-            </GuestGuard>
-          ),
-        },
-        {
-          path: 'register',
-          element: (
-            <GuestGuard>
-              <Register />
-            </GuestGuard>
-          ),
-        },
-        { path: 'login-unprotected', element: <Login /> },
-        { path: 'register-unprotected', element: <Register /> },
-        { path: 'reset-password', element: <ResetPassword /> },
-        { path: 'verify', element: <VerifyCode /> },
-      ],
-    },
+    // {
+    //   path: 'auth',
+    //   children: [
+    //     {
+    //       path: 'login',
+    //       element: (
+    //         <GuestGuard>
+    //           <Login />
+    //         </GuestGuard>
+    //       ),
+    //     },
+    //     {
+    //       path: 'register',
+    //       element: (
+    //         <GuestGuard>
+    //           <Register />
+    //         </GuestGuard>
+    //       ),
+    //     },
+    //     { path: 'login-unprotected', element: <Login /> },
+    //     { path: 'register-unprotected', element: <Register /> },
+    //     { path: 'reset-password', element: <ResetPassword /> },
+    //     { path: 'verify', element: <VerifyCode /> },
+    //   ],
+    // },
 
     // Dashboard Routes
     {
@@ -86,11 +86,14 @@ export default function Router() {
         {
           path: 'users',
           children: [
-            { element: (
-              <RoleBasedGuard accessibleRoles={['admin']}>
-                <Navigate to="/dashboard/users/list" replace />
-              </RoleBasedGuard>
-              ), index: true },
+            {
+              element: (
+                <RoleBasedGuard accessibleRoles={['admin']}>
+                  <Navigate to="/dashboard/users/list" replace />
+                </RoleBasedGuard>
+              ),
+              index: true,
+            },
             { path: 'list', element: <UsersList /> },
             { path: 'form', element: <UsersForm /> },
           ],

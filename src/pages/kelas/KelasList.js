@@ -23,7 +23,7 @@ import useSettings from '../../hooks/useSettings';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { useDispatch, useSelector } from '../../redux/store';
 
-import { getUsers, setCurrentUser, resetUser, deleteUser } from '../../redux/slices/users';
+import { getKelas, createKelas, setCurrentKelas, deleteKelas, resetKelas, updateKelas } from '../../redux/slices/kelas';
 
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -61,16 +61,16 @@ export default function KelasList() {
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [deleteIdUser, setDeleteIdUser] = useState();
+  const [deleteIdKelas, setDeleteIdKelas] = useState();
   let msg = '';
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
-  const { users } = useSelector((state) => state.users);
-  let usersList = [];
+  const { kelas } = useSelector((state) => state.kelas);
+  let kelasList = [];
   try {
-    usersList = users?.data;
-    console.log(usersList);
+    kelasList = kelas?.data;
+    console.log(kelasList);
   } catch (e) {
     console.log(e);
   }
@@ -78,9 +78,9 @@ export default function KelasList() {
   useEffect(() => {
     setLoading(true);
     const action = window.localStorage.getItem('action');
-    window.localStorage.removeItem('currentUsers');
+    window.localStorage.removeItem('currentKelas');
     try {
-      dispatch(getUsers());
+      dispatch(getKelas());
     } catch (e) {
       console.log('ERROR', e);
     }
@@ -124,18 +124,18 @@ export default function KelasList() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyKelas.length) : 0;
 
-  const filteredUsers = applySortFilter(dummyKelas, getComparator(order, orderBy), filterName);
+  const filteredKelas = applySortFilter(dummyKelas, getComparator(order, orderBy), filterName);
 
-  const isNotFound = !filteredUsers.length && Boolean(filterName);
+  const isNotFound = !filteredKelas.length && Boolean(filterName);
 
   if (loading) {
     return <LoadingScreen />;
   }
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteKelas = async (kelasId) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     window.localStorage.setItem('action', 'delete');
-    dispatch(deleteUser(userId))
+    dispatch(deleteKelas(kelasId))
       .then((data) => {
         console.log(data);
         setTimeout(() => {
@@ -143,7 +143,7 @@ export default function KelasList() {
         }, 1000);
 
         setLoading(true);
-        dispatch(getUsers());
+        dispatch(getKelas());
         handleCloseModal();
         handleCloseErrorModal();
         setLoading(false);
@@ -176,14 +176,14 @@ export default function KelasList() {
   };
 
   const handleOpenDeleteModal = (idKelas) => {
-    setDeleteIdUser(parseInt(idKelas, 10));
+    setDeleteIdKelas(parseInt(idKelas, 10));
     setOpen(true);
   };
 
-  const handleUpdateUser = (user) => {
-    console.log('UPDATE USER LIST', user);
-    dispatch(setCurrentUser(user));
-    window.localStorage.setItem('currentUser', JSON.stringify(user));
+  const handleUpdateKelas = (kelas) => {
+    console.log('UPDATE KELAS LIST', kelas);
+    dispatch(setCurrentKelas(kelas));
+    window.localStorage.setItem('currentKelas', JSON.stringify(kelas));
     window.localStorage.setItem('action', 'update');
   };
 
@@ -195,7 +195,7 @@ export default function KelasList() {
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Kelas' }]}
           action={
             <Button
-              //   onClick={() => handleCreateUser()}
+              //   onClick={() => handleCreateKelas()}
               variant="contained"
               component={RouterLink}
               to={PATH_DASHBOARD.kelas.form}
@@ -210,7 +210,7 @@ export default function KelasList() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
-            // onDeleteUsers={() => handleDeleteMultiUser(selected)}
+            // onDeleteKelas={() => handleDeleteMultiKelas(selected)}
           />
 
           <Scrollbar>
@@ -226,7 +226,7 @@ export default function KelasList() {
                   // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  {filteredKelas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const idKelas = row.idKelas;
                     const kelas = row.kelas;
                     const deskripsi = row.deskripsi;
@@ -251,22 +251,22 @@ export default function KelasList() {
                           </Typography>
                         </TableCell>
                         <TableCell align="left">{deskripsi}</TableCell>
-                        {/* <TableCell align="left">{userRole}</TableCell> */}
+                        {/* <TableCell align="left">{kelasRole}</TableCell> */}
                         {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
                         {/* <TableCell align="left">
                           <Label
                             variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={statusUser === 'non-aktif' ? 'error' : 'success'}
+                            color={statusKelas === 'non-aktif' ? 'error' : 'success'}
                           >
-                            {statusUser === 'non-aktif' ? 'Non Aktif' : 'Aktif'}
+                            {statusKelas === 'non-aktif' ? 'Non Aktif' : 'Aktif'}
                           </Label>
                         </TableCell> */}
 
                         <TableCell align="right">
                           <KelasMoreMenu
-                            // onUpdate={() => handleUpdateUser(row)} => handle detail kelas
+                            // onUpdate={() => handleUpdateKelas(row)} => handle detail kelas
                             onDelete={() => handleOpenDeleteModal(idKelas)}
-                            onUpdate={() => handleUpdateUser(row)}
+                            onUpdate={() => handleUpdateKelas(row)}
                           />
                         </TableCell>
                       </TableRow>
@@ -307,7 +307,7 @@ export default function KelasList() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseModal}>Kembali</Button>
-            <Button onClick={() => handleDeleteUser(deleteIdUser)} autoFocus color="error">
+            <Button onClick={() => handleDeleteKelas(deleteIdKelas)} autoFocus color="error">
               Yakin
             </Button>
           </DialogActions>
@@ -350,7 +350,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return array?.filter((_user) => _user?.namaLengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return array?.filter((_kelas) => _kelas?.namaLengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }

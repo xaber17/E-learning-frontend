@@ -7,6 +7,7 @@ import { Box, Stack, Drawer } from '@mui/material';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
+import useAuth from '../../../hooks/useAuth';
 // utils
 import cssStyles from '../../../utils/cssStyles';
 // config
@@ -40,7 +41,10 @@ NavbarVertical.propTypes = {
 };
 
 export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
-  const [nav, setNav] = useState(navConfig('admin'));
+  const { user, login } = useAuth();
+
+  console.log('USER ROLE', user?.role);
+  const [nav, setNav] = useState(navConfig(user?.role));
 
   const theme = useTheme();
 

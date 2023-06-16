@@ -6,19 +6,20 @@ import useAuth from '../hooks/useAuth';
 
 RoleBasedGuard.propTypes = {
   accessibleRoles: PropTypes.array, // Example ['admin', 'leader']
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 const useCurrentRole = () => {
   // Logic here to get current user role
   const { user } = useAuth();
-  console.log("Data User: ", user);
+  console.log('Data User: ', user);
   return user.role;
 };
 
 export default function RoleBasedGuard({ accessibleRoles, children }) {
-  console.log("accessibleRoles: ", accessibleRoles)
+  console.log('accessibleRoles: ', accessibleRoles);
   const currentRole = useCurrentRole(accessibleRoles);
+  console.log(currentRole);
 
   if (!accessibleRoles.includes(currentRole)) {
     return (
