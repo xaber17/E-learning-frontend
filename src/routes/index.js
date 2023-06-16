@@ -98,6 +98,14 @@ export default function Router() {
             { path: 'list', element: <KelasList /> },
           ],
         },
+        { 
+          path: 'ujian',
+          children: [
+            {element: <Navigate to="/dashboard/ujian/list" replace />, index: true},
+            { path: 'list', element: <UjianList/> },
+            { path: 'form', element: <UjianForm /> },
+          ]
+       },
         {
           path: 'user',
           children: [
@@ -178,8 +186,8 @@ export default function Router() {
 // IMPORT COMPONENTS
 
 // Authentication
-const Login = Loadable(lazy(() => import('../pages/auth/login')));
-const Register = Loadable(lazy(() => import('../pages/auth/register')));
+const Login = Loadable(lazy(() => import('../pages/auth/Login')));
+const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const ResetPassword = Loadable(lazy(() => import('../pages/auth/ResetPassword')));
 const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
 // Dashboard
@@ -204,8 +212,8 @@ const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
 const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
-const Calendar = Loadable(lazy(() => import('../pages/dashboard/calendar')));
-const Kanban = Loadable(lazy(() => import('../pages/dashboard/kanban')));
+const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
+const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
 
 // USERS
 const UsersList = Loadable(lazy(() => import('../pages/users/UsersList')));
@@ -213,6 +221,10 @@ const UsersForm = Loadable(lazy(() => import('../pages/users/UsersForm')));
 
 // KELAS
 const KelasList = Loadable(lazy(() => import('../pages/kelas/KelasList')));
+
+// UJIAN
+const UjianList = Loadable(lazy(() => import('../pages/ujian/UjianList')));
+const UjianForm = Loadable(lazy(() => import('../pages/ujian/UjianForm')));
 
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/Home')));
