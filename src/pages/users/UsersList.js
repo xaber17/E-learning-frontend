@@ -315,7 +315,7 @@ export default function UsersList() {
                     const noInduk = row.nomor_induk;
                     const namaLengkap = row.nama_user;
                     const username = row.username;
-                    const kelas = row.kelas_id;
+                    const kelas = row.kelas_name || '-';
                     const userRole = row.role;
 
                     let status = 'Non Aktif';
