@@ -166,6 +166,8 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    window.localStorage.removeItem('usersList');
+    window.localStorage.removeItem('accessToken');
     setSession(null);
     dispatch({ type: 'LOGOUT' });
   };

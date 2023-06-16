@@ -79,16 +79,21 @@ export default function InputUsersForm({ currentData, menu, action }) {
     nomor_induk: Yup.string().required('Nomor Induk wajib diisi'),
     nama_user: Yup.string().required('Nama Lengkap wajib diisi'),
     changePassword: Yup.boolean(),
-    password: Yup.string().when('changePassword', {
-      is: true,
-      then: Yup.string().required('Kata Sandi wajib diisi'),
-    }),
-    password_confirmation: Yup.string().when('changePassword', {
-      is: true,
-      then: Yup.string()
-        .required('Ketik Ulang Kata Sandi wajib diisi')
-        .oneOf([Yup.ref('password'), null], 'Kata sandi tidak sama'),
-    }),
+    password: Yup.string()
+      .required('Kata Sandi wajib diisi')
+      .when('changePassword', {
+        is: true,
+        then: Yup.string().required('Kata Sandi wajib diisi'),
+      }),
+    password_confirmation: Yup.string()
+      .required('Kata Sandi wajib diisi')
+      .oneOf([Yup.ref('password')], 'Kata sandi tidak sama')
+      .when('changePassword', {
+        is: true,
+        then: Yup.string()
+          .required('Ketik Ulang Kata Sandi wajib diisi')
+          .oneOf([Yup.ref('password'), null], 'Kata sandi tidak sama'),
+      }),
     kelas_id: Yup.string().required('Kelas wajib dipilih'),
     role: Yup.string().required('Role wajib dipilih'),
     status: Yup.string().required('Status wajib dipilih'),

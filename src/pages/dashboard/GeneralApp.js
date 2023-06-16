@@ -34,18 +34,17 @@ export default function GeneralApp() {
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <AppWelcome displayName={user?.displayName} />
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={4}>
-            <AnalyticsWidgetSummary title="Total Users" total={siswa?.length + guru?.length} icon={'mdi:user-group'} />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <AnalyticsWidgetSummary title="Total Siswa" total={siswa?.length} color="info" icon={'mdi:user'} />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <AnalyticsWidgetSummary title="Total Guru" total={guru?.length} color="warning" icon={'mdi:user'} />
-          </Grid>
-
+          {user.role === 'admin' ? 
+            <><Grid item xs={12} sm={6} md={4}>
+              <AnalyticsWidgetSummary title="Total Users" total={siswa?.length + guru?.length} icon={'mdi:user-group'} />
+            </Grid><Grid item xs={12} sm={6} md={4}>
+                <AnalyticsWidgetSummary title="Total Siswa" total={siswa?.length} color="info" icon={'mdi:user'} />
+              </Grid><Grid item xs={12} sm={6} md={4}>
+                <AnalyticsWidgetSummary title="Total Guru" total={guru?.length} color="warning" icon={'mdi:user'} />
+              </Grid><Grid item xs={12} md={6} lg={4}>
+                <AnalyticsCurrentVisits />
+              </Grid></>
+          : null }
           <Grid item xs={12} md={6} lg={4}>
             <AnalyticsCurrentVisits />
           </Grid>

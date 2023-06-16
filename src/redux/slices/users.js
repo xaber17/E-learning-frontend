@@ -99,7 +99,7 @@ export async function getUsers() {
   dispatch(slice.actions.startLoading());
   try {
     const accessToken = window.localStorage.getItem('accessToken');
-    console.log(accessToken);
+    console.log("Access token current User: ", accessToken);
     const header = {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -192,7 +192,7 @@ export function updateUser(userId, updateUser) {
       },
     };
 
-    const response = await axios.post(`/user/update/${userId}`, updateUser, header);
+    const response = await axios.patch(`/user/update/${userId}`, updateUser, header);
 
     const status = response.status;
     const data = response.data;
