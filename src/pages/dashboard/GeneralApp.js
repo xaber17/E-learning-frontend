@@ -5,6 +5,7 @@ import { Card, CardHeader, Container, Grid, List, ListItem, Stack } from '@mui/m
 import { useDispatch, useSelector } from '../../redux/store';
 import { getUsers } from '../../redux/slices/users';
 import { getKelas } from '../../redux/slices/kelas';
+import { getUjian } from '../../redux/slices/ujian';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
@@ -45,6 +46,14 @@ export default function GeneralApp() {
   useEffect(() => {
     try {
       dispatch(getKelas());
+    } catch (e) {
+      console.log('ERROR', e);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    try {
+      dispatch(getUjian());
     } catch (e) {
       console.log('ERROR', e);
     }
