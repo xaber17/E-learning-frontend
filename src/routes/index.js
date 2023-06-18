@@ -253,6 +253,7 @@ const MateriDetail = Loadable(lazy(() => import('../pages/materi/MateriDetail'))
 
 // AKUN
 const Akun = Loadable(lazy(() => import('../pages/akun')));
+
 // UJIAN
 const UjianList = Loadable(lazy(() => import('../pages/ujian/UjianList')));
 const UjianForm = Loadable(lazy(() => import('../pages/ujian/UjianForm')));

@@ -76,28 +76,30 @@ export default function UjianList() {
     console.log(e);
   }
 
-  useEffect(async () => {
-    setLoading(true);
-    const action = window.localStorage.getItem('action');
-    window.localStorage.removeItem('currentUjian');
-    try {
-      await dispatch(getUjian());
-    } catch (e) {
-      console.log('ERROR', e);
-    }
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const action = window.localStorage.getItem('action');
+      window.localStorage.removeItem('currentUjian');
+      try {
+        await dispatch(getUjian());
+      } catch (e) {
+        console.log('ERROR', e);
+      }
 
-    if (action === 'delete') {
-      enqueueSnackbar('Berhasil menghapus data');
-      window.localStorage.removeItem('action');
-    } else if (action === 'create') {
-      enqueueSnackbar('Berhasil menambah data');
-      window.localStorage.removeItem('action');
-    } else if (action === 'update') {
-      enqueueSnackbar('Berhasil mengubah data');
-      window.localStorage.removeItem('action');
-    }
+      if (action === 'delete') {
+        enqueueSnackbar('Berhasil menghapus data');
+        window.localStorage.removeItem('action');
+      } else if (action === 'create') {
+        enqueueSnackbar('Berhasil menambah data');
+        window.localStorage.removeItem('action');
+      } else if (action === 'update') {
+        enqueueSnackbar('Berhasil mengubah data');
+        window.localStorage.removeItem('action');
+      }
 
-    setLoading(false);
+      setLoading(false);
+    })();
   }, [dispatch]);
 
   const [page, setPage] = useState(0);
@@ -152,7 +154,7 @@ export default function UjianList() {
         console.log('ERROR', e);
         const error = e;
         Object.keys(error).forEach((key) => {
-          console.log(error[key][0]); // 👉️ "Tom", "Chile"
+          console.log(error[key][0]);
           const errMessage = error[key][0];
 
           msg = msg.concat(errMessage);
@@ -195,7 +197,6 @@ export default function UjianList() {
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Ujian' }]}
           action={
             <Button
-              //   onClick={() => handleCreateUjian()}
               variant="contained"
               component={RouterLink}
               to={PATH_DASHBOARD.ujian.form}
@@ -206,12 +207,7 @@ export default function UjianList() {
           }
         />
         <Card>
-          <UjianListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-            // onDeleteUjian={() => handleDeleteMultiUjian(selected)}
-          />
+          <UjianListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer>
@@ -221,16 +217,12 @@ export default function UjianList() {
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
                   rowCount={ujianList.length}
-                  // numSelected={selected.length}
                   onRequestSort={handleRequestSort}
-                  // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUjian.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const idUjian = row.soal_id;
                     const nama = row.soal_name;
-                    // const kelas = row.kelas_id;
-                    // const deadline = row.deadline;
                     const isItemSelected = selected.indexOf(idUjian) !== -1;
 
                     return (
@@ -242,31 +234,14 @@ export default function UjianList() {
                         selected={isItemSelected}
                         aria-checked={isItemSelected}
                       >
-                        {/* <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} />
-                        </TableCell> */}
-                        {/* <TableCell align="left">{idUjian}</TableCell> */}
                         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                           <Typography variant="subtitle2" noWrap>
                             {idUjian}
                           </Typography>
                         </TableCell>
                         <TableCell align="left">{nama}</TableCell>
-                        {/* <TableCell align="left">{deadline}</TableCell> */}
-                        {/* <TableCell align="left">{ujianRole}</TableCell> */}
-                        {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
-                        {/* <TableCell align="left">
-                          <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={statusUjian === 'non-aktif' ? 'error' : 'success'}
-                          >
-                            {statusUjian === 'non-aktif' ? 'Non Aktif' : 'Aktif'}
-                          </Label>
-                        </TableCell> */}
-
                         <TableCell align="right">
                           <UjianMoreMenu
-                            // onUpdate={() => handleUpdateUjian(row)}  => handle detail ujian
                             onDelete={() => handleOpenDeleteModal(idUjian)}
                             onUpdate={() => handleUpdateUjian(row)}
                           />

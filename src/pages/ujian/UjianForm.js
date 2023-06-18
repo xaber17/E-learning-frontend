@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import { DesktopDateTimePicker, LoadingButton } from '@mui/lab';
-import { Controller } from 'react-hook-form';
-import { Box, Button, Card, Container, Grid, Stack, TextField } from '@mui/material';
-import { RHFUploadMultiFile } from '../../components/hook-form';
+import { Container } from '@mui/material';
 import Page from '../../components/Page';
 import useSettings from '../../hooks/useSettings';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -16,7 +13,7 @@ export default function UjianForm() {
   const isEdit = pathname.includes('edit');
   const [currentUjian, setCurrentUjian] = useState({});
   const [action, setAction] = useState();
-  const title = 'Kelas Form';
+  const title = 'Ujian Form';
 
   useEffect(() => {
     const curr = JSON.parse(window.localStorage.getItem('currentKelas'));

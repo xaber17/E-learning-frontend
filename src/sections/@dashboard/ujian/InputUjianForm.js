@@ -20,6 +20,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
+  Modal,
 } from '@mui/material';
 // utils
 import { fData } from '../../../utils/formatNumber';
@@ -224,6 +225,12 @@ export default function InputUjianForm({ currentData, menu, action }) {
     }, 1000);
   }
 
+  const jenisOptions = [
+    { id: 1, code: 'pilihanGanda', label: 'Pilihan Ganda' },
+    { id: 2, code: 'esai', label: 'Esai' },
+    { id: 3, code: 'gandaEsai', label: 'Pilihan Ganda dan Esai' },
+  ];
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
@@ -238,7 +245,16 @@ export default function InputUjianForm({ currentData, menu, action }) {
               }}
             >
               <RHFTextField name="Soal_name" label="Nama Ujian" />
-              <RHFTextField name="deskripsi" label="Deskripsi" />
+              <RHFTextField name="deskripsi" label="Deadline" />
+              <RHFSelect name="jenis" label="Jenis Ujian" placeholder="Jenis Ujian">
+                <option value="" />
+                {jenisOptions.map((option) => (
+                  <option key={option.id} value={option.code}>
+                    {option.label}
+                  </option>
+                ))}
+              </RHFSelect>
+              <RHFTextField name="bobot" label="Bobot" />
             </Box>
 
             <Box>
