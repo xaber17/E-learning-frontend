@@ -305,13 +305,17 @@ export default function InputUjianForm({ currentData, menu, action }) {
               <RHFTextField name="bobot" label="Bobot" />
             </Box>
             <Box sx={{ mt: 2 }}>
-              <h5>Soal</h5>
+              <h4>Soal</h4>
               <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 {[1, 2, 3].map((value) => (
                   <ListItem
                     key={value}
                     disableGutters
-                    // secondaryAction={<IconButton aria-label="comment">{/* <CommentIcon /> */}</IconButton>}
+                    // secondaryAction={
+                    //   <Button aria-label="edit" onClick={<InputSoalForm />}>
+                    //     Edit
+                    //   </Button>
+                    // }
                   >
                     <ListItemText primary={`${value}. Pertanyaan ${value}`} />
                   </ListItem>

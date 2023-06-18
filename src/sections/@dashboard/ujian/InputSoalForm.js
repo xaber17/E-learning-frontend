@@ -29,6 +29,13 @@ export default function InputSoalForm() {
         <DialogTitle>Soal #1</DialogTitle>
         <DialogContent>
           <Box sx={{ mt: 2 }}>
+            <FormLabel id="jenis">Jenis Soal</FormLabel>
+            <RadioGroup aria-label="jenis" name="jenis">
+              <FormControlLabel value="pilihanGanda" control={<Radio />} label="Pilihan Ganda" />
+              <FormControlLabel value="esai" control={<Radio />} label="Esai" />
+            </RadioGroup>
+          </Box>
+          <Box sx={{ mt: 2 }}>
             <RHFTextField name="pertanyaan" label="Tulis Pertanyaan" />
           </Box>
           <Grid container spacing={2} sx={{ mt: 1 }} alignItems="center">
