@@ -7,7 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { LoadingButton } from '@mui/lab';
+import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
   Box,
   Card,
@@ -21,6 +22,7 @@ import {
   DialogContent,
   DialogContentText,
   Modal,
+  TextField,
 } from '@mui/material';
 // utils
 import { fData } from '../../../utils/formatNumber';
@@ -225,6 +227,21 @@ export default function InputUjianForm({ currentData, menu, action }) {
     }, 1000);
   }
 
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [openDatePicker, setOpenDatePicker] = useState();
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleOpenDatePicker = () => {
+    setOpenDatePicker(true);
+  };
+
+  const handleCloseDatePicker = () => {
+    setOpenDatePicker(false);
+  };
+
   const jenisOptions = [
     { id: 1, code: 'pilihanGanda', label: 'Pilihan Ganda' },
     { id: 2, code: 'esai', label: 'Esai' },
@@ -244,8 +261,18 @@ export default function InputUjianForm({ currentData, menu, action }) {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-              <RHFTextField name="Soal_name" label="Nama Ujian" />
-              <RHFTextField name="deskripsi" label="Deadline" />
+              <RHFTextField name="soal_name" label="Nama Ujian" />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  name="deadline"
+                  label="Deadline"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  open={openDatePicker}
+                  onClose={handleCloseDatePicker}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
               <RHFSelect name="jenis" label="Jenis Ujian" placeholder="Jenis Ujian">
                 <option value="" />
                 {jenisOptions.map((option) => (
