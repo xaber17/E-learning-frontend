@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import isString from 'lodash/isString';
 import { useDropzone } from 'react-dropzone';
+import { Document, Page } from '@react-pdf/renderer';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
@@ -32,7 +33,9 @@ UploadSingleFile.propTypes = {
   sx: PropTypes.object,
 };
 
+
 export default function UploadSingleFile({ error = false, file, helperText, sx, ...other }) {
+  console.log('Data File: ', file)
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
     ...other,
@@ -59,7 +62,7 @@ export default function UploadSingleFile({ error = false, file, helperText, sx, 
         <BlockContent />
 
         {file && (
-          <Image
+          <Image 
             alt="file preview"
             src={isString(file) ? file : file.preview}
             sx={{

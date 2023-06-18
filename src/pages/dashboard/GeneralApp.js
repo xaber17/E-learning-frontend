@@ -5,6 +5,7 @@ import { Card, CardHeader, Container, Grid, List, ListItem, Stack } from '@mui/m
 import { useDispatch, useSelector } from '../../redux/store';
 import { getUsers } from '../../redux/slices/users';
 import { getKelas } from '../../redux/slices/kelas';
+import { getMateri } from '../../redux/slices/materi';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
@@ -25,6 +26,7 @@ import {
 } from '../../sections/@dashboard/general/app';
 import { AnalyticsCurrentVisits, AnalyticsWidgetSummary } from '../../sections/@dashboard/general/analytics';
 
+
 // ----------------------------------------------------------------------
 
 export default function GeneralApp() {
@@ -32,11 +34,28 @@ export default function GeneralApp() {
   const { user, guru, siswa } = useAuth();
   const theme = useTheme();
   const { themeStretch } = useSettings();
+  const { materi } = useSelector((state) => state.materi);
+  let materiList = [];
+  try {
+    materiList = [materi?.data?.result[0], materi?.data?.result[1], materi?.data?.result[2] || []];
+    console.log('materi list dashboard: ', materiList);
+  } catch (e) {
+    console.log(e);
+  }
+  console.log('Data materi di dashboard: ', materi)
   console.log('Data guru dan siswa: ', guru, siswa);
 
   useEffect(() => {
     try {
       dispatch(getUsers());
+    } catch (e) {
+      console.log('ERROR', e);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    try {
+      dispatch(getMateri());
     } catch (e) {
       console.log('ERROR', e);
     }
@@ -71,13 +90,10 @@ export default function GeneralApp() {
                 <AnalyticsWidgetSummary title="Total Guru" total={guru?.length} color="warning" icon={'mdi:user'} />
               </Grid>
               <Grid item xs={12} md={6} lg={4}>
-                <AnalyticsCurrentVisits />
+                <AnalyticsCurrentVisits Materi={materiList}/>
               </Grid>
             </>
           ) : null}
-          <Grid item xs={12} md={6} lg={4}>
-            <AnalyticsCurrentVisits />
-          </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <Card>
               <CardHeader title="Materi Terbaru" />
@@ -87,9 +103,15 @@ export default function GeneralApp() {
                   listStylePosition: 'inside',
                 }}
               >
-                <ListItem sx={{ display: 'list-item' }}>Materi 1</ListItem>
-                <ListItem sx={{ display: 'list-item' }}>Materi 2</ListItem>
-                <ListItem sx={{ display: 'list-item' }}>Materi 3</ListItem>
+              {materiList.map((row) => {
+                const materiName = row.materi_name;
+
+                return (
+                  <ListItem sx={{ display: 'list-item' }}>
+                    {materiName}
+                  </ListItem>
+                )
+              })}
               </List>
             </Card>
             <Card sx={{ mt: 3 }}>

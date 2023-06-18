@@ -33,7 +33,6 @@ UploadMultiFile.propTypes = {
 
 export default function UploadMultiFile({
   error,
-  showPreview = false,
   files,
   onRemove,
   onRemoveAll,
@@ -65,7 +64,7 @@ export default function UploadMultiFile({
 
       {fileRejections.length > 0 && <RejectionFiles fileRejections={fileRejections} />}
 
-      <MultiFilePreview files={files} showPreview={showPreview} onRemove={onRemove} onRemoveAll={onRemoveAll} />
+      <MultiFilePreview files={files} onRemove={onRemove} onRemoveAll={onRemoveAll} />
 
       {helperText && helperText}
     </Box>

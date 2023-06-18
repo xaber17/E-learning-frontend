@@ -104,9 +104,10 @@ export async function getKelas() {
       },
     };
     const response = await axios.get('/kelas/all', header);
-    console.log('redux getKelas', response);
+    console.log('Success redux getKelas', response);
     window.localStorage.setItem('kelasList', JSON.stringify(response.data));
     dispatch(slice.actions.getKelasSuccess(response));
+    console.log('dibawah kelas')
   } catch (error) {
     dispatch(slice.actions.hasError(error));
   }

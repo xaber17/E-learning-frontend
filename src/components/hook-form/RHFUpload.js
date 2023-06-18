@@ -13,6 +13,7 @@ RHFUploadAvatar.propTypes = {
 };
 
 export function RHFUploadAvatar({ name, ...other }) {
+  console.log(' masuke ke RHF Upload Avatar ')
   const { control } = useFormContext();
 
   return (
@@ -44,6 +45,7 @@ RHFUploadSingleFile.propTypes = {
 };
 
 export function RHFUploadSingleFile({ name, ...other }) {
+  console.log(' masuke ke RHF Upload Single File ')
   const { control } = useFormContext();
 
   return (
@@ -91,7 +93,7 @@ export function RHFUploadMultiFile({ name, ...other }) {
 
         return (
           <UploadMultiFile
-            accept="image/*"
+            accept="application/pdf"
             files={field.value}
             error={checkError}
             helperText={

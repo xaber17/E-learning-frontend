@@ -15,10 +15,11 @@ import MenuPopover from '../../../../components/MenuPopover';
 MateriMoreMenu.propTypes = {
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func,
+  onDetail: PropTypes.func,
   userName: PropTypes.string,
 };
 
-export default function MateriMoreMenu({ onDelete, view, onUpdate }) {
+export default function MateriMoreMenu({ onDelete, onDetail, onUpdate }) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -54,7 +55,7 @@ export default function MateriMoreMenu({ onDelete, view, onUpdate }) {
           '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
         }}
       >
-        <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.materi.detail}>
+        <MenuItem onClick={onDetail} component={RouterLink} to={PATH_DASHBOARD.materi.detail}>
           <Iconify icon={'mdi:form-select'} sx={{ ...ICON }} />
           Lihat
         </MenuItem>

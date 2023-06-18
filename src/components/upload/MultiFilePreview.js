@@ -31,12 +31,11 @@ const getFileData = (file) => {
 
 MultiFilePreview.propTypes = {
   files: PropTypes.array,
-  showPreview: PropTypes.bool,
   onRemove: PropTypes.func,
   onRemoveAll: PropTypes.func,
 };
 
-export default function MultiFilePreview({ showPreview = false, files, onRemove, onRemoveAll }) {
+export default function MultiFilePreview({ files, onRemove, onRemoveAll }) {
   const hasFile = files.length > 0;
 
   return (
@@ -45,46 +44,6 @@ export default function MultiFilePreview({ showPreview = false, files, onRemove,
         <AnimatePresence>
           {files.map((file) => {
             const { key, name, size, preview } = getFileData(file);
-
-            if (showPreview) {
-              return (
-                <ListItem
-                  key={key}
-                  component={m.div}
-                  {...varFade().inRight}
-                  sx={{
-                    p: 0,
-                    m: 0.5,
-                    width: 80,
-                    height: 80,
-                    borderRadius: 1.25,
-                    overflow: 'hidden',
-                    position: 'relative',
-                    display: 'inline-flex',
-                    border: (theme) => `solid 1px ${theme.palette.divider}`,
-                  }}
-                >
-                  <Image alt="preview" src={isString(file) ? file : preview} ratio="1/1" />
-                  <IconButton
-                    size="small"
-                    onClick={() => onRemove(file)}
-                    sx={{
-                      top: 6,
-                      p: '2px',
-                      right: 6,
-                      position: 'absolute',
-                      color: 'common.white',
-                      bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
-                      '&:hover': {
-                        bgcolor: (theme) => alpha(theme.palette.grey[900], 0.48),
-                      },
-                    }}
-                  >
-                    <Iconify icon={'eva:close-fill'} />
-                  </IconButton>
-                </ListItem>
-              );
-            }
 
             return (
               <ListItem
@@ -116,17 +75,6 @@ export default function MultiFilePreview({ showPreview = false, files, onRemove,
           })}
         </AnimatePresence>
       </List>
-
-      {hasFile && (
-        <Stack direction="row" justifyContent="flex-end" spacing={1.5}>
-          <Button color="inherit" size="small" onClick={onRemoveAll}>
-            Remove all
-          </Button>
-          <Button size="small" variant="contained">
-            Upload files
-          </Button>
-        </Stack>
-      )}
     </>
   );
 }

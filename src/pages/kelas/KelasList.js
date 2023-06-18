@@ -47,12 +47,6 @@ const TABLE_HEAD = [
   { id: '' },
 ];
 
-const dummyKelas = [
-  { kelas: 'X.IPA.1', deskripsi: 'Angkatan Tahun 2023' },
-  { kelas: 'X.IPS.1', deskripsi: 'Angkatan Tahun 2023' },
-  { kelas: 'X.IPS.2', deskripsi: 'Angkatan Tahun 2023' },
-];
-
 export default function KelasList() {
   const theme = useTheme();
   const { themeStretch } = useSettings();

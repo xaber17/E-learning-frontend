@@ -31,10 +31,15 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [10000, 5435];
+let CHART_DATA = [];
 
-export default function AnalyticsCurrentVisits() {
+export default function AnalyticsCurrentVisits({ Materi, Ujian }) {
   const theme = useTheme();
+  CHART_DATA = [
+    Materi?.length || 0,
+    Ujian?.length || 0
+  ]
+  console.log('materi length', Materi.length)
 
   const chartOptions = merge(BaseOptionChart(), {
     colors: [theme.palette.primary.main, theme.palette.chart.yellow[0]],

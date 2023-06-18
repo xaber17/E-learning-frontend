@@ -56,14 +56,6 @@ const roleOptions = [
   { id: 3, code: 'siswa', label: 'Siswa' },
 ];
 
-const kelasOptions = [
-  { kelas_id: 0, nama_kelas: 'Admin(Bukan Kelas)', deskripsi: 'Admin' },
-  { kelas_id: 1, nama_kelas: 'Kelas A', deskripsi: 'Deskripsi Kelas A' },
-  { kelas_id: 2, nama_kelas: 'Kelas B', deskripsi: 'Deskripsi Kelas B' },
-  { kelas_id: 3, nama_kelas: 'Kelas C', deskripsi: 'Deskripsi Kelas C' },
-  { kelas_id: 4, nama_kelas: 'Kelas D', deskripsi: 'Deskripsi Kelas D' },
-];
-
 export default function InputUsersForm({ currentData, menu, action }) {
   console.log('INPUT USER FORM', currentData);
   console.log('ACTION', action);

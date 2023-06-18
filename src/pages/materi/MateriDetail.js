@@ -1,12 +1,43 @@
 import { Box, Card, Container, Grid } from '@mui/material';
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from '../../redux/store';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import useSettings from '../../hooks/useSettings';
+import LoadingScreen from '../../components/LoadingScreen';
+import { getMateriDetail } from '../../redux/slices/materi';
 import { PATH_DASHBOARD } from '../../routes/paths';
 
-export default function MateriForm() {
+export default function MateriDetail() {
   const title = 'Detail Materi';
+  const [currentMateri, setCurrentMateri] = useState({});
+  const [loading, setLoading] = useState(true);
+  const { pathname } = useLocation();
   const { themeStretch } = useSettings();
+  const dispatch = useDispatch();
+
+  // const { materiDetail } = useSelector((state) => state.materiDetail);
+  const materi = window.localStorage.getItem('materiDetail')
+  console.log('materi', materi)
+  
+  useEffect(async () => {
+    setLoading(true);
+    const curr = JSON.parse(window.localStorage.getItem('currentMateri'));
+    setCurrentMateri(curr);
+    try {
+      await dispatch(getMateriDetail(curr.materi_id));
+    } catch (e) {
+      console.log('ERROR', e);
+    }
+
+    console.log('Materi Detail: ', curr);
+    setLoading(false);
+  }, [dispatch]);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <Page title={title}>
@@ -31,15 +62,32 @@ export default function MateriForm() {
             >
               <div>
                 <h5>Judul</h5>
-                <h4>Materi A</h4>
+                <h4>{currentMateri.materi_name}</h4>
               </div>
               <div>
-                <h5>Pemateri</h5>
-                <h4>Guru A</h4>
+                <h5>Guru</h5>
+                <h4>{currentMateri.user_name}</h4>
               </div>
               <div>
                 <h5>Deskripsi</h5>
-                <h4>Deskripsi Materi Lorem Ipsum</h4>
+                <h4>{currentMateri.deskripsi}</h4>
+              </div>
+              <div>
+              <object
+                data={'https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf'}
+                type="application/pdf"
+                width="900"
+                height="678"
+              >
+
+                <iframe
+                  src={'https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf'}
+                  width="500"
+                  height="678"
+                  title='asdas'
+                />
+
+              </object>
               </div>
             </Box>
           </Card>

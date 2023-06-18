@@ -23,7 +23,7 @@ import useSettings from '../../hooks/useSettings';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { useDispatch, useSelector } from '../../redux/store';
 
-import { getUsers, setCurrentUser, resetUser, deleteUser } from '../../redux/slices/users';
+import { getMateri, setCurrentMateri, resetMateri, deleteMateri } from '../../redux/slices/materi';
 
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -33,10 +33,10 @@ import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
 
 // sections
+import { MateriListHead, MateriListToolbar, MateriMoreMenu } from '../../sections/@dashboard/materi/list';
 import { DialogAnimate } from '../../components/animate';
 import LoadingScreen from '../../components/LoadingScreen';
 import SearchNotFound from '../../components/SearchNotFound';
-import { MateriListHead, MateriListToolbar, MateriMoreMenu } from '../../sections/@dashboard/materi/list';
 
 // ----------------------------------------------------------------------
 
@@ -60,29 +60,31 @@ export default function MateriList() {
   const { themeStretch } = useSettings();
   const [list, setList] = useState();
   const [open, setOpen] = useState(false);
+  const [openDetail, setOpenDetail] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [deleteIdUser, setDeleteIdUser] = useState();
+  const [deleteIdMateri, setDeleteIdMateri] = useState();
+
   let msg = '';
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
-  const { users } = useSelector((state) => state.users);
-  let usersList = [];
+  const { materi } = useSelector((state) => state.materi);
+  let materiList = [];
   try {
-    usersList = users?.data;
-    console.log(usersList);
+    materiList = materi?.data?.result;
+    console.log('Materi list data: ', materiList);
   } catch (e) {
     console.log(e);
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     setLoading(true);
     const action = window.localStorage.getItem('action');
-    window.localStorage.removeItem('currentUsers');
+    window.localStorage.removeItem('currentMateri');
     try {
-      dispatch(getUsers());
+      await dispatch(getMateri());
     } catch (e) {
       console.log('ERROR', e);
     }
@@ -124,20 +126,20 @@ export default function MateriList() {
     setPage(0);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyMateri.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - materiList.length) : 0;
 
-  const filteredUsers = applySortFilter(dummyMateri, getComparator(order, orderBy), filterName);
+  const filteredMateri = applySortFilter(materiList, getComparator(order, orderBy), filterName);
 
-  const isNotFound = !filteredUsers.length && Boolean(filterName);
+  const isNotFound = !filteredMateri.length && Boolean(filterName);
 
   if (loading) {
     return <LoadingScreen />;
   }
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteMateri = async (materiId) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     window.localStorage.setItem('action', 'delete');
-    dispatch(deleteUser(userId))
+    dispatch(deleteMateri(materiId))
       .then((data) => {
         console.log(data);
         setTimeout(() => {
@@ -145,7 +147,7 @@ export default function MateriList() {
         }, 1000);
 
         setLoading(true);
-        dispatch(getUsers());
+        dispatch(getMateri());
         handleCloseModal();
         handleCloseErrorModal();
         setLoading(false);
@@ -173,19 +175,36 @@ export default function MateriList() {
     window.location.reload();
   };
 
+  const handleCloseDetail = () => {
+    setOpenDetail(false);
+    window.location.reload();
+  };
+
+  const handleCreateMateri = () => {
+    dispatch(resetMateri());
+    window.localStorage.removeItem('currentMateri');
+    window.localStorage.setItem('action', 'create');
+  };
+
   const handleCloseErrorModal = () => {
     setOpenErrorModal(false);
   };
 
   const handleOpenDeleteModal = (idMateri) => {
-    setDeleteIdUser(parseInt(idMateri, 10));
+    setDeleteIdMateri(parseInt(idMateri, 10));
     setOpen(true);
   };
 
-  const handleUpdateUser = (user) => {
-    console.log('UPDATE USER LIST', user);
-    dispatch(setCurrentUser(user));
-    window.localStorage.setItem('currentUser', JSON.stringify(user));
+  const handleDetailMateri = (materi) => {
+    console.log('UPDATE Materi LIST', materi);
+    dispatch(setCurrentMateri(materi));
+    window.localStorage.setItem('currentMateri', JSON.stringify(materi));
+  };
+
+  const handleUpdateMateri = (materi) => {
+    console.log('UPDATE Materi LIST', materi);
+    dispatch(setCurrentMateri(materi));
+    window.localStorage.setItem('currentMateri', JSON.stringify(materi));
     window.localStorage.setItem('action', 'update');
   };
 
@@ -197,7 +216,7 @@ export default function MateriList() {
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Materi' }]}
           action={
             <Button
-              //   onClick={() => handleCreateUser()}
+              onClick={() => handleCreateMateri()}
               variant="contained"
               component={RouterLink}
               to={PATH_DASHBOARD.materi.form}
@@ -212,7 +231,6 @@ export default function MateriList() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
-            // onDeleteUsers={() => handleDeleteMultiUser(selected)}
           />
 
           <Scrollbar>
@@ -222,17 +240,17 @@ export default function MateriList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={dummyMateri.length}
+                  rowCount={materiList.length}
                   // numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const idMateri = row.idMateri;
-                    const judul = row.judul;
-                    const guru = row.guru;
-                    const kelas = row.kelas;
+                  {filteredMateri.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const idMateri = row.materi_id;
+                    const judul = row.materi_name;
+                    const guru = row.user_name;
+                    const kelas = row.kelas_name;
                     const deskripsi = row.deskripsi;
                     const isItemSelected = selected.indexOf(idMateri) !== -1;
 
@@ -257,22 +275,11 @@ export default function MateriList() {
                         <TableCell align="left">{guru}</TableCell>
                         <TableCell align="left">{deskripsi}</TableCell>
                         <TableCell align="left">{kelas}</TableCell>
-                        {/* <TableCell align="left">{userRole}</TableCell> */}
-                        {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
-                        {/* <TableCell align="left">
-                          <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={statusUser === 'non-aktif' ? 'error' : 'success'}
-                          >
-                            {statusUser === 'non-aktif' ? 'Non Aktif' : 'Aktif'}
-                          </Label>
-                        </TableCell> */}
-
                         <TableCell align="right">
                           <MateriMoreMenu
-                            // onUpdate={() => handleUpdateUser(row)}  => handle detail materi
+                            onDetail={() => handleDetailMateri(row)}
                             onDelete={() => handleOpenDeleteModal(idMateri)}
-                            onUpdate={() => handleUpdateUser(row)}
+                            onUpdate={() => handleUpdateMateri(row)}
                           />
                         </TableCell>
                       </TableRow>
@@ -299,13 +306,27 @@ export default function MateriList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={dummyMateri.length}
+            count={materiList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
+
+        {/* <DialogAnimate open={openDetail} onClose={handleCloseDetail}>
+          <DialogTitle>Konfirmasi Buka Data</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Data akan terhapus secara permanen. Apakah anda yakin?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDetail}>Kembali</Button>
+            <Button onClick={() => handleDetailMateri(detailIdMateri)} autoFocus color="error">
+              Yakin
+            </Button>
+          </DialogActions>
+        </DialogAnimate> */}
+        
         <DialogAnimate open={open} onClose={handleCloseModal}>
           <DialogTitle>Konfirmasi Hapus Data</DialogTitle>
           <DialogContent>
@@ -313,7 +334,7 @@ export default function MateriList() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseModal}>Kembali</Button>
-            <Button onClick={() => handleDeleteUser(deleteIdUser)} autoFocus color="error">
+            <Button onClick={() => handleDeleteMateri(deleteIdMateri)} autoFocus color="error">
               Yakin
             </Button>
           </DialogActions>
@@ -356,7 +377,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return array?.filter((_user) => _user?.namaLengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return array?.filter((materi) => materi?.namaLengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
