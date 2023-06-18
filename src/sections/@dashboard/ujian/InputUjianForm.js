@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 // form
@@ -23,7 +23,14 @@ import {
   DialogContentText,
   Modal,
   TextField,
+  DialogActions,
+  Dialog,
+  List,
+  ListItem,
+  IconButton,
+  ListItemText,
 } from '@mui/material';
+
 // utils
 import { fData } from '../../../utils/formatNumber';
 
@@ -38,6 +45,7 @@ import Label from '../../../components/Label';
 import LoadingScreen from '../../../components/LoadingScreen';
 import { DialogAnimate } from '../../../components/animate';
 import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } from '../../../components/hook-form';
+import InputSoalForm from './InputSoalForm';
 
 // ----------------------------------------------------------------------
 
@@ -227,6 +235,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
     }, 1000);
   }
 
+  // ----------------------------------------------------------------------
   const [selectedDate, setSelectedDate] = useState(null);
   const [openDatePicker, setOpenDatePicker] = useState();
 
@@ -241,6 +250,18 @@ export default function InputUjianForm({ currentData, menu, action }) {
   const handleCloseDatePicker = () => {
     setOpenDatePicker(false);
   };
+
+  // ----------------------------------------------------------------------
+  const [openModal, setOpenModal] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
+  // ----------------------------------------------------------------------
 
   const jenisOptions = [
     { id: 1, code: 'pilihanGanda', label: 'Pilihan Ganda' },
@@ -282,6 +303,46 @@ export default function InputUjianForm({ currentData, menu, action }) {
                 ))}
               </RHFSelect>
               <RHFTextField name="bobot" label="Bobot" />
+            </Box>
+            <Box sx={{ mt: 2 }}>
+              <h5>Soal</h5>
+              <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                {[1, 2, 3].map((value) => (
+                  <ListItem
+                    key={value}
+                    disableGutters
+                    // secondaryAction={<IconButton aria-label="comment">{/* <CommentIcon /> */}</IconButton>}
+                  >
+                    <ListItemText primary={`${value}. Pertanyaan ${value}`} />
+                  </ListItem>
+                ))}
+              </List>
+              {/* <Button variant="outlined" onClick={handleClickOpen}>
+                + Soal
+              </Button>
+              <Dialog open={openModal} onClose={handleClose}>
+                <DialogTitle>Subscribe</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    To subscribe to this website, please enter your email address here. We will send updates
+                    occasionally.
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Email Address"
+                    type="email"
+                    fullWidth
+                    variant="standard"
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  <Button onClick={handleClose}>Subscribe</Button>
+                </DialogActions>
+              </Dialog> */}
+              <InputSoalForm />
             </Box>
 
             <Box>
