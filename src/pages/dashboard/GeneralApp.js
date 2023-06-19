@@ -37,7 +37,7 @@ export default function GeneralApp() {
   const { materi } = useSelector((state) => state.materi);
   let materiList = [];
   try {
-    materiList = [materi?.data?.result[0], materi?.data?.result[1], materi?.data?.result[2] || []];
+    materiList = [materi?.data?.result[0] || [], materi?.data?.result[1] || [], materi?.data?.result[2] || []];
     console.log('materi list dashboard: ', materiList);
   } catch (e) {
     console.log(e);
@@ -93,7 +93,41 @@ export default function GeneralApp() {
                 <AnalyticsCurrentVisits Materi={materiList}/>
               </Grid>
             </>
-          ) : null}
+          ) : null }
+          {user.role === 'guru' ? (
+            <>
+              <Grid item xs={12} sm={6} md={4}>
+                <AnalyticsWidgetSummary
+                  title="Total Siswa"
+                  total={siswa?.length}
+                  icon={'mdi:user-group'}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <AnalyticsWidgetSummary title="Total Materi" total={materiList?.length} color="info" icon={'mdi:book'} />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <AnalyticsWidgetSummary title="Total Ujian" total={5} color="warning" icon={'mdi:assignment'} />
+              </Grid>
+              <Grid item xs={12} md={6} lg={4}>
+                <AnalyticsCurrentVisits Materi={materiList}/>
+              </Grid>
+            </>
+          ) : null }
+          {user.role === 'siswa' ? (
+            <>
+              <Grid item xs={6} sm={6} md={6}>
+                <AnalyticsWidgetSummary title="Total Materi" total={materiList?.length} color="info" icon={'mdi:book'} />
+              </Grid>
+              <Grid item xs={6} sm={6} md={6}>
+                <AnalyticsWidgetSummary title="Total Ujian" total={5} color="warning" icon={'mdi:assignment'} />
+              </Grid>
+              
+              <Grid item xs={12} md={6} lg={4}>
+                <AnalyticsCurrentVisits Materi={materiList}/>
+              </Grid>
+            </>
+          ) : null }
           <Grid item xs={12} md={6} lg={4}>
             <Card>
               <CardHeader title="Materi Terbaru" />
@@ -104,7 +138,7 @@ export default function GeneralApp() {
                 }}
               >
               {materiList.map((row) => {
-                const materiName = row.materi_name;
+                const materiName = row.materi_name || [];
 
                 return (
                   <ListItem sx={{ display: 'list-item' }}>

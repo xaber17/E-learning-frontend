@@ -37,7 +37,7 @@ export default function AnalyticsCurrentVisits({ Materi, Ujian }) {
   const theme = useTheme();
   CHART_DATA = [
     Materi?.length || 0,
-    Ujian?.length || 0
+    Ujian?.length || 5
   ]
   console.log('materi length', Materi.length)
 
