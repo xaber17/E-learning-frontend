@@ -80,6 +80,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
       tipe_soal: currentData?.tipe_soal || '',
       user_id: currentData?.user_id || '',
       kelas_id: currentData?.kelas_id || '',
+      deadline: currentData?.deadline || ''
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentData]
@@ -138,6 +139,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
       tipe_soal: data.tipe_soal,
       user_id: data.user_id,
       kelas_id: data.kelas_id,
+      deadline: data.deadline,
     };
 
     const updateUjianAll = {

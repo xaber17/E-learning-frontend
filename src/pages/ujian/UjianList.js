@@ -67,10 +67,10 @@ export default function UjianList() {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
-  const { ujian } = useSelector((state) => state.ujian);
-  let ujianList = [];
+  // const { ujian } = useSelector((state) => state.ujian);
+  const ujianList = [];
   try {
-    ujianList = ujian?.data?.result;
+    // ujianList = ujian?.data?.result;
     console.log('Ujian list data: ', ujianList);
   } catch (e) {
     console.log(e);
@@ -82,7 +82,7 @@ export default function UjianList() {
       const action = window.localStorage.getItem('action');
       window.localStorage.removeItem('currentUjian');
       try {
-        await dispatch(getUjian());
+        // await dispatch(getUjian());
       } catch (e) {
         console.log('ERROR', e);
       }
