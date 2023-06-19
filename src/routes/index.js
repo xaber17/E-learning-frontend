@@ -126,6 +126,14 @@ export default function Router() {
           ],
         },
         {
+          path: 'ujian-siswa',
+          children: [
+            { element: <Navigate to="/dashboard/ujian-siswa/list" replace />, index: true },
+            { path: 'list', element: <UjianSiswaList /> },
+            { path: 'form', element: <UjianSiswaForm /> },
+          ],
+        },
+        {
           path: 'user',
           children: [
             { element: <Navigate to="/dashboard/user/profile" replace />, index: true },
@@ -260,6 +268,10 @@ const UjianList = Loadable(lazy(() => import('../pages/ujian/UjianList')));
 const UjianForm = Loadable(lazy(() => import('../pages/ujian/UjianForm')));
 const HasilUjian = Loadable(lazy(() => import('../pages/ujian/HasilUjian')));
 const HasilUjianForm = Loadable(lazy(() => import('../pages/ujian/HasilUjianForm')));
+
+// UJIAN
+const UjianSiswaList = Loadable(lazy(() => import('../pages/ujianSiswa/UjianSiswaList')));
+const UjianSiswaForm = Loadable(lazy(() => import('../pages/ujianSiswa/UjianSiswaForm')));
 
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/Home')));

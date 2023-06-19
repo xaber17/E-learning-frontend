@@ -43,8 +43,10 @@ import { UjianListHead, UjianListToolbar, UjianMoreMenu } from '../../sections/@
 const TABLE_HEAD = [
   //   { id: 'idUjian', label: 'ID Kelas', alignRight: false },
   { id: 'nama', label: 'Nama', alignRight: false },
-  { id: 'kelas', label: 'Kelas', alignRight: false },
+  { id: 'deadline', label: 'Deadline', alignRight: false },
+  { id: 'guru', label: 'Guru', alignRight: false },
   { id: 'tipe', label: 'Tipe', alignRight: false },
+  { id: 'nilai', label: 'Nilai', alignRight: false },
   { id: '' },
 ];
 
@@ -54,7 +56,7 @@ const dummyUjian = [
   { nama: 'Ujian C', kelas: 'X.IPS.2', deadline: 'Deadline' },
 ];
 
-export default function UjianList() {
+export default function UjianSiswaList() {
   const theme = useTheme();
   const { themeStretch } = useSettings();
   const [list, setList] = useState();
@@ -193,8 +195,8 @@ export default function UjianList() {
     <Page title="Ujian">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Ujian"
-          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Ujian' }]}
+          heading="Ujian/Kuis"
+          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Ujian/Kuis' }]}
           action={
             <Button
               variant="contained"
@@ -221,8 +223,12 @@ export default function UjianList() {
                 />
                 <TableBody>
                   {filteredUjian.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const idUjian = row.soal_id;
-                    const nama = row.soal_name;
+                    const idUjian = row?.soal_id;
+                    const nama = row?.soal_name;
+                    const deadline = row?.deadline;
+                    const guru = row?.guru;
+                    const tipe = row?.tipe;
+                    const nilai = row?.nilai;
                     const isItemSelected = selected.indexOf(idUjian) !== -1;
 
                     return (
@@ -236,10 +242,13 @@ export default function UjianList() {
                       >
                         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                           <Typography variant="subtitle2" noWrap>
-                            {idUjian}
+                            {nama}
                           </Typography>
                         </TableCell>
-                        <TableCell align="left">{nama}</TableCell>
+                        <TableCell align="left">{deadline ?? '-'}</TableCell>
+                        <TableCell align="left">{guru ?? '-'}</TableCell>
+                        <TableCell align="left">{tipe ?? '-'}</TableCell>
+                        <TableCell align="left">{nilai ?? 0}</TableCell>
                         <TableCell align="right">
                           <UjianMoreMenu
                             onDelete={() => handleOpenDeleteModal(idUjian)}
