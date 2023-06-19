@@ -12,6 +12,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 export default function MateriDetail() {
   const title = 'Detail Materi';
   const [currentMateri, setCurrentMateri] = useState({});
+  const [previewMateri, setPreviewMateri] = useState();
   const [loading, setLoading] = useState(true);
   const { pathname } = useLocation();
   const { themeStretch } = useSettings();
@@ -19,12 +20,14 @@ export default function MateriDetail() {
 
   // const { materiDetail } = useSelector((state) => state.materiDetail);
   const materi = window.localStorage.getItem('materiDetail')
-  console.log('materi', materi)
+  console.log('Preview Mater: ', previewMateri)
   
   useEffect(async () => {
     setLoading(true);
     const curr = JSON.parse(window.localStorage.getItem('currentMateri'));
     setCurrentMateri(curr);
+    const preview = window.localStorage.getItem(curr.materi_name)
+    setPreviewMateri(preview)
     try {
       await dispatch(getMateriDetail(curr.materi_id));
     } catch (e) {
@@ -74,14 +77,14 @@ export default function MateriDetail() {
               </div>
               <div>
               <object
-                data={'https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf'}
+                data={previewMateri}
                 type="application/pdf"
                 width="900"
                 height="678"
               >
 
                 <iframe
-                  src={'https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf'}
+                  src={previewMateri}
                   width="500"
                   height="678"
                   title='asdas'
