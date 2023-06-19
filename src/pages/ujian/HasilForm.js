@@ -5,15 +5,15 @@ import Page from '../../components/Page';
 import useSettings from '../../hooks/useSettings';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { PATH_DASHBOARD } from '../../routes/paths';
-import InputHasilForm from '../../sections/@dashboard/ujian/InputHasilForm';
+import InputUjianForm from '../../sections/@dashboard/ujian/InputUjianForm';
 
-export default function HasilHasilForm() {
+export default function HasilForm() {
   const { themeStretch } = useSettings();
   const { pathname } = useLocation();
   const isEdit = pathname.includes('edit');
   const [currentHasil, setCurrentHasil] = useState({});
   const [action, setAction] = useState();
-  const title = 'Form Hasil Ujian';
+  const title = 'Hasil Form';
 
   useEffect(() => {
     const curr = JSON.parse(window.localStorage.getItem('currentKelas'));
@@ -38,7 +38,7 @@ export default function HasilHasilForm() {
             { name: title },
           ]}
         />
-        <InputHasilForm currentData={currentHasil} menu={title} action={action} />
+        <InputUjianForm currentData={currentHasil} menu={title} action={action} />
       </Container>
     </Page>
   );

@@ -29,6 +29,9 @@ import {
   ListItem,
   IconButton,
   ListItemText,
+  FormLabel,
+  RadioGroup,
+  Radio,
 } from '@mui/material';
 
 // utils
@@ -80,7 +83,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
       tipe_soal: currentData?.tipe_soal || '',
       user_id: currentData?.user_id || '',
       kelas_id: currentData?.kelas_id || '',
-      deadline: currentData?.deadline || ''
+      deadline: currentData?.deadline || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentData]
@@ -237,7 +240,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
     }, 1000);
   }
 
-  // ----------------------------------------------------------------------
+  // --------------------------------------------------------------------------------
   const [selectedDate, setSelectedDate] = useState(null);
   const [openDatePicker, setOpenDatePicker] = useState();
 
@@ -266,25 +269,34 @@ export default function InputUjianForm({ currentData, menu, action }) {
   // ----------------------------------------------------------------------
 
   const jenisOptions = [
-    { id: 1, code: 'pilihanGanda', label: 'Pilihan Ganda' },
-    { id: 2, code: 'esai', label: 'Esai' },
-    { id: 3, code: 'gandaEsai', label: 'Pilihan Ganda dan Esai' },
+    { id: 1, code: 'ujian', label: 'Ujian' },
+    { id: 2, code: 'kuis', label: 'Kuis' },
   ];
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
+          {/* Input Ujian Form */}
           <Card sx={{ p: 3 }}>
             <Box
               sx={{
                 display: 'grid',
                 columnGap: 2,
                 rowGap: 3,
-                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)' },
               }}
             >
-              <RHFTextField name="soal_name" label="Nama Ujian" />
+              <RHFTextField name="soal_name" label="Nama Ujian" disabled={menu !== 'Ujian Form'} />
+
+              <RHFSelect name="tipe" label="Tipe" placeholder="Tipe">
+                <option value="" />
+                {jenisOptions.map((option) => (
+                  <option key={option.id} value={option.code}>
+                    {option.label}
+                  </option>
+                ))}
+              </RHFSelect>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   name="deadline"
@@ -296,15 +308,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
-              <RHFSelect name="jenis" label="Jenis Ujian" placeholder="Jenis Ujian">
-                <option value="" />
-                {jenisOptions.map((option) => (
-                  <option key={option.id} value={option.code}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
-              <RHFTextField name="bobot" label="Bobot" />
+              {/* <RHFTextField name="bobot" label="Bobot" /> */}
             </Box>
             <Box sx={{ mt: 2 }}>
               <h4>Soal</h4>
@@ -348,12 +352,156 @@ export default function InputUjianForm({ currentData, menu, action }) {
                   <Button onClick={handleClose}>Subscribe</Button>
                 </DialogActions>
               </Dialog> */}
-              <InputSoalForm />
+
+              <Button variant="outlined" onClick={handleClickOpen}>
+                + Soal
+              </Button>
+              <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+                <DialogTitle>Soal #1</DialogTitle>
+                <DialogContent>
+                  <Box sx={{ mt: 2 }}>
+                    <FormLabel id="jenis">Jenis Soal</FormLabel>
+                    <RadioGroup aria-label="jenis" name="jenis">
+                      <FormControlLabel value="pilihanGanda" control={<Radio />} label="Pilihan Ganda" />
+                      <FormControlLabel value="esai" control={<Radio />} label="Esai" />
+                    </RadioGroup>
+                  </Box>
+                  <Box sx={{ mt: 2 }}>
+                    <RHFTextField name="pertanyaan" label="Tulis Pertanyaan" />
+                  </Box>
+                  <Grid container spacing={2} sx={{ mt: 1 }} alignItems="center">
+                    <Grid item xs={9}>
+                      <TextField name="jawaban_1" label="Tulisan Jawaban 1" variant="outlined" fullWidth />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
+                      <RadioGroup aria-label="jawaban" name="jawaban" row>
+                        <FormControlLabel value="ya" control={<Radio />} label="Ya" />
+                        <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={9}>
+                      <TextField name="jawaban_2" label="Tulisan Jawaban 2" variant="outlined" fullWidth />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
+                      <RadioGroup aria-label="jawaban" name="jawaban" row>
+                        <FormControlLabel value="ya" control={<Radio />} label="Ya" />
+                        <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={9}>
+                      <TextField name="jawaban_3" label="Tulisan Jawaban 3" variant="outlined" fullWidth />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
+                      <RadioGroup aria-label="jawaban" name="jawaban" row>
+                        <FormControlLabel value="ya" control={<Radio />} label="Ya" />
+                        <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={9}>
+                      <TextField name="jawaban_4" label="Tulisan Jawaban 4" variant="outlined" fullWidth />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
+                      <RadioGroup aria-label="jawaban" name="jawaban" row>
+                        <FormControlLabel value="ya" control={<Radio />} label="Ya" />
+                        <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Kembali</Button>
+                  <Button onClick={handleClose}>Simpan</Button>
+                </DialogActions>
+              </Dialog>
             </Box>
 
             <Box>
               <Stack flexDirection={'row'} justifyContent={'space-between'} sx={{ mt: 3 }}>
                 {menu === 'Ujian Form' ? (
+                  <Button variant="contained" color="inherit" onClick={handleBack}>
+                    Kembali
+                  </Button>
+                ) : (
+                  <Box />
+                )}
+                <LoadingButton type="submit" variant="contained" loading={isSubmitting} loadingIndicator="Loading...">
+                  Simpan
+                </LoadingButton>
+              </Stack>
+            </Box>
+          </Card>
+          {/* Input Hasil Form */}
+          <Card sx={{ p: 3 }}>
+            <Box sx={{ mb: 2 }}>
+              <h3>Nama : Getar Nuansa</h3>
+            </Box>
+            <Box>
+              <h4>Pilihan Ganda</h4>
+              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                {[1, 2, 3].map((value) => (
+                  <Box
+                    key={value}
+                    disableGutters
+                    // secondaryAction={
+                    //   <Button aria-label="edit" onClick={<InputSoalForm />}>
+                    //     Edit
+                    //   </Button>
+                    // }
+                  >
+                    <ListItemText
+                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ${value}`}
+                    />
+                    <Grid sx={{ pl: 2, mb: 2 }}>
+                      <ListItemText>
+                        <h5>
+                          Jawaban: <span>A</span>
+                        </h5>
+                      </ListItemText>
+                    </Grid>
+                  </Box>
+                ))}
+              </List>
+              <h4>Esai</h4>
+              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                {[1, 2, 3].map((value) => (
+                  <Box key={value} disableGutters>
+                    <ListItemText
+                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ${value}`}
+                    />
+                    <Grid sx={{ pl: 2, mb: 2 }}>
+                      <ListItemText>
+                        <h4>Jawaban:</h4>
+                        <h4>
+                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                          been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                          galley of type and scrambled it to make a type specimen book. It has survived not only five
+                          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It
+                          was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+                          passages, and more recently with desktop publishing software like Aldus PageMaker including
+                          versions of Lorem Ipsum.
+                        </h4>
+                      </ListItemText>
+                    </Grid>
+                  </Box>
+                ))}
+              </List>
+
+              <RHFTextField name="nilai" label="Nilai Esai Keseluruhan" />
+            </Box>
+
+            <Box>
+              <Stack flexDirection={'row'} justifyContent={'space-between'} sx={{ mt: 3 }}>
+                {menu === 'Hasil Form' ? (
                   <Button variant="contained" color="inherit" onClick={handleBack}>
                     Kembali
                   </Button>

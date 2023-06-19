@@ -122,7 +122,7 @@ export default function Router() {
             { path: 'list', element: <UjianList /> },
             { path: 'form', element: <UjianForm /> },
             { path: 'hasil', element: <HasilUjian /> },
-            { path: 'hasil/form', element: <HasilUjianForm /> },
+            { path: 'hasil/form', element: <HasilForm /> },
           ],
         },
         {
@@ -267,7 +267,7 @@ const Akun = Loadable(lazy(() => import('../pages/akun')));
 const UjianList = Loadable(lazy(() => import('../pages/ujian/UjianList')));
 const UjianForm = Loadable(lazy(() => import('../pages/ujian/UjianForm')));
 const HasilUjian = Loadable(lazy(() => import('../pages/ujian/HasilUjian')));
-const HasilUjianForm = Loadable(lazy(() => import('../pages/ujian/HasilUjianForm')));
+const HasilForm = Loadable(lazy(() => import('../pages/ujian/HasilForm')));
 
 // UJIAN
 const UjianSiswaList = Loadable(lazy(() => import('../pages/ujianSiswa/UjianSiswaList')));

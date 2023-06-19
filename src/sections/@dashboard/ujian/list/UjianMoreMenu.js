@@ -15,10 +15,11 @@ import MenuPopover from '../../../../components/MenuPopover';
 UjianMoreMenu.propTypes = {
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func,
-  userName: PropTypes.string,
+  view: PropTypes.func,
+  role: PropTypes.string,
 };
 
-export default function UjianMoreMenu({ onDelete, view, onUpdate }) {
+export default function UjianMoreMenu({ onDelete, view, onUpdate, role }) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -40,33 +41,61 @@ export default function UjianMoreMenu({ onDelete, view, onUpdate }) {
       <IconButton onClick={handleOpen}>
         <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
       </IconButton>
-
-      <MenuPopover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        arrow="right-top"
-        sx={{
-          mt: -1,
-          width: 160,
-          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
-        }}
-      >
-        <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.ujian.hasil}>
-          <Iconify icon={'mdi:form-select'} sx={{ ...ICON }} />
-          Lihat Hasil
-        </MenuItem>
-        <MenuItem onClick={onUpdate} component={RouterLink} to={PATH_DASHBOARD.ujian.form}>
-          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-          Ubah
-        </MenuItem>
-        <MenuItem onClick={onDelete} sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Hapus
-        </MenuItem>
-      </MenuPopover>
+      {role === 'siswa' ? (
+        <MenuPopover
+          open={Boolean(open)}
+          anchorEl={open}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          arrow="right-top"
+          sx={{
+            mt: -1,
+            width: 160,
+            '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
+          }}
+        >
+          <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.ujian.hasil}>
+            <Iconify icon={'mdi:form-select'} sx={{ ...ICON }} />
+            Lihat Hasil
+          </MenuItem>
+          <MenuItem onClick={onUpdate} component={RouterLink} to={PATH_DASHBOARD.ujian.form}>
+            <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
+            Ubah
+          </MenuItem>
+          <MenuItem onClick={onDelete} sx={{ color: 'error.main' }}>
+            <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
+            Hapus
+          </MenuItem>
+        </MenuPopover>
+      ) : (
+        <MenuPopover
+          open={Boolean(open)}
+          anchorEl={open}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          arrow="right-top"
+          sx={{
+            mt: -1,
+            width: 160,
+            '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
+          }}
+        >
+          <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.ujian.hasil}>
+            <Iconify icon={'mdi:form-select'} sx={{ ...ICON }} />
+            Lihat Hasil
+          </MenuItem>
+          <MenuItem onClick={onUpdate} component={RouterLink} to={PATH_DASHBOARD.ujian.form}>
+            <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
+            Ubah
+          </MenuItem>
+          <MenuItem onClick={onDelete} sx={{ color: 'error.main' }}>
+            <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
+            Hapus
+          </MenuItem>
+        </MenuPopover>
+      )}
     </>
   );
 }
