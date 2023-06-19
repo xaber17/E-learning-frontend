@@ -23,7 +23,7 @@ import useSettings from '../../hooks/useSettings';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { useDispatch, useSelector } from '../../redux/store';
 
-import { getUsers, setCurrentUser, resetUser, deleteUser } from '../../redux/slices/users';
+import { getUjian, setCurrentUjian, resetUjian, deleteUjian } from '../../redux/slices/ujian';
 
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -44,7 +44,7 @@ const TABLE_HEAD = [
   //   { id: 'idUjian', label: 'ID Kelas', alignRight: false },
   { id: 'nama', label: 'Nama', alignRight: false },
   { id: 'kelas', label: 'Kelas', alignRight: false },
-  { id: 'deadline', label: 'Deadline', alignRight: false },
+  { id: 'tipe', label: 'Tipe', alignRight: false },
   { id: '' },
 ];
 
@@ -62,42 +62,44 @@ export default function UjianList() {
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [deleteIdUser, setDeleteIdUser] = useState();
+  const [deleteIdUjian, setDeleteIdUjian] = useState();
   let msg = '';
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
-  const { users } = useSelector((state) => state.users);
-  let usersList = [];
+  const { ujian } = useSelector((state) => state.ujian);
+  let ujianList = [];
   try {
-    usersList = users?.data;
-    console.log(usersList);
+    ujianList = ujian?.data?.result;
+    console.log('Ujian list data: ', ujianList);
   } catch (e) {
     console.log(e);
   }
 
   useEffect(() => {
-    setLoading(true);
-    const action = window.localStorage.getItem('action');
-    window.localStorage.removeItem('currentUsers');
-    try {
-      dispatch(getUsers());
-    } catch (e) {
-      console.log('ERROR', e);
-    }
+    (async () => {
+      setLoading(true);
+      const action = window.localStorage.getItem('action');
+      window.localStorage.removeItem('currentUjian');
+      try {
+        await dispatch(getUjian());
+      } catch (e) {
+        console.log('ERROR', e);
+      }
 
-    if (action === 'delete') {
-      enqueueSnackbar('Berhasil menghapus data');
-      window.localStorage.removeItem('action');
-    } else if (action === 'create') {
-      enqueueSnackbar('Berhasil menambah data');
-      window.localStorage.removeItem('action');
-    } else if (action === 'update') {
-      enqueueSnackbar('Berhasil mengubah data');
-      window.localStorage.removeItem('action');
-    }
+      if (action === 'delete') {
+        enqueueSnackbar('Berhasil menghapus data');
+        window.localStorage.removeItem('action');
+      } else if (action === 'create') {
+        enqueueSnackbar('Berhasil menambah data');
+        window.localStorage.removeItem('action');
+      } else if (action === 'update') {
+        enqueueSnackbar('Berhasil mengubah data');
+        window.localStorage.removeItem('action');
+      }
 
-    setLoading(false);
+      setLoading(false);
+    })();
   }, [dispatch]);
 
   const [page, setPage] = useState(0);
@@ -123,20 +125,19 @@ export default function UjianList() {
     setPage(0);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyUjian.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ujianList.length) : 0;
 
-  const filteredUsers = applySortFilter(dummyUjian, getComparator(order, orderBy), filterName);
-
-  const isNotFound = !filteredUsers.length && Boolean(filterName);
+  const filteredUjian = applySortFilter(ujianList, getComparator(order, orderBy), filterName);
+  const isNotFound = !filteredUjian.length && Boolean(filterName);
 
   if (loading) {
     return <LoadingScreen />;
   }
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteUjian = async (ujianId) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     window.localStorage.setItem('action', 'delete');
-    dispatch(deleteUser(userId))
+    dispatch(deleteUjian(ujianId))
       .then((data) => {
         console.log(data);
         setTimeout(() => {
@@ -144,7 +145,7 @@ export default function UjianList() {
         }, 1000);
 
         setLoading(true);
-        dispatch(getUsers());
+        dispatch(getUjian());
         handleCloseModal();
         handleCloseErrorModal();
         setLoading(false);
@@ -153,7 +154,7 @@ export default function UjianList() {
         console.log('ERROR', e);
         const error = e;
         Object.keys(error).forEach((key) => {
-          console.log(error[key][0]); // 👉️ "Tom", "Chile"
+          console.log(error[key][0]);
           const errMessage = error[key][0];
 
           msg = msg.concat(errMessage);
@@ -177,14 +178,14 @@ export default function UjianList() {
   };
 
   const handleOpenDeleteModal = (idUjian) => {
-    setDeleteIdUser(parseInt(idUjian, 10));
+    setDeleteIdUjian(parseInt(idUjian, 10));
     setOpen(true);
   };
 
-  const handleUpdateUser = (user) => {
-    console.log('UPDATE USER LIST', user);
-    dispatch(setCurrentUser(user));
-    window.localStorage.setItem('currentUser', JSON.stringify(user));
+  const handleUpdateUjian = (ujian) => {
+    console.log('UPDATE USER LIST', ujian);
+    dispatch(setCurrentUjian(ujian));
+    window.localStorage.setItem('currentUjian', JSON.stringify(ujian));
     window.localStorage.setItem('action', 'update');
   };
 
@@ -196,7 +197,6 @@ export default function UjianList() {
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Ujian' }]}
           action={
             <Button
-              //   onClick={() => handleCreateUser()}
               variant="contained"
               component={RouterLink}
               to={PATH_DASHBOARD.ujian.form}
@@ -207,12 +207,7 @@ export default function UjianList() {
           }
         />
         <Card>
-          <UjianListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-            // onDeleteUsers={() => handleDeleteMultiUser(selected)}
-          />
+          <UjianListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer>
@@ -221,17 +216,13 @@ export default function UjianList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={dummyUjian.length}
-                  // numSelected={selected.length}
+                  rowCount={ujianList.length}
                   onRequestSort={handleRequestSort}
-                  // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const idUjian = row.idUjian;
-                    const nama = row.nama;
-                    const kelas = row.kelas;
-                    const deadline = row.deadline;
+                  {filteredUjian.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const idUjian = row.soal_id;
+                    const nama = row.soal_name;
                     const isItemSelected = selected.indexOf(idUjian) !== -1;
 
                     return (
@@ -243,33 +234,16 @@ export default function UjianList() {
                         selected={isItemSelected}
                         aria-checked={isItemSelected}
                       >
-                        {/* <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} />
-                        </TableCell> */}
-                        {/* <TableCell align="left">{idUjian}</TableCell> */}
                         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                           <Typography variant="subtitle2" noWrap>
-                            {nama}
+                            {idUjian}
                           </Typography>
                         </TableCell>
-                        <TableCell align="left">{kelas}</TableCell>
-                        <TableCell align="left">{deadline}</TableCell>
-                        {/* <TableCell align="left">{userRole}</TableCell> */}
-                        {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
-                        {/* <TableCell align="left">
-                          <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={statusUser === 'non-aktif' ? 'error' : 'success'}
-                          >
-                            {statusUser === 'non-aktif' ? 'Non Aktif' : 'Aktif'}
-                          </Label>
-                        </TableCell> */}
-
+                        <TableCell align="left">{nama}</TableCell>
                         <TableCell align="right">
                           <UjianMoreMenu
-                            // onUpdate={() => handleUpdateUser(row)}  => handle detail ujian
                             onDelete={() => handleOpenDeleteModal(idUjian)}
-                            onUpdate={() => handleUpdateUser(row)}
+                            onUpdate={() => handleUpdateUjian(row)}
                           />
                         </TableCell>
                       </TableRow>
@@ -296,7 +270,7 @@ export default function UjianList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={dummyUjian.length}
+            count={ujianList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
@@ -310,7 +284,7 @@ export default function UjianList() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseModal}>Kembali</Button>
-            <Button onClick={() => handleDeleteUser(deleteIdUser)} autoFocus color="error">
+            <Button onClick={() => handleDeleteUjian(deleteIdUjian)} autoFocus color="error">
               Yakin
             </Button>
           </DialogActions>
@@ -353,7 +327,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return array?.filter((_user) => _user?.namaLengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return array?.filter((_ujian) => _ujian?.namaLengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }

@@ -261,7 +261,7 @@ export default function HasilUjian() {
                         <TableCell align="left">{kelas}</TableCell>
                         <TableCell align="left">{nilai}</TableCell>
                         <TableCell align="right">
-                          <Link>Form Hasil Ujian </Link>{' '}
+                          <Button>View</Button>
                         </TableCell>
                         {/* <TableCell align="left">{userRole}</TableCell> */}
                         {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}

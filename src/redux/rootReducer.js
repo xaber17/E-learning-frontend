@@ -10,6 +10,7 @@ import kanbanReducer from './slices/kanban';
 import usersReducer from './slices/users';
 import kelasReducer from './slices/kelas';
 import materiReducer from './slices/materi';
+import ujianReducer from './slices/ujian';
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +18,7 @@ const rootPersistConfig = {
   key: 'root',
   storage,
   keyPrefix: 'redux-',
-  whitelist: ['users', 'kelas', 'materi'],
+  whitelist: ['users', 'kelas', 'materi', 'ujian'],
 };
 
 // const absensiPersistConfig = {
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   users: usersReducer,
   kelas: kelasReducer,
   materi: materiReducer,
+  ujian: ujianReducer,
 });
 
 export { rootPersistConfig, rootReducer };

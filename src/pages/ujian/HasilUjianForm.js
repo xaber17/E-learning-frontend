@@ -7,13 +7,13 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import InputUjianForm from '../../sections/@dashboard/ujian/InputUjianForm';
 
-export default function UjianForm() {
+export default function HasilUjianForm() {
   const { themeStretch } = useSettings();
   const { pathname } = useLocation();
   const isEdit = pathname.includes('edit');
   const [currentUjian, setCurrentUjian] = useState({});
   const [action, setAction] = useState();
-  const title = 'Ujian Form';
+  const title = 'Hasil Ujian Form';
 
   useEffect(() => {
     const curr = JSON.parse(window.localStorage.getItem('currentKelas'));
