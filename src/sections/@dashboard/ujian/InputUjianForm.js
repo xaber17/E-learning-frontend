@@ -257,16 +257,19 @@ export default function InputUjianForm({ currentData, menu, action }) {
   };
 
   // ----------------------------------------------------------------------
-  const [openModal, setOpenModal] = React.useState(false);
 
   const handleClickOpen = () => {
-    setOpenModal(true);
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setOpenModal(false);
+    setOpen(false);
   };
   // ----------------------------------------------------------------------
+
+  const hiddenForUjian = menu !== 'Ujian Form' ? { display: 'none' } : {};
+  const hiddenForHasil = menu !== 'Hasil Form' ? { display: 'none' } : {};
+  const hiddenForSiswa = menu !== 'Ujian Siswa Form' ? { display: 'none' } : {};
 
   const jenisOptions = [
     { id: 1, code: 'ujian', label: 'Ujian' },
@@ -278,7 +281,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           {/* Input Ujian Form */}
-          <Card sx={{ p: 3 }}>
+          <Card sx={{ p: 3 }} style={hiddenForUjian}>
             <Box
               sx={{
                 display: 'grid',
@@ -287,7 +290,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)' },
               }}
             >
-              <RHFTextField name="soal_name" label="Nama Ujian" disabled={menu !== 'Ujian Form'} />
+              <RHFTextField name="soal_name" label="Nama Ujian" />
 
               <RHFSelect name="tipe" label="Tipe" placeholder="Tipe">
                 <option value="" />
@@ -327,102 +330,86 @@ export default function InputUjianForm({ currentData, menu, action }) {
                   </ListItem>
                 ))}
               </List>
-              {/* <Button variant="outlined" onClick={handleClickOpen}>
-                + Soal
-              </Button>
-              <Dialog open={openModal} onClose={handleClose}>
-                <DialogTitle>Subscribe</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    To subscribe to this website, please enter your email address here. We will send updates
-                    occasionally.
-                  </DialogContentText>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Email Address"
-                    type="email"
-                    fullWidth
-                    variant="standard"
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancel</Button>
-                  <Button onClick={handleClose}>Subscribe</Button>
-                </DialogActions>
-              </Dialog> */}
-
-              <Button variant="outlined" onClick={handleClickOpen}>
-                + Soal
-              </Button>
-              <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-                <DialogTitle>Soal #1</DialogTitle>
-                <DialogContent>
-                  <Box sx={{ mt: 2 }}>
-                    <FormLabel id="jenis">Jenis Soal</FormLabel>
-                    <RadioGroup aria-label="jenis" name="jenis">
-                      <FormControlLabel value="pilihanGanda" control={<Radio />} label="Pilihan Ganda" />
-                      <FormControlLabel value="esai" control={<Radio />} label="Esai" />
-                    </RadioGroup>
-                  </Box>
-                  <Box sx={{ mt: 2 }}>
-                    <RHFTextField name="pertanyaan" label="Tulis Pertanyaan" />
-                  </Box>
-                  <Grid container spacing={2} sx={{ mt: 1 }} alignItems="center">
-                    <Grid item xs={9}>
-                      <TextField name="jawaban_1" label="Tulisan Jawaban 1" variant="outlined" fullWidth />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
-                      <RadioGroup aria-label="jawaban" name="jawaban" row>
-                        <FormControlLabel value="ya" control={<Radio />} label="Ya" />
-                        <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
+              {/* Box Modal Soal */}
+              <Box>
+                <Button variant="outlined" onClick={handleClickOpen}>
+                  + Soal
+                </Button>
+                <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+                  <DialogTitle>Soal #1</DialogTitle>
+                  <DialogContent>
+                    <Box sx={{ mt: 2 }}>
+                      <FormLabel id="jenis">Jenis Soal</FormLabel>
+                      <RadioGroup aria-label="jenis" name="jenis">
+                        <FormControlLabel value="pilihanGanda" control={<Radio />} label="Pilihan Ganda" />
+                        <FormControlLabel value="esai" control={<Radio />} label="Esai" />
                       </RadioGroup>
+                    </Box>
+                    <Box sx={{ mt: 2 }}>
+                      <RHFTextField name="pertanyaan" label="Tulis Pertanyaan" />
+                    </Box>
+                    <Grid container spacing={2} sx={{ mt: 1 }} alignItems="center">
+                      <Grid item xs={9}>
+                        <TextField name="jawaban_1" label="Tulisan Jawaban 1" variant="outlined" fullWidth />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
+                        <RadioGroup aria-label="jawaban" name="jawaban" row>
+                          <FormControlLabel value="ya" control={<Radio />} label="Ya" />
+                          <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
+                        </RadioGroup>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={9}>
-                      <TextField name="jawaban_2" label="Tulisan Jawaban 2" variant="outlined" fullWidth />
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item xs={9}>
+                        <TextField name="jawaban_2" label="Tulisan Jawaban 2" variant="outlined" fullWidth />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
+                        <RadioGroup aria-label="jawaban" name="jawaban" row>
+                          <FormControlLabel value="ya" control={<Radio />} label="Ya" />
+                          <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
+                        </RadioGroup>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={3}>
-                      <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
-                      <RadioGroup aria-label="jawaban" name="jawaban" row>
-                        <FormControlLabel value="ya" control={<Radio />} label="Ya" />
-                        <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
-                      </RadioGroup>
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item xs={9}>
+                        <TextField name="jawaban_3" label="Tulisan Jawaban 3" variant="outlined" fullWidth />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
+                        <RadioGroup aria-label="jawaban" name="jawaban" row>
+                          <FormControlLabel value="ya" control={<Radio />} label="Ya" />
+                          <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
+                        </RadioGroup>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={9}>
-                      <TextField name="jawaban_3" label="Tulisan Jawaban 3" variant="outlined" fullWidth />
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item xs={9}>
+                        <TextField name="jawaban_4" label="Tulisan Jawaban 4" variant="outlined" fullWidth />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
+                        <RadioGroup aria-label="jawaban" name="jawaban" row>
+                          <FormControlLabel value="ya" control={<Radio />} label="Ya" />
+                          <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
+                        </RadioGroup>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={3}>
-                      <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
-                      <RadioGroup aria-label="jawaban" name="jawaban" row>
-                        <FormControlLabel value="ya" control={<Radio />} label="Ya" />
-                        <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
-                      </RadioGroup>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={9}>
-                      <TextField name="jawaban_4" label="Tulisan Jawaban 4" variant="outlined" fullWidth />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
-                      <RadioGroup aria-label="jawaban" name="jawaban" row>
-                        <FormControlLabel value="ya" control={<Radio />} label="Ya" />
-                        <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
-                      </RadioGroup>
-                    </Grid>
-                  </Grid>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Kembali</Button>
-                  <Button onClick={handleClose}>Simpan</Button>
-                </DialogActions>
-              </Dialog>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Kembali</Button>
+                    <LoadingButton
+                      type="submit"
+                      variant="contained"
+                      loading={isSubmitting}
+                      loadingIndicator="Loading..."
+                    >
+                      Simpan
+                    </LoadingButton>
+                  </DialogActions>
+                </Dialog>
+              </Box>
             </Box>
 
             <Box>
@@ -440,32 +427,25 @@ export default function InputUjianForm({ currentData, menu, action }) {
               </Stack>
             </Box>
           </Card>
+
           {/* Input Hasil Form */}
-          <Card sx={{ p: 3 }}>
+          <Card sx={{ p: 3 }} style={hiddenForHasil}>
             <Box sx={{ mb: 2 }}>
               <h3>Nama : Getar Nuansa</h3>
+              <h3>Soal : Ujian Matematika</h3>
             </Box>
             <Box>
               <h4>Pilihan Ganda</h4>
               <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 {[1, 2, 3].map((value) => (
-                  <Box
-                    key={value}
-                    disableGutters
-                    // secondaryAction={
-                    //   <Button aria-label="edit" onClick={<InputSoalForm />}>
-                    //     Edit
-                    //   </Button>
-                    // }
-                  >
+                  <Box key={value} disableGutters>
                     <ListItemText
-                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ${value}`}
+                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry`}
                     />
                     <Grid sx={{ pl: 2, mb: 2 }}>
                       <ListItemText>
-                        <h5>
-                          Jawaban: <span>A</span>
-                        </h5>
+                        <h5>Jawaban:</h5>
+                        <h4>A. Lorem Ipsum is simple dummy</h4>
                       </ListItemText>
                     </Grid>
                   </Box>
@@ -476,32 +456,23 @@ export default function InputUjianForm({ currentData, menu, action }) {
                 {[1, 2, 3].map((value) => (
                   <Box key={value} disableGutters>
                     <ListItemText
-                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ${value}`}
+                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry.`}
                     />
                     <Grid sx={{ pl: 2, mb: 2 }}>
                       <ListItemText>
                         <h4>Jawaban:</h4>
-                        <h4>
-                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                          been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                          galley of type and scrambled it to make a type specimen book. It has survived not only five
-                          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It
-                          was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
-                          passages, and more recently with desktop publishing software like Aldus PageMaker including
-                          versions of Lorem Ipsum.
-                        </h4>
+                        <h4>Lorem Ipsum is simply dummy text of the printing</h4>
                       </ListItemText>
                     </Grid>
                   </Box>
                 ))}
               </List>
-
               <RHFTextField name="nilai" label="Nilai Esai Keseluruhan" />
             </Box>
 
             <Box>
               <Stack flexDirection={'row'} justifyContent={'space-between'} sx={{ mt: 3 }}>
-                {menu === 'Hasil Form' ? (
+                {hiddenForHasil ? (
                   <Button variant="contained" color="inherit" onClick={handleBack}>
                     Kembali
                   </Button>
@@ -514,6 +485,73 @@ export default function InputUjianForm({ currentData, menu, action }) {
               </Stack>
             </Box>
           </Card>
+
+          {/* Input Ujian Siswa */}
+          <Card sx={{ p: 3 }} style={hiddenForSiswa}>
+            <Box sx={{ mb: 2 }}>
+              <h3>Nama : Getar Nuansa</h3>
+              <h3>Soal : Ujian Matematika</h3>
+            </Box>
+            <Box>
+              <h4>Pilihan Ganda</h4>
+              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                {[1, 2, 3].map((value) => (
+                  <Box key={value} disableGutters>
+                    <ListItemText
+                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry`}
+                    />
+                    <Grid sx={{ pl: 2, my: 2 }}>
+                      <ListItemText>
+                        <h5>Jawaban:</h5>
+                        <Box sx={{ mt: 2 }}>
+                          <RadioGroup aria-label="jawab" name="jawab">
+                            <FormControlLabel value="a" control={<Radio />} label="A. Lorem" />
+                            <FormControlLabel value="b" control={<Radio />} label="B. Ipsum" />
+                            <FormControlLabel value="c" control={<Radio />} label="C. Dolor" />
+                            <FormControlLabel value="d" control={<Radio />} label="D. Sit Amet" />
+                          </RadioGroup>
+                        </Box>
+                      </ListItemText>
+                    </Grid>
+                  </Box>
+                ))}
+              </List>
+              <h4>Esai</h4>
+              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                {[1, 2, 3].map((value) => (
+                  <Box key={value} disableGutters>
+                    <ListItemText
+                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry.`}
+                    />
+                    <Grid sx={{ pl: 2, mb: 2 }}>
+                      <ListItemText>
+                        <h4>Jawaban:</h4>
+                        <Box sx={{ mt: 2 }}>
+                          <RHFTextField name="jawab" label="Tulis jawabanmu" multiline rows={4} />
+                        </Box>
+                      </ListItemText>
+                    </Grid>
+                  </Box>
+                ))}
+              </List>
+            </Box>
+
+            <Box>
+              <Stack flexDirection={'row'} justifyContent={'space-between'} sx={{ mt: 3 }}>
+                {hiddenForHasil ? (
+                  <Button variant="contained" color="inherit" onClick={handleBack}>
+                    Kembali
+                  </Button>
+                ) : (
+                  <Box />
+                )}
+                <LoadingButton type="submit" variant="contained" loading={isSubmitting} loadingIndicator="Loading...">
+                  Simpan
+                </LoadingButton>
+              </Stack>
+            </Box>
+          </Card>
+
           <DialogAnimate open={open} onClose={handleCloseModal}>
             <DialogTitle>{failedMessage}</DialogTitle>
             <DialogContent>
