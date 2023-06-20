@@ -21,10 +21,11 @@ import {
 } from '@mui/material';
 import Page from '../../components/Page';
 import useSettings from '../../hooks/useSettings';
+import useAuth from '../../hooks/useAuth';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { useDispatch, useSelector } from '../../redux/store';
 
-import { getUsers, setCurrentUser, resetUser, deleteUser } from '../../redux/slices/users';
+import { getHasil, setCurrentHasil, resetHasil, deleteHasil } from '../../redux/slices/hasil';
 
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -57,6 +58,7 @@ const dummyHasil = [
 
 export default function HasilUjian() {
   const title = 'Hasil Ujian';
+  const { user } = useAuth();
   const theme = useTheme();
   const { themeStretch } = useSettings();
   const [list, setList] = useState();
@@ -64,16 +66,16 @@ export default function HasilUjian() {
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [deleteIdUser, setDeleteIdUser] = useState();
+  const [deleteIdHasil, setDeleteIdHasil] = useState();
   let msg = '';
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
-  const { users } = useSelector((state) => state.users);
-  let usersList = [];
+  const { hasil } = useSelector((state) => state.hasil);
+  let hasilList = [];
   try {
-    usersList = users?.data;
-    console.log(usersList);
+    hasilList = hasil?.data;
+    console.log(hasilList);
   } catch (e) {
     console.log(e);
   }
@@ -81,9 +83,9 @@ export default function HasilUjian() {
   useEffect(() => {
     setLoading(true);
     const action = window.localStorage.getItem('action');
-    window.localStorage.removeItem('currentUsers');
+    window.localStorage.removeItem('currentHasil');
     try {
-      dispatch(getUsers());
+      dispatch(getHasil());
     } catch (e) {
       console.log('ERROR', e);
     }
@@ -127,18 +129,18 @@ export default function HasilUjian() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyHasil.length) : 0;
 
-  const filteredUsers = applySortFilter(dummyHasil, getComparator(order, orderBy), filterName);
+  const filteredHasil = applySortFilter(dummyHasil, getComparator(order, orderBy), filterName);
 
-  const isNotFound = !filteredUsers.length && Boolean(filterName);
+  const isNotFound = !filteredHasil.length && Boolean(filterName);
 
   if (loading) {
     return <LoadingScreen />;
   }
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteHasil = async (hasilId) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     window.localStorage.setItem('action', 'delete');
-    dispatch(deleteUser(userId))
+    dispatch(deleteHasil(hasilId))
       .then((data) => {
         console.log(data);
         setTimeout(() => {
@@ -146,7 +148,7 @@ export default function HasilUjian() {
         }, 1000);
 
         setLoading(true);
-        dispatch(getUsers());
+        dispatch(getHasil());
         handleCloseModal();
         handleCloseErrorModal();
         setLoading(false);
@@ -179,14 +181,14 @@ export default function HasilUjian() {
   };
 
   const handleOpenDeleteModal = (idHasil) => {
-    setDeleteIdUser(parseInt(idHasil, 10));
+    setDeleteIdHasil(parseInt(idHasil, 10));
     setOpen(true);
   };
 
-  const handleUpdateUser = (user) => {
-    console.log('UPDATE USER LIST', user);
-    dispatch(setCurrentUser(user));
-    window.localStorage.setItem('currentUser', JSON.stringify(user));
+  const handleUpdateHasil = (hasil) => {
+    console.log('UPDATE USER LIST', hasil);
+    dispatch(setCurrentHasil(hasil));
+    window.localStorage.setItem('currentHasil', JSON.stringify(hasil));
     window.localStorage.setItem('action', 'update');
   };
 
@@ -200,24 +202,24 @@ export default function HasilUjian() {
             { name: 'Ujian', href: PATH_DASHBOARD.ujian.list },
             { name: title },
           ]}
-          action={
-            <Button
-              //   onClick={() => handleCreateUser()}
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.ujian.form}
-              startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              Tambah
-            </Button>
-          }
+          // action={
+          //   <Button
+          //     //   onClick={() => handleCreateHasil()}
+          //     variant="contained"
+          //     component={RouterLink}
+          //     to={PATH_DASHBOARD.ujian.form}
+          //     startIcon={<Iconify icon={'eva:plus-fill'} />}
+          //   >
+          //     Tambah
+          //   </Button>
+          // }
         />
         <Card>
           <UjianListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
-            // onDeleteUsers={() => handleDeleteMultiUser(selected)}
+            // onDeleteHasil={() => handleDeleteMultiHasil(selected)}
           />
 
           <Scrollbar>
@@ -233,7 +235,7 @@ export default function HasilUjian() {
                   // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  {filteredHasil.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const idHasil = row.idHasil;
                     const siswa = row.siswa;
                     const kelas = row.kelas;
@@ -261,24 +263,28 @@ export default function HasilUjian() {
                         <TableCell align="left">{kelas}</TableCell>
                         <TableCell align="left">{nilai}</TableCell>
                         <TableCell align="right">
-                          <Button>View</Button>
+                          <UjianMoreMenu
+                            onDelete={() => handleOpenDeleteModal(idHasil)}
+                            role={user.role}
+                            menu={title}
+                          />
                         </TableCell>
                         {/* <TableCell align="left">{userRole}</TableCell> */}
                         {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
                         {/* <TableCell align="left">
                           <Label
                             variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={statusUser === 'non-aktif' ? 'error' : 'success'}
+                            color={statusHasil === 'non-aktif' ? 'error' : 'success'}
                           >
-                            {statusUser === 'non-aktif' ? 'Non Aktif' : 'Aktif'}
+                            {statusHasil === 'non-aktif' ? 'Non Aktif' : 'Aktif'}
                           </Label>
                         </TableCell> */}
 
                         {/* <TableCell align="right">
                           <UjianMoreMenu
-                            // onUpdate={() => handleUpdateUser(row)}  => handle detail ujian
+                            // onUpdate={() => handleUpdateHasil(row)}  => handle detail ujian
                             onDelete={() => handleOpenDeleteModal(idHasil)}
-                            onUpdate={() => handleUpdateUser(row)}
+                            onUpdate={() => handleUpdateHasil(row)}
                           />
                         </TableCell> */}
                       </TableRow>
@@ -319,7 +325,7 @@ export default function HasilUjian() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseModal}>Kembali</Button>
-            <Button onClick={() => handleDeleteUser(deleteIdUser)} autoFocus color="error">
+            <Button onClick={() => handleDeleteHasil(deleteIdHasil)} autoFocus color="error">
               Yakin
             </Button>
           </DialogActions>
@@ -362,7 +368,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return array?.filter((_user) => _user?.namaLengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return array?.filter((_hasil) => _hasil?.namaLengkap.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }

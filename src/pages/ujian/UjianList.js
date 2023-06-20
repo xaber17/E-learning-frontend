@@ -249,7 +249,7 @@ export default function UjianList() {
                           <UjianMoreMenu
                             onDelete={() => handleOpenDeleteModal(idUjian)}
                             onUpdate={() => handleUpdateUjian(row)}
-                            role={user.role}
+                            // role={user.role}
                           />
                         </TableCell>
                       </TableRow>

@@ -17,9 +17,10 @@ UjianMoreMenu.propTypes = {
   onUpdate: PropTypes.func,
   view: PropTypes.func,
   role: PropTypes.string,
+  menu: PropTypes.string,
 };
 
-export default function UjianMoreMenu({ onDelete, view, onUpdate, role }) {
+export default function UjianMoreMenu({ onDelete, view, onUpdate, role, menu }) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -82,18 +83,27 @@ export default function UjianMoreMenu({ onDelete, view, onUpdate, role }) {
             '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
           }}
         >
-          <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.ujian.hasil}>
-            <Iconify icon={'mdi:form-select'} sx={{ ...ICON }} />
-            Lihat Hasil
-          </MenuItem>
-          <MenuItem onClick={onUpdate} component={RouterLink} to={PATH_DASHBOARD.ujian.form}>
-            <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-            Ubah
-          </MenuItem>
-          <MenuItem onClick={onDelete} sx={{ color: 'error.main' }}>
-            <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-            Hapus
-          </MenuItem>
+          {menu === 'Hasil Ujian' ? (
+            <MenuItem onClick={onUpdate} component={RouterLink} to={PATH_DASHBOARD.ujian.hasilForm}>
+              <Iconify icon={'icon-park-outline:check-correct'} sx={{ ...ICON }} />
+              Koreksi
+            </MenuItem>
+          ) : (
+            <>
+              <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.ujian.hasil}>
+                <Iconify icon={'mdi:form-select'} sx={{ ...ICON }} />
+                Lihat Hasil
+              </MenuItem>
+              <MenuItem onClick={onUpdate} component={RouterLink} to={PATH_DASHBOARD.ujian.form}>
+                <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
+                Ubah
+              </MenuItem>
+              <MenuItem onClick={onDelete} sx={{ color: 'error.main' }}>
+                <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
+                Hapus
+              </MenuItem>
+            </>
+          )}
         </MenuPopover>
       )}
     </>
