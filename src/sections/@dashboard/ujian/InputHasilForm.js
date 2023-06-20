@@ -280,10 +280,10 @@ export default function InputHasilForm({ currentData, menu, action }) {
               <h3>Nama : Getar Nuansa</h3>
             </Box>
             <Box>
-              <h5>Pilihan Ganda</h5>
-              <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              <h4>Pilihan Ganda</h4>
+              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 {[1, 2, 3].map((value) => (
-                  <ListItem
+                  <Box
                     key={value}
                     disableGutters
                     // secondaryAction={
@@ -292,47 +292,46 @@ export default function InputHasilForm({ currentData, menu, action }) {
                     //   </Button>
                     // }
                   >
-                    <ListItemText primary={`${value}. Pertanyaan ${value}`} />
-                  </ListItem>
+                    <ListItemText
+                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ${value}`}
+                    />
+                    <Grid sx={{ pl: 2, mb: 2 }}>
+                      <ListItemText>
+                        <h5>
+                          Jawaban: <span>A</span>
+                        </h5>
+                      </ListItemText>
+                    </Grid>
+                  </Box>
                 ))}
               </List>
-              <h5>Esai</h5>
-              <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              <h4>Esai</h4>
+              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 {[1, 2, 3].map((value) => (
-                  <ListItem
-                    key={value}
-                    disableGutters
-                    // secondaryAction={
-                    //   <Button aria-label="edit" onClick={<InputSoalForm />}>
-                    //     Edit
-                    //   </Button>
-                    // }
-                  >
-                    <ListItemText primary={`${value}. Pertanyaan ${value}`} />
-                  </ListItem>
+                  <Box key={value} disableGutters>
+                    <ListItemText
+                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ${value}`}
+                    />
+                    <Grid sx={{ pl: 2, mb: 2 }}>
+                      <ListItemText>
+                        <h4>Jawaban:</h4>
+                        <h4>
+                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                          been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                          galley of type and scrambled it to make a type specimen book. It has survived not only five
+                          centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It
+                          was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+                          passages, and more recently with desktop publishing software like Aldus PageMaker including
+                          versions of Lorem Ipsum.
+                        </h4>
+                      </ListItemText>
+                    </Grid>
+                  </Box>
                 ))}
               </List>
 
               <RHFTextField name="nilai" label="Nilai Esai Keseluruhan" />
             </Box>
-            {/* <Box sx={{ mt: 2 }}>
-              <h4>Soal</h4>
-              <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                {[1, 2, 3].map((value) => (
-                  <ListItem
-                    key={value}
-                    disableGutters
-                    // secondaryAction={
-                    //   <Button aria-label="edit" onClick={<InputSoalForm />}>
-                    //     Edit
-                    //   </Button>
-                    // }
-                  >
-                    <ListItemText primary={`${value}. Pertanyaan ${value}`} />
-                  </ListItem>
-                ))}
-              </List>
-            </Box> */}
 
             <Box>
               <Stack flexDirection={'row'} justifyContent={'space-between'} sx={{ mt: 3 }}>

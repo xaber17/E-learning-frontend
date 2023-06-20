@@ -19,6 +19,7 @@ import {
   useTheme,
 } from '@mui/material';
 import Page from '../../components/Page';
+import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { useDispatch, useSelector } from '../../redux/store';
@@ -56,6 +57,7 @@ const dummyUjian = [
 ];
 
 export default function UjianList() {
+  const { user } = useAuth();
   const theme = useTheme();
   const { themeStretch } = useSettings();
   const [list, setList] = useState();
@@ -184,7 +186,7 @@ export default function UjianList() {
   };
 
   const handleUpdateUjian = (ujian) => {
-    console.log('UPDATE USER LIST', ujian);
+    console.log('UPDATE UJIAN LIST', ujian);
     dispatch(setCurrentUjian(ujian));
     window.localStorage.setItem('currentUjian', JSON.stringify(ujian));
     window.localStorage.setItem('action', 'update');
@@ -247,6 +249,7 @@ export default function UjianList() {
                           <UjianMoreMenu
                             onDelete={() => handleOpenDeleteModal(idUjian)}
                             onUpdate={() => handleUpdateUjian(row)}
+                            role={user.role}
                           />
                         </TableCell>
                       </TableRow>

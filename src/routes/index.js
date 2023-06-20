@@ -122,7 +122,15 @@ export default function Router() {
             { path: 'list', element: <UjianList /> },
             { path: 'form', element: <UjianForm /> },
             { path: 'hasil', element: <HasilUjian /> },
-            { path: 'hasil/form', element: <HasilUjianForm /> },
+            { path: 'hasil/form', element: <HasilForm /> },
+          ],
+        },
+        {
+          path: 'ujian-siswa',
+          children: [
+            { element: <Navigate to="/dashboard/ujian-siswa/list" replace />, index: true },
+            { path: 'list', element: <UjianSiswaList /> },
+            { path: 'form', element: <UjianSiswaForm /> },
           ],
         },
         {
@@ -259,7 +267,11 @@ const Akun = Loadable(lazy(() => import('../pages/akun')));
 const UjianList = Loadable(lazy(() => import('../pages/ujian/UjianList')));
 const UjianForm = Loadable(lazy(() => import('../pages/ujian/UjianForm')));
 const HasilUjian = Loadable(lazy(() => import('../pages/ujian/HasilUjian')));
-const HasilUjianForm = Loadable(lazy(() => import('../pages/ujian/HasilUjianForm')));
+const HasilForm = Loadable(lazy(() => import('../pages/ujian/HasilForm')));
+
+// UJIAN
+const UjianSiswaList = Loadable(lazy(() => import('../pages/ujianSiswa/UjianSiswaList')));
+const UjianSiswaForm = Loadable(lazy(() => import('../pages/ujianSiswa/UjianSiswaForm')));
 
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/Home')));
