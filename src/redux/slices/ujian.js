@@ -103,9 +103,9 @@ export async function getUjian() {
         Authorization: `Bearer ${accessToken}`,
       },
     };
-    const response = await axios.get('/soal', header);
+    const response = await axios.get('/soal/all', header); 
     console.log('redux getUjian', response);
-    window.localStorage.setItem('ujianList', JSON.stringify(response.data));
+    window.localStorage.setItem('ujianList', JSON.stringify(response?.data));
     dispatch(slice.actions.getUjianSuccess(response));
   } catch (error) {
     dispatch(slice.actions.hasError(error));

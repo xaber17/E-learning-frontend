@@ -45,6 +45,7 @@ const TABLE_HEAD = [
   { id: 'nama', label: 'Nama', alignRight: false },
   { id: 'kelas', label: 'Kelas', alignRight: false },
   { id: 'tipe', label: 'Tipe', alignRight: false },
+  { id: 'deadline', label: 'Deadline', alignRight: false },
   { id: '' },
 ];
 
@@ -67,10 +68,10 @@ export default function UjianList() {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
-  // const { ujian } = useSelector((state) => state.ujian);
-  const ujianList = [];
+  const { ujian } = useSelector((state) => state.ujian);
+  let ujianList = [];
   try {
-    // ujianList = ujian?.data?.result;
+    ujianList = ujian?.data?.result || [];
     console.log('Ujian list data: ', ujianList);
   } catch (e) {
     console.log(e);
@@ -82,7 +83,7 @@ export default function UjianList() {
       const action = window.localStorage.getItem('action');
       window.localStorage.removeItem('currentUjian');
       try {
-        // await dispatch(getUjian());
+        await dispatch(getUjian());
       } catch (e) {
         console.log('ERROR', e);
       }
@@ -236,10 +237,12 @@ export default function UjianList() {
                       >
                         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                           <Typography variant="subtitle2" noWrap>
-                            {idUjian}
+                            {nama}
                           </Typography>
                         </TableCell>
-                        <TableCell align="left">{nama}</TableCell>
+                        <TableCell align="left">{row.kelas_name}</TableCell>
+                        <TableCell align="left">{row.tipe_soal}</TableCell>
+                        <TableCell align="left">{row.deadline}</TableCell>
                         <TableCell align="right">
                           <UjianMoreMenu
                             onDelete={() => handleOpenDeleteModal(idUjian)}
