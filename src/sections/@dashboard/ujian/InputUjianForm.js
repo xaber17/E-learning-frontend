@@ -74,12 +74,12 @@ export default function InputUjianForm({ currentData, menu, action }) {
   const NewUjianSchema = Yup.object().shape({
     soal_name: Yup.string().required('Nama Ujian wajib diisi'),
     tipe_soal: Yup.string().required('Tipe Soal wajib diisi'),
+    deadline: Yup.string().required('Deadline wajib diisi'),
   });
 
   const defaultValues = useMemo(
     () => ({
       soal_name: currentData?.soal_name || '',
-      file_id: currentData?.file_id || '',
       tipe_soal: currentData?.tipe_soal || '',
       user_id: currentData?.user_id || '',
       kelas_id: currentData?.kelas_id || '',
@@ -143,14 +143,6 @@ export default function InputUjianForm({ currentData, menu, action }) {
       user_id: data.user_id,
       kelas_id: data.kelas_id,
       deadline: data.deadline,
-    };
-
-    const updateUjianAll = {
-      soal_name: data.soal_name,
-      file_id: data.file_id,
-      tipe_soal: data.tipe_soal,
-      user_id: data.user_id,
-      kelas_id: data.kelas_id,
     };
 
     const updateUjianData = {
@@ -331,7 +323,8 @@ export default function InputUjianForm({ currentData, menu, action }) {
                 ))}
               </List>
               {/* Box Modal Soal */}
-              <Box>
+              <InputSoalForm />
+              {/* <Box>
                 <Button variant="outlined" onClick={handleClickOpen}>
                   + Soal
                 </Button>
@@ -409,7 +402,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
                     </LoadingButton>
                   </DialogActions>
                 </Dialog>
-              </Box>
+              </Box> */}
             </Box>
 
             <Box>

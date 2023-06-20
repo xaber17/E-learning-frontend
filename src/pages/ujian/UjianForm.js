@@ -16,7 +16,7 @@ export default function UjianForm() {
   const title = 'Ujian Form';
 
   useEffect(() => {
-    const curr = JSON.parse(window.localStorage.getItem('currentKelas'));
+    const curr = JSON.parse(window.localStorage.getItem('currentUjian'));
 
     setCurrentUjian(curr);
 
