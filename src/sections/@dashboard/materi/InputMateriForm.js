@@ -243,7 +243,6 @@ export default function InputMateriForm({ currentData, menu, action }) {
 
   return (
     <FormProvider className='form-group' methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        
       <Grid container spacing={3}>
         <Grid item xs={12}>
         <Card sx={{ p: 3 }}>
