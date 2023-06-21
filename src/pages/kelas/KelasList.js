@@ -22,7 +22,7 @@ import Page from '../../components/Page';
 import useSettings from '../../hooks/useSettings';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { useDispatch, useSelector } from '../../redux/store';
-
+import useAuth from '../../hooks/useAuth';
 import { getKelas, createKelas, setCurrentKelas, deleteKelas, resetKelas, updateKelas } from '../../redux/slices/kelas';
 
 // routes
@@ -41,9 +41,9 @@ import SearchNotFound from '../../components/SearchNotFound';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'idKelas', label: 'Id', alignRight: false },
   { id: 'kelas', label: 'Kelas', alignRight: false },
   { id: 'deskripsi', label: 'Deskripsi', alignRight: false },
+  { id: 'link', label: 'Link Meet', alignRight: false },
   { id: '' },
 ];
 
@@ -61,10 +61,12 @@ export default function KelasList() {
   const dispatch = useDispatch();
 
   const { kelas } = useSelector((state) => state.kelas);
+  const { user } = useAuth();
   let kelasList = [];
   try {
     kelasList = kelas?.data?.result;
     console.log('Kelas list data: ', kelasList);
+    console.log('Kelas list data: ', user);
   } catch (e) {
     console.log(e);
   }
@@ -190,21 +192,30 @@ export default function KelasList() {
   return (
     <Page title="Kelas">
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading="Kelas"
-          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Kelas' }]}
-          action={
-            <Button
-              onClick={() => handleCreateKelas()}
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.kelas.form}
-              startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              Tambah
-            </Button>
-          }
-        />
+        {user.role === 'siswa' ? (
+          <>
+            <HeaderBreadcrumbs
+              heading="Kelas"
+              links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Kelas' }]}
+            />
+          </>
+        ) : (
+          <HeaderBreadcrumbs
+            heading="Kelas"
+            links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Kelas' }]}
+            action={
+              <Button
+                onClick={() => handleCreateKelas()}
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.kelas.form}
+                startIcon={<Iconify icon={'eva:plus-fill'} />}
+              >
+                Tambah
+              </Button>
+            }
+          />
+        )}
         <Card>
           <KelasListToolbar
             numSelected={selected.length}
@@ -230,6 +241,7 @@ export default function KelasList() {
                     const idKelas = row.kelas_id;
                     const kelas = row.kelas_name;
                     const deskripsi = row.deskripsi;
+                    const link = row.link || 'https://meet.google.com/';
                     const isItemSelected = selected.indexOf(idKelas) !== -1;
 
                     return (
@@ -243,11 +255,13 @@ export default function KelasList() {
                       >
                         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                           <Typography variant="subtitle2" noWrap>
-                            {idKelas}
+                            {kelas}
                           </Typography>
                         </TableCell>
-                        <TableCell align="left">{kelas}</TableCell>
                         <TableCell align="left">{deskripsi}</TableCell>
+                        <TableCell align="left">
+                          <a href={link}>{link}</a>
+                        </TableCell>
                         <TableCell align="right">
                           <KelasMoreMenu
                             // onUpdate={() => handleUpdateKelas(row)} => handle detail kelas

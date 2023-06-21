@@ -20,8 +20,15 @@ export default function MateriDetail() {
 
   // const { materiDetail } = useSelector((state) => state.materiDetail);
   const materi = window.localStorage.getItem('materiDetail')
-  console.log('Preview Mater: ', previewMateri)
-  
+  console.log('Preview Materi: ', previewMateri)
+  console.log('Data Materi: ', materi)
+  // let previewPDF;
+  // if (materi) {
+  //   previewPDF = Object.assign(materi, {
+  //     pdfView: URL.createObjectURL(materi),
+  //   })
+  // }
+
   useEffect(async () => {
     setLoading(true);
     const curr = JSON.parse(window.localStorage.getItem('currentMateri'));
@@ -37,6 +44,8 @@ export default function MateriDetail() {
     console.log('Materi Detail: ', curr);
     setLoading(false);
   }, [dispatch]);
+
+
 
   if (loading) {
     return <LoadingScreen />;

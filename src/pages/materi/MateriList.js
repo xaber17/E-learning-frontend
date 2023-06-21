@@ -22,7 +22,7 @@ import Page from '../../components/Page';
 import useSettings from '../../hooks/useSettings';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { useDispatch, useSelector } from '../../redux/store';
-
+import useAuth from '../../hooks/useAuth';
 import { getMateri, setCurrentMateri, resetMateri, deleteMateri } from '../../redux/slices/materi';
 
 // routes
@@ -71,6 +71,7 @@ export default function MateriList() {
   const dispatch = useDispatch();
 
   const { materi } = useSelector((state) => state.materi);
+  const { user } = useAuth();
   let materiList = [];
   try {
     materiList = materi?.data?.result;
@@ -211,27 +212,31 @@ export default function MateriList() {
   return (
     <Page title="Materi">
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading="Materi"
-          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Materi' }]}
-          action={
-            <Button
-              onClick={() => handleCreateMateri()}
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.materi.form}
-              startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              Tambah
-            </Button>
-          }
-        />
-        <Card>
-          <MateriListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
+        {user.role === 'siswa' ? (
+          <HeaderBreadcrumbs
+            heading="Materi"
+            links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Materi' }]}
           />
+        ) : (
+          <HeaderBreadcrumbs
+            heading="Materi"
+            links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Materi' }]}
+            action={
+              <Button
+                onClick={() => handleCreateMateri()}
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.materi.form}
+                startIcon={<Iconify icon={'eva:plus-fill'} />}
+              >
+                Tambah
+              </Button>
+            }
+          />
+        )}
+
+        <Card>
+          <MateriListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer>
@@ -326,7 +331,7 @@ export default function MateriList() {
             </Button>
           </DialogActions>
         </DialogAnimate> */}
-        
+
         <DialogAnimate open={open} onClose={handleCloseModal}>
           <DialogTitle>Konfirmasi Hapus Data</DialogTitle>
           <DialogContent>

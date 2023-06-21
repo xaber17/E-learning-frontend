@@ -36,10 +36,14 @@ export default function GeneralApp() {
   const theme = useTheme();
   const { themeStretch } = useSettings();
   const { materi } = useSelector((state) => state.materi);
-  let materiList = [];
+  const { ujian } = useSelector((state) => state.ujian);
+  let ujianList;
+  let materiList;
   try {
     materiList = [materi?.data?.result[0] || [], materi?.data?.result[1] || [], materi?.data?.result[2] || []];
     console.log('materi list dashboard: ', materiList);
+    ujianList = [ujian?.data?.result[0] || [], ujian?.data?.result[1] || [], ujian?.data?.result[2] || []]
+    console.log('Ujian list dashboard: ', ujianList);
   } catch (e) {
     console.log(e);
   }
@@ -158,16 +162,21 @@ export default function GeneralApp() {
               </List>
             </Card>
             <Card sx={{ mt: 3 }}>
-              <CardHeader title="Ujian Berlangsung" />
+              <CardHeader title="Ujian/Kuis Berlangsung" />
               <List
                 sx={{
                   listStyleType: 'disc',
                   listStylePosition: 'inside',
                 }}
               >
-                <ListItem sx={{ display: 'list-item' }}>Ujian A</ListItem>
-                <ListItem sx={{ display: 'list-item' }}>Ujian B</ListItem>
-                <ListItem sx={{ display: 'list-item' }}>Ujian C</ListItem>
+                {ujianList.map((row) => {
+                const ujianName = row.soal_name || 'Belum ada Ujian/Kuis';
+                return (
+                  <ListItem sx={{ display: 'list-item' }}>
+                    {ujianName}
+                  </ListItem>
+                )
+              })}
               </List>
             </Card>
           </Grid>

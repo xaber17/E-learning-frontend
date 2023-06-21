@@ -1,5 +1,8 @@
 import * as React from 'react';
+import * as Yup from 'yup';
 import { Box, FormControlLabel, FormLabel, Grid, Radio, RadioGroup } from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -25,6 +28,26 @@ export default function InputSoalForm() {
   const handleRadioChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
+  const NewPertanyaanSchema = Yup.object().shape({
+    pertanyaan: Yup.array()
+  });
+
+  const methods = useForm({
+    resolver: yupResolver(NewPertanyaanSchema),
+  });
+
+  const {
+    reset,
+    watch,
+    control,
+    setValue,
+    handleSubmit,
+    getValues,
+    formState: { isSubmitting },
+  } = methods;
+
+  const values = watch();
 
   return (
     <Box>

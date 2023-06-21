@@ -67,6 +67,7 @@ export default function InputKelasForm({ currentData, menu, action }) {
       kelas_name: currentData?.kelas_name || '',
       deskripsi: currentData?.deskripsi || '',
       kelas_id: currentData?.kelas_id || '',
+      link: currentData?.link || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentData]
@@ -122,6 +123,7 @@ export default function InputKelasForm({ currentData, menu, action }) {
     const newKelas = {
       kelas_name: data.kelas_name,
       deskripsi: data.deskripsi,
+      link: data.link,
     };
 
     const updateKelasAll = {
@@ -134,6 +136,7 @@ export default function InputKelasForm({ currentData, menu, action }) {
       kelas_name: data.kelas_name,
       kelas_id: data.kelas_id,
       deskripsi: data.deskripsi,
+      link: data.link,
     };
     console.log('pushed button');
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -230,6 +233,7 @@ export default function InputKelasForm({ currentData, menu, action }) {
             >
               <RHFTextField name="kelas_name" label="Nama Kelas" />
               <RHFTextField name="deskripsi" label="Deskripsi" />
+              <RHFTextField name="link" label="Link" />
             </Box>
 
             <Box>

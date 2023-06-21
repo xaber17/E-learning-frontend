@@ -195,20 +195,28 @@ export default function UjianList() {
   return (
     <Page title="Ujian">
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading="Ujian"
-          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Ujian' }]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.ujian.form}
-              startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              Tambah
-            </Button>
-          }
-        />
+        {user.role === 'siswa' ? (
+          <HeaderBreadcrumbs
+            heading="Ujian"
+            links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Ujian' }]}
+          />
+        ) : (
+          <HeaderBreadcrumbs
+            heading="Ujian"
+            links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Ujian' }]}
+            action={
+              <Button
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.ujian.form}
+                startIcon={<Iconify icon={'eva:plus-fill'} />}
+              >
+                Tambah
+              </Button>
+            }
+          />
+        )}
+
         <Card>
           <UjianListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 

@@ -275,7 +275,8 @@ export default function InputMateriForm({ currentData, menu, action }) {
                   maxSize={3145728}
                   onDrop={handleDrop}
                   onRemove={handleRemove}
-                  onRemoveAll={handleRemoveAll}/>
+                  onRemoveAll={handleRemoveAll}
+                />
             </Box>
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }} direction="row-reverse">
               <Button

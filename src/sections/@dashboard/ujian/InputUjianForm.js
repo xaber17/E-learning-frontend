@@ -47,7 +47,7 @@ import { countries, roles } from '../../../_mock';
 import Label from '../../../components/Label';
 import LoadingScreen from '../../../components/LoadingScreen';
 import { DialogAnimate } from '../../../components/animate';
-import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } from '../../../components/hook-form';
+import { FormProvider, RHFSelect, RHFTextField, RHFUploadAvatar, RHFUploadMultiFile } from '../../../components/hook-form';
 import InputSoalForm from './InputSoalForm';
 
 // ----------------------------------------------------------------------
@@ -74,7 +74,8 @@ export default function InputUjianForm({ currentData, menu, action }) {
   const NewUjianSchema = Yup.object().shape({
     soal_name: Yup.string().required('Nama Ujian wajib diisi'),
     tipe_soal: Yup.string().required('Tipe Soal wajib diisi'),
-    deadline: Yup.string().required('Deadline wajib diisi'),
+    deadline: Yup.date(),
+    pdf: Yup.array().min(1)
   });
 
   const defaultValues = useMemo(
@@ -84,6 +85,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
       user_id: currentData?.user_id || '',
       kelas_id: currentData?.kelas_id || '',
       deadline: currentData?.deadline || '',
+      pdf: currentData?.pdf || [],
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentData]
@@ -105,6 +107,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
   } = methods;
 
   const values = watch();
+  const pdf = (values.pdf.length >= 1)
 
   console.log('VALUE INPUT', values);
 
@@ -142,7 +145,9 @@ export default function InputUjianForm({ currentData, menu, action }) {
       tipe_soal: data.tipe_soal,
       user_id: data.user_id,
       kelas_id: data.kelas_id,
+      pertanyaan: data.pertanyaan,
       deadline: data.deadline,
+      file: data.pdf[0],
     };
 
     const updateUjianData = {
@@ -268,6 +273,29 @@ export default function InputUjianForm({ currentData, menu, action }) {
     { id: 2, code: 'kuis', label: 'Kuis' },
   ];
 
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      setValue(
+        'pdf',
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+    },
+    [setValue]
+  );
+
+  const handleRemoveAll = () => {
+    setValue('pdf', []);
+  };
+
+  const handleRemove = (file) => {
+    const filteredItems = values.pdf?.filter((_file) => _file !== file);
+    setValue('pdf', filteredItems);
+  };
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
@@ -284,7 +312,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
             >
               <RHFTextField name="soal_name" label="Nama Ujian" />
 
-              <RHFSelect name="tipe" label="Tipe" placeholder="Tipe">
+              <RHFSelect name="tipe_soal" label="Tipe" placeholder="Tipe">
                 <option value="" />
                 {jenisOptions.map((option) => (
                   <option key={option.id} value={option.code}>
@@ -292,119 +320,30 @@ export default function InputUjianForm({ currentData, menu, action }) {
                   </option>
                 ))}
               </RHFSelect>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  name="deadline"
-                  label="Deadline"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  open={openDatePicker}
-                  onClose={handleCloseDatePicker}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-              {/* <RHFTextField name="bobot" label="Bobot" /> */}
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    name="deadline"
+                    label="Deadline"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    open={openDatePicker}
+                    onClose={handleCloseDatePicker}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
             </Box>
             <Box sx={{ mt: 2 }}>
-              <h4>Soal</h4>
-              <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                {[1, 2, 3].map((value) => (
-                  <ListItem
-                    key={value}
-                    disableGutters
-                    // secondaryAction={
-                    //   <Button aria-label="edit" onClick={<InputSoalForm />}>
-                    //     Edit
-                    //   </Button>
-                    // }
-                  >
-                    <ListItemText primary={`${value}. Pertanyaan ${value}`} />
-                  </ListItem>
-                ))}
-              </List>
-              {/* Box Modal Soal */}
-              <InputSoalForm />
-              {/* <Box>
-                <Button variant="outlined" onClick={handleClickOpen}>
-                  + Soal
-                </Button>
-                <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-                  <DialogTitle>Soal #1</DialogTitle>
-                  <DialogContent>
-                    <Box sx={{ mt: 2 }}>
-                      <FormLabel id="jenis">Jenis Soal</FormLabel>
-                      <RadioGroup aria-label="jenis" name="jenis">
-                        <FormControlLabel value="pilihanGanda" control={<Radio />} label="Pilihan Ganda" />
-                        <FormControlLabel value="esai" control={<Radio />} label="Esai" />
-                      </RadioGroup>
-                    </Box>
-                    <Box sx={{ mt: 2 }}>
-                      <RHFTextField name="pertanyaan" label="Tulis Pertanyaan" />
-                    </Box>
-                    <Grid container spacing={2} sx={{ mt: 1 }} alignItems="center">
-                      <Grid item xs={9}>
-                        <TextField name="jawaban_1" label="Tulisan Jawaban 1" variant="outlined" fullWidth />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
-                        <RadioGroup aria-label="jawaban" name="jawaban" row>
-                          <FormControlLabel value="ya" control={<Radio />} label="Ya" />
-                          <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
-                        </RadioGroup>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} alignItems="center">
-                      <Grid item xs={9}>
-                        <TextField name="jawaban_2" label="Tulisan Jawaban 2" variant="outlined" fullWidth />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
-                        <RadioGroup aria-label="jawaban" name="jawaban" row>
-                          <FormControlLabel value="ya" control={<Radio />} label="Ya" />
-                          <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
-                        </RadioGroup>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} alignItems="center">
-                      <Grid item xs={9}>
-                        <TextField name="jawaban_3" label="Tulisan Jawaban 3" variant="outlined" fullWidth />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
-                        <RadioGroup aria-label="jawaban" name="jawaban" row>
-                          <FormControlLabel value="ya" control={<Radio />} label="Ya" />
-                          <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
-                        </RadioGroup>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} alignItems="center">
-                      <Grid item xs={9}>
-                        <TextField name="jawaban_4" label="Tulisan Jawaban 4" variant="outlined" fullWidth />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <FormLabel id="jawaban">Jawaban yang Benar?</FormLabel>
-                        <RadioGroup aria-label="jawaban" name="jawaban" row>
-                          <FormControlLabel value="ya" control={<Radio />} label="Ya" />
-                          <FormControlLabel value="tidak" control={<Radio />} label="Tidak" />
-                        </RadioGroup>
-                      </Grid>
-                    </Grid>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClose}>Kembali</Button>
-                    <LoadingButton
-                      type="submit"
-                      variant="contained"
-                      loading={isSubmitting}
-                      loadingIndicator="Loading..."
-                    >
-                      Simpan
-                    </LoadingButton>
-                  </DialogActions>
-                </Dialog>
-              </Box> */}
+            <h4>Soal</h4>
+            <RHFUploadMultiFile 
+                  name="pdf"
+                  showPreview
+                  accept="application/pdf"
+                  maxSize={3145728}
+                  onDrop={handleDrop}
+                  onRemove={handleRemove}
+                  onRemoveAll={handleRemoveAll}
+                />
             </Box>
-
             <Box>
               <Stack flexDirection={'row'} justifyContent={'space-between'} sx={{ mt: 3 }}>
                 {menu === 'Ujian Form' ? (

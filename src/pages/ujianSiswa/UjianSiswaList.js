@@ -69,10 +69,10 @@ export default function UjianSiswaList() {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
-  // const { ujian } = useSelector((state) => state.ujian);
-  const ujianList = [];
+  const { ujian } = useSelector((state) => state.ujian);
+  let ujianList = [];
   try {
-    // ujianList = ujian?.data?.result;
+    ujianList = ujian?.data?.result || [];
     console.log('Ujian list data: ', ujianList);
   } catch (e) {
     console.log(e);
@@ -197,16 +197,6 @@ export default function UjianSiswaList() {
         <HeaderBreadcrumbs
           heading="Ujian/Kuis"
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Ujian/Kuis' }]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.ujian.form}
-              startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              Tambah
-            </Button>
-          }
         />
         <Card>
           <UjianListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
@@ -225,9 +215,9 @@ export default function UjianSiswaList() {
                   {filteredUjian.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const idUjian = row?.soal_id;
                     const nama = row?.soal_name;
-                    const deadline = row?.deadline;
-                    const guru = row?.guru;
-                    const tipe = row?.tipe;
+                    const deadline = row?.deadlines;
+                    const guru = row?.guru_name;
+                    const tipe = row?.tipe_soal;
                     const nilai = row?.nilai;
                     const isItemSelected = selected.indexOf(idUjian) !== -1;
 
