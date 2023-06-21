@@ -78,6 +78,14 @@ export default function InputUjianForm({ currentData, menu, action }) {
 
   const [message, setMessage] = useState('');
 
+  const { kelas } = useSelector((state) => state.kelas);
+  let kelasList = [];
+  try {
+    kelasList = kelas?.data?.result;
+  } catch (e) {
+    console.log(e);
+  }
+
   const NewUjianSchema = Yup.object().shape({
     soal_name: Yup.string().required('Nama Ujian wajib diisi'),
     tipe_soal: Yup.string().required('Tipe Soal wajib diisi'),
@@ -276,8 +284,8 @@ export default function InputUjianForm({ currentData, menu, action }) {
   const hiddenForSiswa = menu !== 'Ujian Siswa Form' ? { display: 'none' } : {};
 
   const jenisOptions = [
-    { id: 1, code: 'ujian', label: 'Ujian' },
-    { id: 2, code: 'kuis', label: 'Kuis' },
+    { id: 1, code: 'Ujian', label: 'Ujian' },
+    { id: 2, code: 'Kuis', label: 'Kuis' },
   ];
 
   const handleDrop = useCallback(
@@ -325,6 +333,14 @@ export default function InputUjianForm({ currentData, menu, action }) {
                 {jenisOptions.map((option) => (
                   <option key={option.id} value={option.code}>
                     {option.label}
+                  </option>
+                ))}
+              </RHFSelect>
+              <RHFSelect name="kelas_id" label="Kelas" placeholder="Kelas">
+                <option value="" />
+                {kelasList.map((option) => (
+                  <option key={option.kelas_id} value={option.kelas_id}>
+                    {option.kelas_name}
                   </option>
                 ))}
               </RHFSelect>

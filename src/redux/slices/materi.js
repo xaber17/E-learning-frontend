@@ -145,7 +145,7 @@ export function createMateri(newMateri) {
   return async () => {
     console.log("Data New Materi: ", newMateri);
     console.log("Data New File: ", newMateri.file.preview);
-    window.localStorage.setItem(newMateri.materi_name, newMateri.file.preview);
+    window.localStorage.setItem(newMateri.materi_name, newMateri?.file?.preview);
     dispatch(slice.actions.startLoading());
     // try {
     const formData = new FormData();

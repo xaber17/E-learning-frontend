@@ -115,17 +115,26 @@ export async function getUjian() {
 
 export function createUjian(newUjian) {
   return async () => {
-    console.log(newUjian);
+    console.log("Data New Ujian: ", newUjian);
+    window.localStorage.setItem(newUjian.ujian_name, newUjian?.file?.preview);
     dispatch(slice.actions.startLoading());
     // try {
+    const formData = new FormData();
+    formData.append('file', newUjian.file);
+    formData.append('deadline', newUjian.deadline);
+    formData.append('soal_name', newUjian.soal_name);
+    formData.append('tipe_soal', newUjian.tipe_soal);
+    formData.append('kelas_id', newUjian.kelas_id);
+
     const accessToken = window.localStorage.getItem('accessToken');
     console.log(accessToken);
     const header = {
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
       },
     };
-    const response = await axios.post('/soal', newUjian, header);
+    const response = await axios.post('/upload-file/soal', formData, header);
 
     const status = response.status;
     const data = response.data;
