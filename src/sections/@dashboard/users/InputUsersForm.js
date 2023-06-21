@@ -178,7 +178,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
 
   console.log('VALUE INPUT', values);
 
-  if (action === 'update' && menu === 'Akun' && values.nama_user === '') {
+  if (action === 'update' && menu === 'Profile' && values.nama_user === '') {
     window.location.reload();
   }
   console.log('CURRENTDATA', currentData);
@@ -271,7 +271,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
         });
     } else if (action === 'update') {
       console.log('jalan update');
-      if (menu === 'Akun') {
+      if (menu === 'Profile') {
         console.log('jalan update akun true');
         dispatch(updateUser(data.user_id, updateAkun))
           .then((update) => {
@@ -402,7 +402,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
                 ))}
               </RHFSelect>
 
-              {currentData !== null && menu !== 'Akun' ? (
+              {currentData !== null && menu !== 'Profile' ? (
                 <>
                   <RHFSwitch name="changePassword" label="Ubah kata sandi?" />
                   <Box />
@@ -429,7 +429,7 @@ export default function InputUsersForm({ currentData, menu, action }) {
                   <RHFTextField name="password_confirmation" label="Ketik Ulang Kata Sandi" type="password" />
                 </>
               )}
-              {menu !== 'Akun' && (
+              {menu !== 'Profile' && (
                 <>
                   <RHFSelect name="role" label="Tipe User" placeholder="Tipe User">
                     <option value="" />

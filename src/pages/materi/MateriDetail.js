@@ -77,14 +77,14 @@ export default function MateriDetail() {
               </div>
               <div>
               <object
-                data={previewMateri}
+                data={previewMateri || 'https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf'}
                 type="application/pdf"
                 width="900"
                 height="678"
               >
 
                 <iframe
-                  src={previewMateri}
+                  src={previewMateri || 'https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf'}
                   width="500"
                   height="678"
                   title='asdas'

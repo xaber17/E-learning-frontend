@@ -52,7 +52,7 @@ function navConfig(role) {
           { title: 'Kelas', path: PATH_DASHBOARD.kelas.root, icon: ICONS.kanban },
           { title: 'Materi', path: PATH_DASHBOARD.materi.root, icon: ICONS.booking },
           { title: 'Ujian/Kuis', path: PATH_DASHBOARD.ujian.root, icon: ICONS.kanban },
-          { title: 'Akun', path: PATH_DASHBOARD.akun, icon: ICONS.user },
+          { title: 'Profile', path: PATH_DASHBOARD.akun, icon: ICONS.user },
         ],
       },
     ];
@@ -64,7 +64,7 @@ function navConfig(role) {
           { title: 'Kelas', path: PATH_DASHBOARD.kelas.root, icon: ICONS.kanban },
           { title: 'Materi', path: PATH_DASHBOARD.materi.root, icon: ICONS.booking },
           { title: 'Ujian/Kuis', path: PATH_DASHBOARD.ujian.root, icon: ICONS.kanban },
-          { title: 'Akun', path: PATH_DASHBOARD.akun, icon: ICONS.user },
+          { title: 'Profile', path: PATH_DASHBOARD.akun, icon: ICONS.user },
         ],
       },
     ];
@@ -77,7 +77,7 @@ function navConfig(role) {
           { title: 'Kelas', path: PATH_DASHBOARD.kelas.root, icon: ICONS.kanban },
           { title: 'Materi', path: PATH_DASHBOARD.materi.root, icon: ICONS.booking },
           { title: 'Ujian/Kuis', path: PATH_DASHBOARD.ujianSiswa.root, icon: ICONS.kanban },
-          { title: 'Akun', path: PATH_DASHBOARD.akun, icon: ICONS.user },
+          { title: 'Profile', path: PATH_DASHBOARD.akun, icon: ICONS.user },
         ],
       },
     ];

@@ -46,7 +46,7 @@ export default function UsersForm() {
 
   const currentUser = a;
 
-  const title = 'Akun';
+  const title = 'Profile';
 
   return (
     <Page title={title}>
