@@ -27,7 +27,6 @@ import {
 } from '../../sections/@dashboard/general/app';
 import { AnalyticsCurrentVisits, AnalyticsWidgetSummary } from '../../sections/@dashboard/general/analytics';
 
-
 // ----------------------------------------------------------------------
 
 export default function GeneralApp() {
@@ -42,12 +41,12 @@ export default function GeneralApp() {
   try {
     materiList = [materi?.data?.result[0] || [], materi?.data?.result[1] || [], materi?.data?.result[2] || []];
     console.log('materi list dashboard: ', materiList);
-    ujianList = [ujian?.data?.result[0] || [], ujian?.data?.result[1] || [], ujian?.data?.result[2] || []]
+    ujianList = [ujian?.data?.result[0] || [], ujian?.data?.result[1] || [], ujian?.data?.result[2] || []];
     console.log('Ujian list dashboard: ', ujianList);
   } catch (e) {
     console.log(e);
   }
-  console.log('Data materi di dashboard: ', materi)
+  console.log('Data materi di dashboard: ', materi);
   console.log('Data guru dan siswa: ', guru, siswa);
 
   useEffect(() => {
@@ -103,44 +102,50 @@ export default function GeneralApp() {
                 <AnalyticsWidgetSummary title="Total Guru" total={guru?.length} color="warning" icon={'mdi:user'} />
               </Grid>
               <Grid item xs={12} md={6} lg={4}>
-                <AnalyticsCurrentVisits Materi={materiList}/>
+                <AnalyticsCurrentVisits Materi={materiList} />
               </Grid>
             </>
-          ) : null }
+          ) : null}
           {user.role === 'guru' ? (
             <>
               <Grid item xs={12} sm={6} md={4}>
+                <AnalyticsWidgetSummary title="Total Siswa" total={siswa?.length} icon={'mdi:user-group'} />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
                 <AnalyticsWidgetSummary
-                  title="Total Siswa"
-                  total={siswa?.length}
-                  icon={'mdi:user-group'}
+                  title="Total Materi"
+                  total={materiList?.length}
+                  color="info"
+                  icon={'mdi:book'}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
-                <AnalyticsWidgetSummary title="Total Materi" total={materiList?.length} color="info" icon={'mdi:book'} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
                 <AnalyticsWidgetSummary title="Total Ujian" total={5} color="warning" icon={'mdi:assignment'} />
               </Grid>
               <Grid item xs={12} md={6} lg={4}>
-                <AnalyticsCurrentVisits Materi={materiList}/>
+                <AnalyticsCurrentVisits Materi={materiList} />
               </Grid>
             </>
-          ) : null }
+          ) : null}
           {user.role === 'siswa' ? (
             <>
               <Grid item xs={6} sm={6} md={6}>
-                <AnalyticsWidgetSummary title="Total Materi" total={materiList?.length} color="info" icon={'mdi:book'} />
+                <AnalyticsWidgetSummary
+                  title="Total Materi"
+                  total={materiList?.length}
+                  color="info"
+                  icon={'mdi:book'}
+                />
               </Grid>
               <Grid item xs={6} sm={6} md={6}>
                 <AnalyticsWidgetSummary title="Total Ujian" total={5} color="warning" icon={'mdi:assignment'} />
               </Grid>
-              
+
               <Grid item xs={12} md={6} lg={4}>
-                <AnalyticsCurrentVisits Materi={materiList}/>
+                <AnalyticsCurrentVisits Materi={materiList} />
               </Grid>
             </>
-          ) : null }
+          ) : null}
           <Grid item xs={12} md={6} lg={4}>
             <Card>
               <CardHeader title="Materi Terbaru" />
@@ -150,15 +155,11 @@ export default function GeneralApp() {
                   listStylePosition: 'inside',
                 }}
               >
-              {materiList.map((row) => {
-                const materiName = row.materi_name || [];
+                {materiList?.map((row) => {
+                  const materiName = row.materi_name || [];
 
-                return (
-                  <ListItem sx={{ display: 'list-item' }}>
-                    {materiName}
-                  </ListItem>
-                )
-              })}
+                  return <ListItem sx={{ display: 'list-item' }}>{materiName}</ListItem>;
+                })}
               </List>
             </Card>
             <Card sx={{ mt: 3 }}>
@@ -169,14 +170,10 @@ export default function GeneralApp() {
                   listStylePosition: 'inside',
                 }}
               >
-                {ujianList.map((row) => {
-                const ujianName = row.soal_name || 'Belum ada Ujian/Kuis';
-                return (
-                  <ListItem sx={{ display: 'list-item' }}>
-                    {ujianName}
-                  </ListItem>
-                )
-              })}
+                {ujianList?.map((row) => {
+                  const ujianName = row.soal_name || 'Belum ada Ujian/Kuis';
+                  return <ListItem sx={{ display: 'list-item' }}>{ujianName}</ListItem>;
+                })}
               </List>
             </Card>
           </Grid>

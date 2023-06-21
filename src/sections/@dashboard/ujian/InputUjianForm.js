@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { isBefore } from 'date-fns';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 // form
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
+import { DatePicker, LoadingButton, LocalizationProvider, MobileDateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
   Box,
@@ -47,7 +48,13 @@ import { countries, roles } from '../../../_mock';
 import Label from '../../../components/Label';
 import LoadingScreen from '../../../components/LoadingScreen';
 import { DialogAnimate } from '../../../components/animate';
-import { FormProvider, RHFSelect, RHFTextField, RHFUploadAvatar, RHFUploadMultiFile } from '../../../components/hook-form';
+import {
+  FormProvider,
+  RHFSelect,
+  RHFTextField,
+  RHFUploadAvatar,
+  RHFUploadMultiFile,
+} from '../../../components/hook-form';
 import InputSoalForm from './InputSoalForm';
 
 // ----------------------------------------------------------------------
@@ -74,8 +81,8 @@ export default function InputUjianForm({ currentData, menu, action }) {
   const NewUjianSchema = Yup.object().shape({
     soal_name: Yup.string().required('Nama Ujian wajib diisi'),
     tipe_soal: Yup.string().required('Tipe Soal wajib diisi'),
-    deadline: Yup.date(),
-    pdf: Yup.array().min(1)
+    deadline: Yup.date().required('Deadline wajib diisi'),
+    pdf: Yup.array().min(1),
   });
 
   const defaultValues = useMemo(
@@ -84,7 +91,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
       tipe_soal: currentData?.tipe_soal || '',
       user_id: currentData?.user_id || '',
       kelas_id: currentData?.kelas_id || '',
-      deadline: currentData?.deadline || '',
+      deadline: new Date(currentData?.deadline) || '',
       pdf: currentData?.pdf || [],
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +114,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
   } = methods;
 
   const values = watch();
-  const pdf = (values.pdf.length >= 1)
+  const pdf = values.pdf.length >= 1;
 
   console.log('VALUE INPUT', values);
 
@@ -295,6 +302,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
     const filteredItems = values.pdf?.filter((_file) => _file !== file);
     setValue('pdf', filteredItems);
   };
+  const isDateError = isBefore(new Date(values.deadline), new Date());
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -320,7 +328,26 @@ export default function InputUjianForm({ currentData, menu, action }) {
                   </option>
                 ))}
               </RHFSelect>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Controller
+                name="deadline"
+                control={control}
+                render={({ field }) => (
+                  <MobileDateTimePicker
+                    {...field}
+                    label="Deadline"
+                    inputFormat="dd/MM/yyyy"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        error={!!isDateError}
+                        helperText={isDateError && 'End date must be later than start date'}
+                      />
+                    )}
+                  />
+                )}
+              />
+              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     name="deadline"
                     label="Deadline"
@@ -330,19 +357,19 @@ export default function InputUjianForm({ currentData, menu, action }) {
                     onClose={handleCloseDatePicker}
                     renderInput={(params) => <TextField {...params} />}
                   />
-                </LocalizationProvider>
+                </LocalizationProvider> */}
             </Box>
             <Box sx={{ mt: 2 }}>
-            <h4>Soal</h4>
-            <RHFUploadMultiFile 
-                  name="pdf"
-                  showPreview
-                  accept="application/pdf"
-                  maxSize={3145728}
-                  onDrop={handleDrop}
-                  onRemove={handleRemove}
-                  onRemoveAll={handleRemoveAll}
-                />
+              <h4>Soal</h4>
+              <RHFUploadMultiFile
+                name="pdf"
+                showPreview
+                accept="application/pdf"
+                maxSize={3145728}
+                onDrop={handleDrop}
+                onRemove={handleRemove}
+                onRemoveAll={handleRemoveAll}
+              />
             </Box>
             <Box>
               <Stack flexDirection={'row'} justifyContent={'space-between'} sx={{ mt: 3 }}>

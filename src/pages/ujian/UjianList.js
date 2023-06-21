@@ -192,6 +192,12 @@ export default function UjianList() {
     window.localStorage.setItem('action', 'update');
   };
 
+  const handleCreateUjian = () => {
+    dispatch(resetUjian());
+    window.localStorage.removeItem('currentUjian');
+    window.localStorage.setItem('action', 'create');
+  };
+
   return (
     <Page title="Ujian">
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -206,6 +212,7 @@ export default function UjianList() {
             links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Ujian' }]}
             action={
               <Button
+                onClick={() => handleCreateUjian()}
                 variant="contained"
                 component={RouterLink}
                 to={PATH_DASHBOARD.ujian.form}
