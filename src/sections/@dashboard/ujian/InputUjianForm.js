@@ -323,7 +323,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
                 display: 'grid',
                 columnGap: 2,
                 rowGap: 3,
-                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)' },
+                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
               <RHFTextField name="soal_name" label="Nama Ujian" />

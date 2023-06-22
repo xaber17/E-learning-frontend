@@ -92,7 +92,7 @@ const slice = createSlice({
 // Reducer
 export default slice.reducer;
 
-export async function getHasil() {
+export async function getHasil(body) {
   // return async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
@@ -103,7 +103,7 @@ export async function getHasil() {
         Authorization: `Bearer ${accessToken}`,
       },
     };
-    const response = await axios.get('/soal', header);
+    const response = await axios.post('/jawaban/all', body, header);
     console.log('redux getHasil', response);
     window.localStorage.setItem('hasilList', JSON.stringify(response.data));
     dispatch(slice.actions.getHasilSuccess(response));

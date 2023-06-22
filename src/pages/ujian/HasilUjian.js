@@ -74,8 +74,8 @@ export default function HasilUjian() {
   const { hasil } = useSelector((state) => state.hasil);
   let hasilList = [];
   try {
-    hasilList = hasil?.data;
-    console.log(hasilList);
+    hasilList = hasil?.data?.result;
+    console.log('HASIL LIST', hasilList);
   } catch (e) {
     console.log(e);
   }
@@ -84,8 +84,12 @@ export default function HasilUjian() {
     setLoading(true);
     const action = window.localStorage.getItem('action');
     window.localStorage.removeItem('currentHasil');
+    const curr = JSON.parse(window.localStorage.getItem('soalId'));
     try {
-      dispatch(getHasil());
+      const body = {
+        soalId: curr.soal_id,
+      };
+      dispatch(getHasil(body));
     } catch (e) {
       console.log('ERROR', e);
     }
@@ -127,9 +131,9 @@ export default function HasilUjian() {
     setPage(0);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dummyHasil.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - hasilList.length) : 0;
 
-  const filteredHasil = applySortFilter(dummyHasil, getComparator(order, orderBy), filterName);
+  const filteredHasil = applySortFilter(hasilList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredHasil.length && Boolean(filterName);
 
@@ -229,7 +233,7 @@ export default function HasilUjian() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={dummyHasil.length}
+                  rowCount={hasilList.length}
                   // numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   // onSelectAllClick={handleSelectAllClick}
@@ -311,7 +315,7 @@ export default function HasilUjian() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={dummyHasil.length}
+            count={hasilList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

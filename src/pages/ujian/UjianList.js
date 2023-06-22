@@ -25,6 +25,7 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { useDispatch, useSelector } from '../../redux/store';
 
 import { getUjian, setCurrentUjian, resetUjian, deleteUjian } from '../../redux/slices/ujian';
+import { getHasil } from '../../redux/slices/hasil';
 
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -192,6 +193,19 @@ export default function UjianList() {
     window.localStorage.setItem('action', 'update');
   };
 
+  const handleLihatHasil = (ujian) => {
+    console.log('LIHAT HASIL UJIAN', ujian);
+    console.log('SOALID', ujian.soal_id);
+    const body = {
+      soalId: ujian?.soal_id,
+    };
+    console.log('BODY', body);
+    dispatch(getHasil(body));
+    window.localStorage.setItem('soalId', JSON.stringify(body));
+    // const hasil = await dispatch(getHasil(body));
+    // console.log('HASIL ALL', hasil);
+  };
+
   const handleCreateUjian = () => {
     dispatch(resetUjian());
     window.localStorage.removeItem('currentUjian');
@@ -264,7 +278,7 @@ export default function UjianList() {
                           <UjianMoreMenu
                             onDelete={() => handleOpenDeleteModal(idUjian)}
                             onUpdate={() => handleUpdateUjian(row)}
-                            // role={user.role}
+                            view={() => handleLihatHasil(row)}
                           />
                         </TableCell>
                       </TableRow>
