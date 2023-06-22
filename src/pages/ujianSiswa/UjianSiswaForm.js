@@ -16,9 +16,11 @@ export default function UjianSiswaForm() {
   const title = 'Ujian Siswa Form';
 
   useEffect(() => {
-    const curr = JSON.parse(window.localStorage.getItem('currentKelas'));
+    const curr = JSON.parse(window.localStorage.getItem('currentSoal'));
 
     setCurrentUjian(curr);
+
+    console.log("current Soal", curr);
 
     const a = window.localStorage.getItem('action');
 

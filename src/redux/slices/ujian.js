@@ -115,7 +115,7 @@ export async function getUjian() {
 
 export function createUjian(newUjian) {
   return async () => {
-    console.log("Data New Ujian: ", newUjian);
+    console.log("Data New Ujian test: ", newUjian);
     window.localStorage.setItem(newUjian.ujian_name, newUjian?.file?.preview);
     dispatch(slice.actions.startLoading());
     // try {
@@ -125,6 +125,7 @@ export function createUjian(newUjian) {
     formData.append('soal_name', newUjian.soal_name);
     formData.append('tipe_soal', newUjian.tipe_soal);
     formData.append('kelas_id', newUjian.kelas_id);
+    formData.append('soal_id', newUjian.soal_id || '');
 
     const accessToken = window.localStorage.getItem('accessToken');
     console.log(accessToken);

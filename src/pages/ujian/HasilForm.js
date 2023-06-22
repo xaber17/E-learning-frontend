@@ -16,7 +16,7 @@ export default function HasilForm() {
   const title = 'Hasil Form';
 
   useEffect(() => {
-    const curr = JSON.parse(window.localStorage.getItem('currentKelas'));
+    const curr = JSON.parse(window.localStorage.getItem('currentHasil'));
 
     setCurrentHasil(curr);
 

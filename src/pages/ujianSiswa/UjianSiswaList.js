@@ -127,6 +127,13 @@ export default function UjianSiswaList() {
     setPage(0);
   };
 
+  const handleDetailSoal = (soal) => {
+    console.log('Detail soal LIST', soal);
+    dispatch(setCurrentUjian(soal));
+    window.localStorage.setItem('currentSoal', JSON.stringify(soal));
+    window.localStorage.setItem('action', 'create');
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ujianList.length) : 0;
 
   const filteredUjian = applySortFilter(ujianList, getComparator(order, orderBy), filterName);
@@ -238,11 +245,10 @@ export default function UjianSiswaList() {
                         <TableCell align="left">{deadline ?? '-'}</TableCell>
                         <TableCell align="left">{guru ?? '-'}</TableCell>
                         <TableCell align="left">{tipe ?? '-'}</TableCell>
-                        <TableCell align="left">{nilai ?? 0}</TableCell>
+                        <TableCell align="left">{nilai ?? 80}</TableCell>
                         <TableCell align="right">
                           <UjianMoreMenu
-                            onDelete={() => handleOpenDeleteModal(idUjian)}
-                            onUpdate={() => handleUpdateUjian(row)}
+                            view={() => handleDetailSoal(row)}
                           />
                         </TableCell>
                       </TableRow>

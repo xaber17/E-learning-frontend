@@ -5,6 +5,7 @@ import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { MenuItem, IconButton } from '@mui/material';
 // routes
+import useAuth from '../../../../hooks/useAuth';
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
 import Iconify from '../../../../components/Iconify';
@@ -22,6 +23,8 @@ UjianMoreMenu.propTypes = {
 
 export default function UjianMoreMenu({ onDelete, view, onUpdate, role, menu }) {
   const [open, setOpen] = useState(null);
+
+  const { user } = useAuth();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -42,7 +45,7 @@ export default function UjianMoreMenu({ onDelete, view, onUpdate, role, menu }) 
       <IconButton onClick={handleOpen}>
         <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
       </IconButton>
-      {role === 'siswa' ? (
+      {user.role === 'siswa' ? (
         <MenuPopover
           open={Boolean(open)}
           anchorEl={open}
@@ -56,18 +59,14 @@ export default function UjianMoreMenu({ onDelete, view, onUpdate, role, menu }) 
             '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
           }}
         >
-          <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.ujian.hasil}>
+          <MenuItem onClick={view} component={RouterLink} to={PATH_DASHBOARD.ujianSiswa.form}>
             <Iconify icon={'mdi:form-select'} sx={{ ...ICON }} />
-            Lihat Hasil
+            Lihat Detail
           </MenuItem>
-          <MenuItem onClick={onUpdate} component={RouterLink} to={PATH_DASHBOARD.ujian.form}>
+          {/* <MenuItem onClick={onUpdate} component={RouterLink} to={PATH_DASHBOARD.ujian.form}>
             <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
             Ubah
-          </MenuItem>
-          <MenuItem onClick={onDelete} sx={{ color: 'error.main' }}>
-            <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-            Hapus
-          </MenuItem>
+          </MenuItem> */}
         </MenuPopover>
       ) : (
         <MenuPopover

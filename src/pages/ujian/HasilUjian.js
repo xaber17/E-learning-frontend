@@ -45,7 +45,6 @@ import { UjianListHead, UjianListToolbar, UjianMoreMenu } from '../../sections/@
 const TABLE_HEAD = [
   //   { id: 'idHasil', label: 'ID Kelas', alignRight: false },
   { id: 'siswa', label: 'Nama Siswa', alignRight: false },
-  { id: 'kelas', label: 'Kelas', alignRight: false },
   { id: 'nilai', label: 'Nilai', alignRight: false },
   { id: '' },
 ];
@@ -90,6 +89,7 @@ export default function HasilUjian() {
         soalId: curr.soal_id,
       };
       dispatch(getHasil(body));
+      console.log("a", action)
     } catch (e) {
       console.log('ERROR', e);
     }
@@ -239,11 +239,11 @@ export default function HasilUjian() {
                   // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredHasil.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  {hasilList.map((row) => {
                     const idHasil = row.idHasil;
-                    const siswa = row.siswa;
-                    const kelas = row.kelas;
-                    const nilai = row.nilai;
+                    const siswa = row.siswa_name;
+                    // const kelas = row.kelas;
+                    const nilai = row.nilai || 0;
                     const isItemSelected = selected.indexOf(idHasil) !== -1;
 
                     return (
@@ -264,10 +264,11 @@ export default function HasilUjian() {
                             {siswa}
                           </Typography>
                         </TableCell>
-                        <TableCell align="left">{kelas}</TableCell>
+                        {/* <TableCell align="left">{kelas}</TableCell> */}
                         <TableCell align="left">{nilai}</TableCell>
                         <TableCell align="right">
                           <UjianMoreMenu
+                            onUpdate={() => handleUpdateHasil(row)}
                             onDelete={() => handleOpenDeleteModal(idHasil)}
                             role={user.role}
                             menu={title}

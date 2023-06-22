@@ -55,6 +55,7 @@ import {
   RHFUploadAvatar,
   RHFUploadMultiFile,
 } from '../../../components/hook-form';
+import useAuth from '../../../hooks/useAuth';
 import InputSoalForm from './InputSoalForm';
 
 // ----------------------------------------------------------------------
@@ -78,6 +79,8 @@ export default function InputUjianForm({ currentData, menu, action }) {
 
   const [message, setMessage] = useState('');
 
+  const { user } = useAuth();
+  console.log("INi User: ", user)
   const { kelas } = useSelector((state) => state.kelas);
   let kelasList = [];
   try {
@@ -90,17 +93,20 @@ export default function InputUjianForm({ currentData, menu, action }) {
     soal_name: Yup.string().required('Nama Ujian wajib diisi'),
     tipe_soal: Yup.string().required('Tipe Soal wajib diisi'),
     deadline: Yup.date().required('Deadline wajib diisi'),
-    pdf: Yup.array().min(1),
+    pdf: Yup.array()
   });
 
   const defaultValues = useMemo(
     () => ({
+      soal_id: currentData?.soal_id || '',
       soal_name: currentData?.soal_name || '',
       tipe_soal: currentData?.tipe_soal || '',
       user_id: currentData?.user_id || '',
       kelas_id: currentData?.kelas_id || '',
       deadline: new Date(currentData?.deadline) || '',
+      nilai: currentData?.nilai || 0,
       pdf: currentData?.pdf || [],
+      jawaban_id: currentData?.jawaban_id || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentData]
@@ -152,17 +158,18 @@ export default function InputUjianForm({ currentData, menu, action }) {
 
   const onSubmit = async (data) => {
     console.log('jalan');
-    console.log(data);
+    // console.log(data);
     // try {
     const newUjian = {
-      soal_name: data.soal_name,
-      file_id: data.file_id,
-      tipe_soal: data.tipe_soal,
-      user_id: data.user_id,
-      kelas_id: data.kelas_id,
-      pertanyaan: data.pertanyaan,
-      deadline: data.deadline,
-      file: data.pdf[0],
+      soal_name: data?.soal_name,
+      soal_id: data?.soal_id,
+      file_id: data?.file_id,
+      tipe_soal: data?.tipe_soal,
+      user_id: data?.user_id,
+      kelas_id: data?.kelas_id,
+      deadline: data?.deadline,
+      file: data?.pdf[0] || [],
+      nilai: data?.nilai || 0,
     };
 
     const updateUjianData = {
@@ -171,6 +178,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
       tipe_soal: data.tipe_soal,
       user_id: data.user_id,
       kelas_id: data.kelas_id,
+      nilai: data?.nilai || 0,
     };
     console.log('pushed button');
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -252,31 +260,6 @@ export default function InputUjianForm({ currentData, menu, action }) {
     }, 1000);
   }
 
-  // --------------------------------------------------------------------------------
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [openDatePicker, setOpenDatePicker] = useState();
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const handleOpenDatePicker = () => {
-    setOpenDatePicker(true);
-  };
-
-  const handleCloseDatePicker = () => {
-    setOpenDatePicker(false);
-  };
-
-  // ----------------------------------------------------------------------
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   // ----------------------------------------------------------------------
 
   const hiddenForUjian = menu !== 'Ujian Form' ? { display: 'none' } : {};
@@ -363,17 +346,6 @@ export default function InputUjianForm({ currentData, menu, action }) {
                   />
                 )}
               />
-              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    name="deadline"
-                    label="Deadline"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    open={openDatePicker}
-                    onClose={handleCloseDatePicker}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </LocalizationProvider> */}
             </Box>
             <Box sx={{ mt: 2 }}>
               <h4>Soal</h4>
@@ -406,43 +378,29 @@ export default function InputUjianForm({ currentData, menu, action }) {
           {/* Input Hasil Form */}
           <Card sx={{ p: 3 }} style={hiddenForHasil}>
             <Box sx={{ mb: 2 }}>
-              <h3>Nama : Getar Nuansa</h3>
-              <h3>Soal : Ujian Matematika</h3>
+              <h3>Nama Siswa : {currentData?.siswa_name}</h3>
+              <h3>Soal : Kuis Dadakan</h3>
             </Box>
             <Box>
-              <h4>Pilihan Ganda</h4>
-              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                {[1, 2, 3].map((value) => (
-                  <Box key={value} disableGutters>
-                    <ListItemText
-                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry`}
-                    />
-                    <Grid sx={{ pl: 2, mb: 2 }}>
-                      <ListItemText>
-                        <h5>Jawaban:</h5>
-                        <h4>A. Lorem Ipsum is simple dummy</h4>
-                      </ListItemText>
-                    </Grid>
-                  </Box>
-                ))}
-              </List>
-              <h4>Esai</h4>
-              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                {[1, 2, 3].map((value) => (
-                  <Box key={value} disableGutters>
-                    <ListItemText
-                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry.`}
-                    />
-                    <Grid sx={{ pl: 2, mb: 2 }}>
-                      <ListItemText>
-                        <h4>Jawaban:</h4>
-                        <h4>Lorem Ipsum is simply dummy text of the printing</h4>
-                      </ListItemText>
-                    </Grid>
-                  </Box>
-                ))}
-              </List>
-              <RHFTextField name="nilai" label="Nilai Esai Keseluruhan" />
+              <h4>Jawaban Siswa</h4>
+              <div>
+              <object
+                data={'https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf'}
+                type="application/pdf"
+                width="900"
+                height="678"
+              >
+
+                <iframe
+                  src={'https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf'}
+                  width="500"
+                  height="678"
+                  title='asdas'
+                />
+
+              </object>
+              </div>
+              <RHFTextField name="nilai" label="Beri Nilai" />
             </Box>
 
             <Box>
@@ -454,8 +412,8 @@ export default function InputUjianForm({ currentData, menu, action }) {
                 ) : (
                   <Box />
                 )}
-                <LoadingButton type="submit" variant="contained" loading={isSubmitting} loadingIndicator="Loading...">
-                  Simpan
+                <LoadingButton type='submit' variant="contained" loading={isSubmitting} loadingIndicator="Loading...">
+                  Simpan Data
                 </LoadingButton>
               </Stack>
             </Box>
@@ -464,56 +422,43 @@ export default function InputUjianForm({ currentData, menu, action }) {
           {/* Input Ujian Siswa */}
           <Card sx={{ p: 3 }} style={hiddenForSiswa}>
             <Box sx={{ mb: 2 }}>
-              <h3>Nama : Getar Nuansa</h3>
-              <h3>Soal : Ujian Matematika</h3>
+              <h3>Nama : {user.nama_user}</h3>
+              <h3>Soal : {currentData?.soal_name}</h3>
             </Box>
             <Box>
-              <h4>Pilihan Ganda</h4>
-              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                {[1, 2, 3].map((value) => (
-                  <Box key={value} disableGutters>
-                    <ListItemText
-                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry`}
-                    />
-                    <Grid sx={{ pl: 2, my: 2 }}>
-                      <ListItemText>
-                        <h5>Jawaban:</h5>
-                        <Box sx={{ mt: 2 }}>
-                          <RadioGroup aria-label="jawab" name="jawab">
-                            <FormControlLabel value="a" control={<Radio />} label="A. Lorem" />
-                            <FormControlLabel value="b" control={<Radio />} label="B. Ipsum" />
-                            <FormControlLabel value="c" control={<Radio />} label="C. Dolor" />
-                            <FormControlLabel value="d" control={<Radio />} label="D. Sit Amet" />
-                          </RadioGroup>
-                        </Box>
-                      </ListItemText>
-                    </Grid>
-                  </Box>
-                ))}
-              </List>
-              <h4>Esai</h4>
-              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                {[1, 2, 3].map((value) => (
-                  <Box key={value} disableGutters>
-                    <ListItemText
-                      primary={`${value}. Lorem Ipsum is simply dummy text of the printing and typesetting industry.`}
-                    />
-                    <Grid sx={{ pl: 2, mb: 2 }}>
-                      <ListItemText>
-                        <h4>Jawaban:</h4>
-                        <Box sx={{ mt: 2 }}>
-                          <RHFTextField name="jawab" label="Tulis jawabanmu" multiline rows={4} />
-                        </Box>
-                      </ListItemText>
-                    </Grid>
-                  </Box>
-                ))}
-              </List>
+              <h3>File Soal</h3>
+              <div>
+              <object
+                data={'https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf'}
+                type="application/pdf"
+                width="900"
+                height="678"
+              >
+
+                <iframe
+                  src={'https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf'}
+                  width="500"
+                  height="678"
+                  title='asdas'
+                />
+
+              </object>
+              </div>
+              <h3>Upload Jawaban</h3>
+              <RHFUploadMultiFile 
+                  name="pdf"
+                  showPreview
+                  accept="application/pdf"
+                  maxSize={3145728}
+                  onDrop={handleDrop}
+                  onRemove={handleRemove}
+                  onRemoveAll={handleRemoveAll}
+                />
             </Box>
 
             <Box>
               <Stack flexDirection={'row'} justifyContent={'space-between'} sx={{ mt: 3 }}>
-                {hiddenForHasil ? (
+                {hiddenForSiswa ? (
                   <Button variant="contained" color="inherit" onClick={handleBack}>
                     Kembali
                   </Button>
@@ -521,7 +466,7 @@ export default function InputUjianForm({ currentData, menu, action }) {
                   <Box />
                 )}
                 <LoadingButton type="submit" variant="contained" loading={isSubmitting} loadingIndicator="Loading...">
-                  Simpan
+                  Simpan Data
                 </LoadingButton>
               </Stack>
             </Box>
